@@ -14,7 +14,6 @@ app.listen(5000, ()=>{
     console.log("listening on http://localhost:5000")
 })
 
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
@@ -64,6 +63,21 @@ app.post('/signup', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Unable to create user' });
+  }
+});
+
+// Define a POST endpoint to create a new user
+app.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ where: { username, password } });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Unable to login' });
   }
 });
 
