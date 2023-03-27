@@ -66,7 +66,7 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-// Define a POST endpoint to create a new user
+// Define a POST endpoint to login
 app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
