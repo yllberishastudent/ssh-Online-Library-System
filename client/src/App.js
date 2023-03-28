@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import UserLogin from "./component/user/UserLogin";
+import UserRegister from "./component/user/UserRegister";
 import "./component/user/UserLogin.css";
+
 
 
 function App() {
@@ -20,7 +22,13 @@ function App() {
     {/* {(typeof get.test === 'undefined') ? (<p>Loading...</p>):(get.test.map((test,i) =>(
       <p key={i}>{test}</p>
     )))} */}
-  </div>);
+ 
+   <UserRegister/>
+   {/* {(typeof get.test === 'undefined') ? (<p>Loading...</p>):(get.test.map((test,i) =>(
+     <p key={i}>{test}</p>
+   )))} */}
+ </div>
+  );
 }
 
 export default App;
