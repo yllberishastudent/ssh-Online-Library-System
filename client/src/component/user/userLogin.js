@@ -21,14 +21,14 @@ function UserLogin() {
 
   return (
     <div class="login-wrap">
-    <form onSubmit={handleSubmit} className="login-form">
+    <form onSubmit={handleSubmit} class="login-form" action="/login" method="POST">
       <label>
         Username:
-        <input type="text" value={username} onChange={handleUsernameChange} />
+        <input type="text" id="username" value={username} onChange={handleUsernameChange} />
       </label>
       <label>
         Password:
-        <input type="password" value={password} onChange={handlePasswordChange} />
+        <input type="password" id="password" value={password} onChange={handlePasswordChange} />
       </label>
       <button type="submit">Log in</button>
     </form>

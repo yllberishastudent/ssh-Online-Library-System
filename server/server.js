@@ -1,26 +1,13 @@
-// const express = require('express')
-// const app = express()
 
-// app.get("/api", (req,res) => {
-//     res.json({"test" : ["test1","test2","test3"]})
-// })
-
-
-app.get("/login", (req,res) => {
-    res.json({"test" : ["test1","test2","test3"]})
-})
-
-app.listen(5000, ()=>{
-    console.log("listening on http://localhost:5000")
-})
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 
 // Initialize Sequelize with database credentials
-const sequelize = new Sequelize('library', 'root', 'admin', {
+const sequelize = new Sequelize('library', 'root', 'tiktak123', {
   host: 'localhost',
+  port:3307,
   dialect: 'mysql'
 });
 
@@ -82,7 +69,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Start the server
-const PORT = 5000;
+const PORT = 5001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
