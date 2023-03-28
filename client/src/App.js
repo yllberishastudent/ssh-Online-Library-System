@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import UserLogin from "./component/user/UserLogin";
 import UserRegister from "./component/user/UserRegister";
-import "./component/user/UserLogin.css";
-import "./component/user/UserRegister.css";
-
-
+import './App.css'; // Import CSS styles
 
 function App() {
-  const [get, set] = useState([{}]);
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/user/login">Log In</Link>
+            </li>
+            <li>
+              <Link to="/user/register">Register</Link>
+            </li>
+          </ul>
+        </nav>
 
-  // useEffect(() => {
-  //   fetch("/api")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       set(data);
-  //     });
-  // }, []);
-
-  return( 
-  <div>
-  <UserLogin />
-    {/* {(typeof get.test === 'undefined') ? (<p>Loading...</p>):(get.test.map((test,i) =>(
-      <p key={i}>{test}</p>
-    )))} */}
- 
-   <UserRegister/>
-   {/* {(typeof get.test === 'undefined') ? (<p>Loading...</p>):(get.test.map((test,i) =>(
-     <p key={i}>{test}</p>
-   )))} */}
- </div>
+        <Routes>
+          <Route path="/"/>
+          <Route path="/user/login" element={<UserLogin/>}/>
+          <Route path="/user/register" element={<UserRegister/>}/>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
