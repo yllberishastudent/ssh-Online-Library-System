@@ -23,11 +23,15 @@ function UserLogin() {
     <div class="login-wrap">
     <form onSubmit={handleSubmit} class="login-form" action="/login" method="POST">
       <label>
+        <div class="label-text">
         Username:
+        </div>
         <input type="text" id="username" value={username} onChange={handleUsernameChange} />
       </label>
       <label>
+      <div class="label-text">
         Password:
+        </div>
         <input type="password" id="password" value={password} onChange={handlePasswordChange} />
       </label>
       <button type="submit">Log in</button>

@@ -21,6 +21,7 @@
   label {
     display: block;
     margin: 10px 0;
+    font-weight: bold;
   }
   
   input[type="text"],
@@ -42,3 +43,6 @@
     margin-top: 10px;
   }
   
+  .login-form label div.label-text {
+    margin-bottom: 5px;
+  }
