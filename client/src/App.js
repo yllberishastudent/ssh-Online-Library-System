@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserLogin from "./component/user/UserLogin";
 import UserRegister from "./component/user/UserRegister";
 import "./component/user/UserLogin.css";
+import "./component/user/UserRegister.css";
 
 
 

@@ -17,10 +17,6 @@ const User = sequelize.define('user', {
       type: Sequelize.STRING,
       allowNull: false
     },
-    password: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
     email: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -30,6 +26,14 @@ const User = sequelize.define('user', {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    confirm_password: {
+      type: Sequelize.STRING,
+      allowNull: false
     }
   }, { 
     timestamps: false // disable the creation of createdAt and updatedAt fields
@@ -44,8 +48,8 @@ app.use(bodyParser.json());
 // Define a POST endpoint to create a new user
 app.post('/signup', async (req, res) => {
   try {
-    const { username, password, email, phone_number } = req.body;
-    const user = await User.create({ username, password, email, phone_number });
+    const { username, email, phone_number, password, confirm_password } = req.body;
+    const user = await User.create({ username, email, phone_number, password, confirm_password });
     res.status(201).json({ user });
   } catch (error) {
     console.error(error);
