@@ -1,10 +1,23 @@
-const db = require('../models'); // import all the models
+const db = require("../models");
 
-// Synchronize all models with the database
-db.sequelize.sync({ force: true })
+// Synchronize all models with the database in a specific order
+db.sequelize
+  .sync({ force: false })
   .then(() => {
-    console.log('All models were synchronized successfully.');
+    return db.User.sync();
+  })
+  .then(() => {
+    return db.Book.sync();
+  })
+  .then(() => {
+    return db.Transaction.sync();
+  })
+  .then(() => {
+    return db.Favorite.sync();
+  })
+  .then(() => {
+    console.log("All models were synchronized successfully.");
   })
   .catch((error) => {
-    console.error('An error occurred while synchronizing the models:', error);
+    console.error("An error occurred while synchronizing the models:", error);
   });
