@@ -43,6 +43,44 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/categories", async (req, res) => {
+  try {
+    const categories = await db.Category.findAll(); // Retrieve all categories using the ORM
+    res.status(200).json(categories); // Send the categories as a JSON response
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error"); // Send an error response if something went wrong
+  }
+});
+
+app.get("/books", async (req, res) => {
+  try {
+    const books = await db.Book.findAll();
+    res.json(books);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+app.get("/books/category/:categoryName", async (req, res) => {
+  const { categoryName } = req.params;
+  try {
+    const category = await db.Category.findOne({
+      where: { category_name: categoryName },
+    });
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    const books = await category.getBooks();
+    res.json(books);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // Start the server
 const PORT = 5001;
 app.listen(PORT, () => {

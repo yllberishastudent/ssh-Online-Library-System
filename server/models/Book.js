@@ -33,7 +33,10 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Book.associate = function (models) {
-    // associations can be defined here
+    Book.belongsToMany(models.Category, {
+      through: "BookCategory",
+      foreignKey: "book_id",
+    });
   };
   return Book;
 };
