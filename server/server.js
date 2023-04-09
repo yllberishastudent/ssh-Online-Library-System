@@ -63,7 +63,6 @@ app.get("/books", async (req, res) => {
   }
 });
 
-
 app.get("/books/category/:categoryName", async (req, res) => {
   const { categoryName } = req.params;
   try {
@@ -78,6 +77,64 @@ app.get("/books/category/:categoryName", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/addreview", async (req, res) => {
+  try {
+    const { user_id, book_id, review_text } = req.body;
+
+    // Check if the user and book exist
+    const userExists = await db.User.findByPk(user_id);
+    const bookExists = await db.Book.findByPk(book_id);
+    if (!userExists || !bookExists) {
+      return res.status(400).json({ message: "User or book does not exist" });
+    }
+    // Create the review in the database
+    const newReview = await db.Review.create({
+      user_id,
+      book_id,
+      review_text,
+      review_date: new Date(),
+    });
+
+    // Respond with the new review
+    return res.status(201).json({ review: newReview });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/books/:bookId/reviews", async (req, res) => {
+  try {
+    const { bookId } = req.params;
+
+    // Check if the book exists
+    const bookExists = await db.Book.findByPk(bookId);
+    if (!bookExists) {
+      return res.status(400).json({ message: "Book does not exist" });
+    }
+
+    // Get all the reviews for the book
+    const reviews = await db.Review.findAll({
+      where: {
+        book_id: bookId,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["username"],
+        },
+      ],
+      order: [["review_date", "DESC"]],
+    });
+
+    // Respond with the reviews
+    return res.status(200).json({ reviews });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
