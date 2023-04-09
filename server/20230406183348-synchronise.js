@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require("./models");
 
 // Synchronize all models with the database in a specific order
 db.sequelize
