@@ -1,11 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./models");
+const bcrypt = require("bcrypt");
 
 // Initialize the app
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
 
 app.post("/signup", async (req, res) => {
   try {
@@ -17,8 +20,15 @@ app.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Create the user in the database
-    const newUser = await db.User.create({ username, email, password });
+    const newUser = await db.User.create({
+      username,
+      email,
+      password: hashedPassword, // Save the hashed password in the database
+    });
 
     // Respond with the new user
     return res.status(201).json({ user: newUser });
@@ -28,12 +38,16 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// Define a POST endpoint to login
+
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    const user = await db.User.findOne({ where: { username, password } });
+    const user = await db.User.findOne({ where: { username } });
     if (!user) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
     res.status(200).json({ user });
