@@ -2,13 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./models");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 
 // Initialize the app
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-
+app.use(cors());
 
 app.post("/signup", async (req, res) => {
   try {
@@ -38,7 +38,6 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -50,7 +49,8 @@ app.post("/login", async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
-    res.status(200).json({ user });
+    // res.status(200).json({ user });
+    res.send(user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Unable to login" });

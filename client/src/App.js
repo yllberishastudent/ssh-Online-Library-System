@@ -1,8 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import UserLogin from "./component/user/UserLogin";
 import UserRegister from "./component/user/UserRegister";
-import './App.css'; // Import CSS styles
+import "./App.css"; // Import CSS styles
 
 function App() {
   return (
@@ -23,9 +23,9 @@ function App() {
         </nav>
 
         <Routes>
-          <Route path="/"/>
-          <Route path="/user/login" element={<UserLogin/>}/>
-          <Route path="/user/register" element={<UserRegister/>}/>
+          <Route path="/" />
+          <Route path="/user/login" element={<UserLogin />} />
+          <Route path="/user/register" element={<UserRegister />} />
         </Routes>
       </div>
     </Router>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import './UserLogin.css'; // Import CSS styles
+import React, { useState } from "react";
+import "./UserLogin.css"; // Import CSS styles
+import axios from "axios";
 
 function UserLogin() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleUsernameChange(event) {
     setUsername(event.target.value);
@@ -13,29 +14,53 @@ function UserLogin() {
     setPassword(event.target.value);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     console.log(`Submitting username ${username} and password ${password}`);
-    // You can replace the console.log with your own logic to submit the form data
+    try {
+      const response = await axios.post(
+        "/login",
+        {
+          username,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Custom-Header": "value",
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
-    <div class="login-wrap">
-    <form onSubmit={handleSubmit} class="login-form" action="/login" method="POST">
-      <label>
-        <div class="label-text">
-        Username:
-        </div>
-        <input type="text" id="username" value={username} onChange={handleUsernameChange} />
-      </label>
-      <label>
-      <div class="label-text">
-        Password:
-        </div>
-        <input type="password" id="password" value={password} onChange={handlePasswordChange} />
-      </label>
-      <button type="submit">Log in</button>
-    </form>
+    <div className="login-wrap">
+      <form onSubmit={handleSubmit} className="login-form" method="POST">
+        <label>
+          <div className="label-text">Username:</div>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+        </label>
+        <label>
+          <div className="label-text">Password:</div>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+        </label>
+        <button type="submit">Log in</button>
+      </form>
     </div>
   );
 }
