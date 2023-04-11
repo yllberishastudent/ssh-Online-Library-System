@@ -1,9 +1,10 @@
 {
   "development": {
     "username": "root",
-    "password": "admin",
+    "password": "tiktak123",
     "database": "library",
-    "host": "127.0.0.1",
+    "host": "localhost",
+    "port": "3307",
     "dialect": "mysql"
   },
   "test": {

@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import UserLogin from "./component/user/UserLogin";
+import UserLogin from "./component/user/userLogin";
 import UserRegister from "./component/user/UserRegister";
+import HomePage from "./component/user/HomePage";
 import "./App.css"; // Import CSS styles
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/" />
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
+          <Route path="/user/homepage" element={<HomePage />} />
         </Routes>
       </div>
     </Router>
