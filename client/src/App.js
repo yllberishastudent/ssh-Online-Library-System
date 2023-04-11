@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import UserLogin from "./component/user/userLogin";
-import UserRegister from "./component/user/UserRegister";
+import UserRegister from "./component/user/userRegister";
 import HomePage from "./component/user/HomePage";
 import "./App.css"; // Import CSS styles
 
