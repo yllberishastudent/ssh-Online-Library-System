@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import "./UserLogin.css"; // Import CSS styles
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 
 function UserLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const history = useNavigate();
 
   function handleUsernameChange(event) {
     setUsername(event.target.value);
@@ -33,8 +36,10 @@ function UserLogin() {
         }
       );
       console.log(response.data);
+      history("/user/homepage");
     } catch (error) {
       console.error(error);
+      setErrorMessage("Incorrect username or password");
     }
   }
 
@@ -60,6 +65,7 @@ function UserLogin() {
           />
         </label>
         <button type="submit">Log in</button>
+        {errorMessage && <p className="error">{errorMessage}</p>}
       </form>
     </div>
   );
