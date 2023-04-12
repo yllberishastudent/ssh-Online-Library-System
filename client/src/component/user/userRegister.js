@@ -33,6 +33,7 @@ function UserRegister() {
     console.log(`Submitting username ${username} and email ${email} and phone number ${phone_number} password ${password}`);
   }
 
+  
 
   return (
     <div class="register-wrap">

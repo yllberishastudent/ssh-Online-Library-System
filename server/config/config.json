@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "admin",
+    "password": "tiktak123",
     "database": "library",
     "host": "localhost",
     "dialect": "mysql"
