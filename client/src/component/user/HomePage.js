@@ -12,9 +12,7 @@ importAll(require.context("../..", true, /\.jpg$/));
 
 function HomePage() {
     const [books, setBooks] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [searchYear, setSearchYear] = useState("");
-    const [searchdescription, setSearchdescription] = useState("");
+    const [searchTerm, setSearchTerm] = useState("")
 
     useEffect(() => {
         axios
@@ -29,9 +27,7 @@ function HomePage() {
 
     const filteredBooks = books.filter(book => {
         const titleMatch = book.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const yearMatch = book.author.toString().includes(searchYear);
-        const descriptionMatch = book.description.toLowerCase().includes(searchdescription.toLowerCase());
-        return titleMatch && yearMatch && descriptionMatch;
+        return titleMatch
     });
 
     return (
@@ -43,16 +39,6 @@ function HomePage() {
                     placeholder="Search by name"
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)} />
-                <input
-                    type="text"
-                    placeholder="Search by year"
-                    value={searchYear}
-                    onChange={e => setSearchYear(e.target.value)} />
-                <input
-                    type="text"
-                    placeholder="Search by description"
-                    value={searchdescription}
-                    onChange={e => setSearchdescription(e.target.value)} />
             </div>
             <div className="grid-container">
                 {filteredBooks.map(book => (
