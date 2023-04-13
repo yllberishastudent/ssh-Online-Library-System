@@ -9,7 +9,6 @@ function importAll(r) {
 }
 
 importAll(require.context("../..", true, /\.jpg$/));
-
 function HomePage() {
     const [books, setBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("")
@@ -27,7 +26,8 @@ function HomePage() {
 
     const filteredBooks = books.filter(book => {
         const titleMatch = book.title.toLowerCase().includes(searchTerm.toLowerCase());
-        return titleMatch
+        const authorMatch = book.author.toLowerCase().includes(searchTerm.toLowerCase());
+        return titleMatch || authorMatch;
     });
 
     return (
@@ -36,7 +36,7 @@ function HomePage() {
             <div className="filters">
                 <input
                     type="text"
-                    placeholder="Search by name"
+                    placeholder="Search by name or author"
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)} />
             </div>
