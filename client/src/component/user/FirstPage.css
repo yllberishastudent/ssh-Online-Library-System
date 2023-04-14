@@ -1,0 +1,51 @@
+.wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .filters {
+    margin-bottom: 20px;
+  }
+  
+  .grid-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-bottom: 20px;
+  }
+  
+  .grid-item {
+    width: 30%;
+    margin-right: 20px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+  }
+  
+  .grid-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 1024px) {
+    .grid-item {
+      width: 45%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .grid-item {
+      width: 70%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .grid-item {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+  

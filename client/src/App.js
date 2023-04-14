@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import UserLogin from "./component/user/userLogin";
 import UserRegister from "./component/user/userRegister";
 import HomePage from "./component/user/HomePage";
+import FirstPage from "./component/user/FirstPage";
 import "./App.css"; // Import CSS styles
 
 function App() {
@@ -24,10 +25,12 @@ function App() {
         </nav>
 
         <Routes>
-          <Route path="/" />
+        <Route path="/" element={<FirstPage />} />
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
           <Route path="/user/homepage" element={<HomePage />} />
+          
+
         </Routes>
       </div>
     </Router>
