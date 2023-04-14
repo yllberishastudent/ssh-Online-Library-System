@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const db = require("./models");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
+const authMiddleware = require("./middleware/authMiddleware");
+const jwt = require("jsonwebtoken");
 
 // Initialize the app
 const app = express();
@@ -50,12 +52,21 @@ app.post("/login", async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
-    // res.status(200).json({ user });
-    res.send(user);
+    const token = jwt.sign(
+      { id: user.user_id, username: user.username },
+      authMiddleware.secretKey,
+      { expiresIn: "1h" }
+    );
+    res.json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Unable to login" });
   }
+});
+
+// Example protected route
+app.get("/protected", authMiddleware.authenticateToken, (req, res) => {
+  res.send("This is a protected route");
 });
 
 app.get("/categories", async (req, res) => {
