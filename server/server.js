@@ -12,7 +12,7 @@ app.use(cors());
 
 app.post("/signup", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, phone_number, password } = req.body;
 
     // Check if user already exists
     const userExists = await db.User.findOne({ where: { email } });
@@ -27,6 +27,7 @@ app.post("/signup", async (req, res) => {
     const newUser = await db.User.create({
       username,
       email,
+      phone_number,
       password: hashedPassword, // Save the hashed password in the database
     });
 
