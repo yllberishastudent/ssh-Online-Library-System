@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./UserLogin.css"; // Import CSS styles
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function UserLogin() {
@@ -36,6 +36,7 @@ function UserLogin() {
         }
       );
       console.log(response.data);
+      localStorage.setItem("token", response.data.token); // save token to local storage
       history("/user/homepage");
     } catch (error) {
       console.error(error);
@@ -67,8 +68,7 @@ function UserLogin() {
         <button type="submit">Log in</button>
         {errorMessage && <p className="error">{errorMessage}</p>}
       </form>
-      </div>
-  
+    </div>
   );
 }
 
