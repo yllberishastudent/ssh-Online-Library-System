@@ -79,7 +79,7 @@ function HomePage() {
     setPopular(true);
   };
 
-  const handleClickAllMovies = () => {
+  const handleClickAllBooks = () => {
     setPopular(false);
   }
   
@@ -101,8 +101,8 @@ function HomePage() {
   return (
     <div className="wrapper">
       <div className="titles">
-        <h2>All Books</h2>
-        <h2>Popular</h2>
+      <h2 onClick={handleClickAllBooks}>All books</h2>
+        <h2 onClick={handleClickPopular}>Popular</h2>
       </div>
       <div className="filters-homepage">
         <input
@@ -113,7 +113,7 @@ function HomePage() {
         />
       </div>
       <div className="grid-container-homepage">
-        {filteredBooks.map((book) => (
+        {sortedBooks.map((book) => (
           <Link
             key={book.id}
             to={`/books/${book.id}`}
