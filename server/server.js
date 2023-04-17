@@ -41,7 +41,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/login", authMiddleware.authenticateToken,async (req, res) => {
+app.post("/login",async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await db.User.findOne({ where: { username } });
