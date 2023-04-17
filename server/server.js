@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const authMiddleware = require("./middleware/authMiddleware");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const fs = require("fs");
 
 // Initialize the app
 const app = express();
@@ -41,7 +43,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/login",async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await db.User.findOne({ where: { username } });
@@ -55,7 +57,7 @@ app.post("/login",async (req, res) => {
     const token = jwt.sign(
       { id: user.user_id, username: user.username },
       authMiddleware.secretKey,
-      { expiresIn: "1h" }
+      { expiresIn: "10h" }
     );
     res.json({ token });
   } catch (error) {
@@ -134,13 +136,13 @@ app.post("/addreview", async (req, res) => {
 });
 
 // GET all reviews
-app.get('/reviews', async (req, res) => {
+app.get("/reviews", async (req, res) => {
   try {
     const reviews = await db.Review.findAll();
     res.json(reviews);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
@@ -173,6 +175,100 @@ app.get("/books/:bookId/reviews", async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get(
+  "/readd/:id/pdf",
+  authMiddleware.authenticateToken,
+  async (req, res) => {
+    try {
+      const book = await db.Book.findOne({
+        where: { book_id: req.params.id },
+        attributes: ["pdf_file_url"],
+      });
+      if (!book) {
+        return res.status(404).send({ error: "Book not found" });
+      }
+      const filePath = path.join(__dirname, "..", book.pdf_file_url);
+      const stat = fs.statSync(filePath);
+      const fileSize = stat.size;
+      const range = req.headers.range;
+
+      const user = await db.User.findByPk(req.user.id);
+      if (!user) {
+        return res.status(404).send({ error: "User not found" });
+      }
+
+      let end;
+      if (user.membership_status === "active") {
+        end = fileSize;
+      } else {
+        end = 5 * 1024 * 1024; // 5 MB limit
+      }
+      const start = 0;
+      const chunksize = end - start + 1;
+      const file = fs.createReadStream(filePath, { start, end });
+      const head = {
+        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": chunksize,
+        "Content-Type": "application/pdf",
+      };
+      res.writeHead(206, head);
+      file.pipe(res);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: "Server error" });
+    }
+  }
+);
+const { PDFDocument } = require("pdf-lib");
+//test without authentification
+app.get("/readtest/:user_id/:book_id", async (req, res) => {
+  try {
+    const book = await db.Book.findOne({
+      where: { book_id: req.params.book_id },
+      attributes: ["pdf_file_url"],
+    });
+    if (!book) {
+      return res.status(404).send({ error: "Book not found" });
+    }
+    const filePath = path.join(__dirname, "..", book.pdf_file_url);
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+
+    const user = await db.User.findByPk(req.params.user_id);
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    if (user.membership_status === "active") {
+      // User has an active membership, send entire PDF
+      const head = {
+        "Content-Length": fileSize,
+        "Content-Type": "application/pdf",
+      };
+      res.writeHead(200, head);
+      fs.createReadStream(filePath).pipe(res);
+    } else {
+      // User has an inactive membership, send only the first 10 pages of the PDF
+      const PDFdoc = await PDFDocument.load(fs.readFileSync(filePath));
+      const firstTenPages = PDFdoc.getPages().slice(0, 10);
+      const newPDF = await PDFDocument.create();
+      await newPDF.addPagesOf(firstTenPages);
+      const pdfBytes = await newPDF.save();
+      const head = {
+        "Content-Length": pdfBytes.byteLength,
+        "Content-Type": "application/pdf",
+      };
+      res.writeHead(200, head);
+      res.end(pdfBytes);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error" });
   }
 });
 
