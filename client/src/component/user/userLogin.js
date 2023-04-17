@@ -29,6 +29,7 @@ function UserLogin() {
         },
         {
           headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
             "X-Requested-With": "XMLHttpRequest",
             "Custom-Header": "value",

@@ -3,7 +3,7 @@
   margin: 10%;
 }
 
-.grid-container-homepage {
+.grid-container-homepage{
   display:grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
@@ -21,6 +21,11 @@
 
 .star {
   cursor: pointer;
+  color: #ccc;
+}
+
+.star.filled {
+  color: #ff9800;
 }
 .titles {
   display: flex;
@@ -32,4 +37,10 @@
   display: flex;
   justify-self: center;
   align-items: center;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  gap:50px;
 }

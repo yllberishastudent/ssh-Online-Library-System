@@ -41,7 +41,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", authMiddleware.authenticateToken,async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await db.User.findOne({ where: { username } });
@@ -121,6 +121,7 @@ app.post("/addreview", async (req, res) => {
       user_id,
       book_id,
       review_text,
+      rate,
       review_date: new Date(),
     });
 
@@ -129,6 +130,17 @@ app.post("/addreview", async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// GET all reviews
+app.get('/reviews', async (req, res) => {
+  try {
+    const reviews = await db.Review.findAll();
+    res.json(reviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
   }
 });
 
