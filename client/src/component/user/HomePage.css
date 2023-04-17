@@ -3,6 +3,12 @@
   margin: 10%;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
+
 .grid-container-homepage{
   display:grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;

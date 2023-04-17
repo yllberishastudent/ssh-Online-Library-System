@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./HomePage.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 const token = localStorage.getItem("token");
 
 const images = {};
@@ -11,6 +13,7 @@ function importAll(r) {
 
 
 importAll(require.context("../..", true, /\.jpg$/));
+
 function HomePage() {
   const [books, setBooks] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -31,7 +34,7 @@ function HomePage() {
         console.log(error);
       });
 
-      axios
+    axios
       .get("http://localhost:5001/reviews", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -98,8 +101,8 @@ function HomePage() {
   return (
     <div className="wrapper">
       <div className="titles">
-      <h2 className="titles__title" onClick={handleClickAllMovies}>All Books</h2>
-      <h2 className="titles__title" onClick={handleClickPopular}>Popular</h2>
+        <h2>All Books</h2>
+        <h2>Popular</h2>
       </div>
       <div className="filters-homepage">
         <input
@@ -110,13 +113,20 @@ function HomePage() {
         />
       </div>
       <div className="grid-container-homepage">
-        {sortedBooks.map((book) => (
-          <div key={book.id} className="grid-item-homepage">
-            <img src={images[`./${book.cover_image_url}`]} alt="Animal Farm" />
+        {filteredBooks.map((book) => (
+          <Link
+            key={book.id}
+            to={`/books/${book.id}`}
+            className="grid-item-homepage"
+          >
+            <img
+              src={images[`./${book.cover_image_url}`]}
+              alt="Animal Farm"
+            />
             <h2>{book.title}</h2>
             <p>{book.author}</p>
-            <p>Average Rating: {calculateAverageRating(book.book_id)}</p>
-          </div>
+            <p>Average Rating: {calculateAverageRating(book.id)}</p>
+          </Link>
         ))}
       </div>
     </div>
