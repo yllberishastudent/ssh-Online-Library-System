@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./UserRegister.css"; // Import CSS styles
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function UserRegister() {
   const [username, setUsername] = useState("");
@@ -8,6 +9,7 @@ function UserRegister() {
   const [phone_number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirmPassword] = useState("");
+  const history = useNavigate();
 
   function handleUsernameChange(event) {
     setUsername(event.target.value);
@@ -68,6 +70,7 @@ function UserRegister() {
         alert(
           "Registration successful... Also fix this so that it does smth cool (aka move to another page)"
         );
+        history("/user/homepage");
         // Add any desired behavior on successful registration
       })
       .catch((error) => {
