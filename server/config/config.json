@@ -4,7 +4,6 @@
     "password": "tiktak123",
     "database": "library",
     "host": "localhost",
-    "port":3307,
     "dialect": "mysql"
   },
   "test": {
