@@ -1,34 +1,126 @@
-nav {
-    background-color: #333;
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*general css fonts and headings */
+
+.container{
+  background-color: #e8e5e55f;
+}
+.logo{
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: 60px;
+  height: 50px;
+
+  font-size: 40px;
+  font-style: oblique;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: rgb(255, 255, 255);
+  background-color: rgb(16, 169, 246);
+  border-radius: 5px;
+}
+.main-nav{
     overflow: hidden;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
     display: flex;
-    justify-content: flex-end;
-  }
+    align-items: center;
+    justify-content: space-between;
 
-  nav ul li {
-     flex-direction: column ;
+    height: 60px;
+    padding: 20px 0;
+    
   }
+  .main-nav ul{
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    padding: 0 2%;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
 
-  nav ul li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
+  .main-nav a{
     text-decoration: none;
   }
+
+  .nav-left{
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 22px;
   
-  nav ul li a.active {
-    background-color: #4CAF50;
   }
-  
-  nav ul li a:hover:not(.active) {
-    background-color: #555;
+  .nav-right li{
+    padding: 10px;
+    border-radius: 60px;
+    width:70px;
+    text-align: center;
+    
+  }
+  .login_button{
+    background-color: rgb(40, 164, 236);
     color: white;
   }
-  
+  .register_button{
+    background-color: black;
+    color: white;
+  }
+  .nav-left a:visited {
+    color: rgb(0, 0, 0);
+  }
+  .nav-right a:visited {
+    color: rgb(255, 255, 255);
+  }
+  nav ul li a:hover:not(.active) {
+    color: rgb(22, 135, 201);
+  }
+  nav .nav-right li:hover {
+    box-shadow: 5px 5px 5px lightblue;
+   
+  }

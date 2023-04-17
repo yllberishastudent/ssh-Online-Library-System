@@ -9,21 +9,29 @@ import "./App.css"; // Import CSS styles
 function App() {
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
+      <div class="container">
+        <nav class="main-nav">
+          <ul class="nav-left">
+          <div class="logo">
+            <Link to="/">LIB</Link>
+            </div>
+            <li><a href="/">POPULAR</a></li>
+            <li><a href="/">GENRES</a></li>
+            <li><a href="/">NEWEST</a></li>
+            <li><a href="/">A-Z</a></li>
+        
+          </ul>
+        
+          <ul class="nav-right">
+          
+            <li class="login_button">
+              <Link to="/user/login">Login</Link>
             </li>
-            <li>
-              <Link to="/user/login">Log In</Link>
-            </li>
-            <li>
+            <li class="register_button">
               <Link to="/user/register">Register</Link>
             </li>
           </ul>
         </nav>
-
         <Routes>
         <Route path="/" element={<FirstPage />} />
           <Route path="/user/login" element={<UserLogin />} />
