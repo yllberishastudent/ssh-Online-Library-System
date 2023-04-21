@@ -18,7 +18,7 @@
     width: 300px;
   }
   
-  label {
+  .label-text {
     display: block;
     margin: 10px 0;
     font-weight: bold;
@@ -34,7 +34,7 @@
   }
   
   button[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -45,4 +45,11 @@
   
   .login-form label div.label-text {
     margin-bottom: 5px;
+  }
+
+  .error {
+    margin: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color:gray;
+    font-size: 12px;
   }

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const token = localStorage.getItem("token");
-const user = localStorage.getItem("user");
 
 function UserLogin() {
   const [username, setUsername] = useState("");
@@ -20,8 +19,19 @@ function UserLogin() {
     setPassword(event.target.value);
   }
 
+  function validateForm() {
+    if (username.trim() === "" || password.trim() === "") {
+      setErrorMessage("Please enter your username and password");
+      return false;
+    }
+    return true;
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
     console.log(`Submitting username ${username} and password ${password}`);
     try {
       const response = await axios.post(
@@ -41,9 +51,7 @@ function UserLogin() {
       );
       console.log(response.data);
       localStorage.setItem("token", response.data.token); // save token to local storage
-      localStorage.setItem("user", JSON.stringify(response.data.username)); // save user information to local storage
-      console.log("purr",response.data);
-      history("/user/homepage");
+      history(`user/homepage/`); //tek useri me kon useri?prej tokeni?
     } catch (error) {
       console.error(error);
       setErrorMessage("Incorrect username or password");
@@ -58,6 +66,7 @@ function UserLogin() {
           <input
             type="text"
             id="username"
+            placeholder="Enter username"
             value={username}
             onChange={handleUsernameChange}
           />
@@ -67,6 +76,7 @@ function UserLogin() {
           <input
             type="password"
             id="password"
+            placeholder="Enter password"
             value={password}
             onChange={handlePasswordChange}
           />

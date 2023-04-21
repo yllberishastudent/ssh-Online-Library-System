@@ -91,11 +91,29 @@ function HomePage() {
     return averageRating;
   };
 
+  function renderRatingStars(averageRating) {
+    const fullStars = Math.floor(averageRating);
+    const hasHalfStar = averageRating - fullStars >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  
+    const starIcon = (filled) => filled ? '★' : '☆';
+  
+    return (
+      <span>
+        {[...Array(fullStars)].map((_, i) => <span key={i}>{starIcon(true)}</span>)}
+        {hasHalfStar && <span>{starIcon(false)}½</span>}
+        {[...Array(emptyStars)].map((_, i) => <span key={i}>{starIcon(false)}</span>)}
+      </span>
+    );
+  }
+  
   const handleClickPopular = () => {
+    setGenreOption('');
     setPopular(true);
   };
 
   const handleClickAllBooks = () => {
+    setGenreOption('');
     setPopular(false);
   }
   
@@ -145,17 +163,19 @@ function HomePage() {
       <div className="grid-container-homepage">
         {sortedBooks.map((book) => (
           <Link
-            key={book.id}
-            to={`/books/${book.id}`}
+            key={book.book_id}
+            to={`/books/${book.book_id}`}
             className="grid-item-homepage"
           >
             <img
               src={images[`./${book.cover_image_url}`]}
-              alt="//"
+              alt={`${book.title}`}
             />
+            <div className="book--info">
             <h2>{book.title}</h2>
             <p>{book.author}</p>
-            <p>Average Rating: {calculateAverageRating(book.id)}</p>
+            <p>{renderRatingStars(calculateAverageRating(book.book_id))}</p>
+            </div>
           </Link>
         ))}
       </div>

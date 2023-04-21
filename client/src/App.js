@@ -32,11 +32,11 @@ function App() {
             </li>
           </ul>
         </nav>
-        <Routes>
+        <Routes> --!
         <Route path="/" element={<FirstPage />} />
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
-          <Route path="/user/homepage" element={<HomePage />} />
+          <Route path="/user/homepage/" element={<HomePage />} />
           
 
         </Routes>
