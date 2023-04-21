@@ -4,6 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const token = localStorage.getItem("token");
+const user = localStorage.getItem("user");
+
 
 const images = {};
 
@@ -17,36 +19,50 @@ importAll(require.context("../..", true, /\.jpg$/));
 function HomePage() {
   const [books, setBooks] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [popular, setPopular] = useState(false);
+  const [genreOption, setGenreOption] = useState('');
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5001/books", {
+    Promise.all([
+      axios.get("http://localhost:5001/books", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      axios.get("http://localhost:5001/reviews", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      axios.get("http://localhost:5001/categories", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        setBooks(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    axios
-      .get("http://localhost:5001/reviews", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setReviews(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    ]).then((responses) => {
+      const [booksRes, reviewsRes, categoriesRes] = responses;
+      setBooks(booksRes.data);
+      setReviews(reviewsRes.data);
+      setCategories(categoriesRes.data);
+    }).catch((error) => {
+      console.log(error);
+    });
   }, []);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5001/books${genreOption ? `/category/${genreOption}` : ''}`);
+        setBooks(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [genreOption]);
+  
 
   const filteredBooks = books.filter((book) => {
     const titleMatch = book.title
@@ -98,11 +114,25 @@ function HomePage() {
     });
   }
 
+  const handleGenreChange = (event) => {
+    setGenreOption(event.target.value);
+  };
+
+
   return (
     <div className="wrapper">
       <div className="titles">
       <h2 onClick={handleClickAllBooks}>All books</h2>
         <h2 onClick={handleClickPopular}>Popular</h2>
+        <label htmlFor="genre-select">Genre:</label>
+        <select id="genre-select" value={genreOption} onChange={handleGenreChange}>
+          <option value="">All genres</option>
+          {categories.map((category) => (
+            <option key={category.category_id} value={category.category_name}>
+              {category.category_name}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="filters-homepage">
         <input
@@ -121,7 +151,7 @@ function HomePage() {
           >
             <img
               src={images[`./${book.cover_image_url}`]}
-              alt="Animal Farm"
+              alt="//"
             />
             <h2>{book.title}</h2>
             <p>{book.author}</p>

@@ -3,6 +3,9 @@ import "./UserLogin.css"; // Import CSS styles
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const token = localStorage.getItem("token");
+const user = localStorage.getItem("user");
+
 function UserLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -38,6 +41,8 @@ function UserLogin() {
       );
       console.log(response.data);
       localStorage.setItem("token", response.data.token); // save token to local storage
+      localStorage.setItem("user", JSON.stringify(response.data.username)); // save user information to local storage
+      console.log("purr",response.data);
       history("/user/homepage");
     } catch (error) {
       console.error(error);

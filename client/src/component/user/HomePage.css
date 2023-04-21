@@ -66,3 +66,43 @@ a {
 .titles__title:hover {
   scale: 110%;
 }
+
+.titles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.titles h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.titles h2:hover {
+  color: #0077cc;
+}
+
+.titles label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.titles select {
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  appearance: none;
+  background-color: #fff;
+}
+
+.titles select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #0077cc;
+}
