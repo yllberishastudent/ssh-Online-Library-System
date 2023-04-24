@@ -122,5 +122,12 @@ table {
   }
   nav .nav-right li:hover {
     box-shadow: 5px 5px 5px lightblue;
-   
+  }
+
+  .emri{
+    color: black;
+  }
+
+  .logout_button {
+    color: blue;
   }

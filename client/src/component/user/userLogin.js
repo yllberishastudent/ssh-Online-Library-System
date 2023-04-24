@@ -51,7 +51,8 @@ function UserLogin() {
       );
       console.log(response.data);
       localStorage.setItem("token", response.data.token); // save token to local storage
-      history(`user/homepage/`); //tek useri me kon useri?prej tokeni?
+      history(`/user/homepage`); //tek useri me kon useri?prej tokeni?
+      window.location.reload();
     } catch (error) {
       console.error(error);
       setErrorMessage("Incorrect username or password");

@@ -4,9 +4,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const token = localStorage.getItem("token");
-const user = localStorage.getItem("user");
-
-
 const images = {};
 
 function importAll(r) {
