@@ -7,12 +7,43 @@ const authMiddleware = require("./middleware/authMiddleware");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
+const updateUser = require("./middleware/updateUser");
 
 // Initialize the app
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+
+app.put("/users/:id", updateUser, (req, res) => {
+  res.status(200).json({ success: true, data: req.user });
+});
+
+
+app.get("/users/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    // Find the user by ID
+    const user = await db.User.findOne({
+      where: { user_id: id },
+    });
+
+    // If the user is found, return the user data
+    if (user) {
+      res.status(200).json({ user });
+    } else {
+      // If the user is not found, return a 404 error
+      throw new ErrorHandler(404, "User not found");
+    }
+  } catch (error) {
+    // Handle any errors
+    next(error);
+  }
+});
+
+
+
 
 app.post("/signup", async (req, res) => {
   try {
@@ -55,7 +86,7 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid username or password" });
     }
     const token = jwt.sign(
-      { id: user.user_id, username: user.username },
+      { id: user.user_id, username: user.username, role: user.role },
       authMiddleware.secretKey,
       { expiresIn: "10h" }
     );
