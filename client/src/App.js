@@ -4,6 +4,7 @@ import UserLogin from "./component/user/userLogin";
 import UserRegister from "./component/user/userRegister";
 import HomePage from "./component/user/HomePage";
 import FirstPage from "./component/user/FirstPage";
+import Books from "./component/user/Books";
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
@@ -55,6 +56,7 @@ function App() {
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
           <Route path="/user/homepage/" element={<HomePage />} />
+          <Route path="/user/books/" element={<Books />} />
           
 
         </Routes>
