@@ -19,7 +19,6 @@ app.put("/users/:id", updateUser, (req, res) => {
   res.status(200).json({ success: true, data: req.user });
 });
 
-
 app.get("/users/:id", async (req, res, next) => {
   const { id } = req.params;
 
@@ -41,9 +40,6 @@ app.get("/users/:id", async (req, res, next) => {
     next(error);
   }
 });
-
-
-
 
 app.post("/signup", async (req, res) => {
   try {
@@ -140,6 +136,22 @@ app.get("/books/category/:categoryName", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/books/:id", async (req, res) => {
+  try {
+    const book = await db.Book.findByPk(req.params.id, {
+      include: db.Category, // include the categories associated with the book
+    });
+    if (book) {
+      res.status(200).json(book);
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

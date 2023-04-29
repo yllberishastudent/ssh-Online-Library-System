@@ -9,7 +9,7 @@ function Books() {
 
   useEffect(() => {
     // retrieve the book information from the database based on the ID
-    axios.get(`http://localhost:5001/books${id}`)
+    axios.get(`http://localhost:5001/books/${id}`)
       .then((response) => {
         setBook(response.data); // set the book state with the retrieved book data
       })
