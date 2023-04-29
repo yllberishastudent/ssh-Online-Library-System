@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Books.css";
-import { useParams } from 'react-router-dom';
+import { useParams, navigate, useNavigate } from 'react-router-dom';
+import {FaArrowLeft} from "react-icons/fa";
+
+const images = {};
+
+function importAll(r) {
+  r.keys().forEach(key => (images[key] = r(key)));
+}
+
+importAll(require.context("../..", true, /\.jpg$/));
 
 function Books() {
   const { id } = useParams(); // get the book ID from the URL parameters
   const [book, setBook] = useState(null); // initialize book state
+  const history = useNavigate();
 
   useEffect(() => {
     // retrieve the book information from the database based on the ID
@@ -24,13 +34,39 @@ function Books() {
 
   // display the retrieved book information
   return (
-    <div>
-      <h2>{book.title}</h2>
-      <img src={book.image} alt={book.title} />
-      <p>{book.description}</p>
-      <p>Author: {book.author}</p>
-     <p>Price: {book.price}</p>
+    <section className="book-details">
+        <div className="container">
+            <button type="button" className="flex flex-c back-btn"
+                onClick={() => history('/user/homepage')}>
+                    <FaArrowLeft size={20}/>
+                    <span className="fs-18 fw-6">Back</span>
+            </button>
+            <div className="book-details-content grid">
+                <div className="book-details-img">
+                <img
+                  src={images[`./${book.cover_image_url}`]}
+                  alt={book.title}
+                />
+                </div>
+                <div className="book-details-info">
+                    <div className="book-details-item title">
+                        <span className="fw-6 fs-24">{book.title}</span>
+                    </div>
+                    <div className="book-details-item author">
+                        <span className="fw-6 fs-24">{book.author}</span>
+                    </div>
+                    <div className="book-details-item description">
+                        <span className="fw-6 fs-24">{book.description}</span>
+                    </div>
+                </div>
+                
+
+            </div>
+            <button type="button" className="flex flex-c read-btn">
+                    <span className="fs-18 fw-6">Read</span>
+            </button>
     </div>
+    </section>
   );
 }
 
