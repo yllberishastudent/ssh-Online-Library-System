@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
 const updateUser = require("./middleware/updateUser");
+const updateMembershipStatus = require("./middleware/updateMembershipStatus");
 
 // Initialize the app
 const app = express();
@@ -15,7 +16,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.put("/users/:id", updateUser, (req, res) => {
+app.put(
+  "/users/membership",
+  authMiddleware.authenticateToken,
+  updateMembershipStatus
+);
+
+app.put("/users-update/:id", updateUser, (req, res) => {
   res.status(200).json({ success: true, data: req.user });
 });
 
@@ -33,10 +40,12 @@ app.get("/users/:id", async (req, res, next) => {
       res.status(200).json({ user });
     } else {
       // If the user is not found, return a 404 error
-      throw new ErrorHandler(404, "User not found");
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      throw error;
     }
   } catch (error) {
-    // Handle any errors
+    // Pass the error to the default error handler
     next(error);
   }
 });
