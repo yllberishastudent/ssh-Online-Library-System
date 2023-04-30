@@ -58,6 +58,7 @@ function App() {
           <Route path="/user/register" element={<UserRegister />} />
           <Route path="/user/homepage/" element={<HomePage />} />
           <Route path="/user/books/:id" element={<Books />} />
+          <Route path="/user/membership/:userName" element={<Membership />} />
 
         </Routes>
       </div>
@@ -72,12 +73,15 @@ function AuthNav({ userName }) {
     navigate("/user/login");
     window.location.reload();
   };
-
+  const goToMembership = () => {
+    navigate(`/user/membership/${userName}`);
+  }
   return (
     <ul className="nav-right">
       {userName ? (
         <>
           <li className="emri">{userName}</li>
+          <li className="membership" onClick={goToMembership}>Membership</li>
           <li className="logout_button" onClick={logout}>
               Logout
           </li>

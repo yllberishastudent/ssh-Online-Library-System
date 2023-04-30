@@ -64,15 +64,13 @@ function HomePage() {
     };
     fetchData();
   }, [genreOption]);
-<<<<<<< HEAD
+
   
   useEffect(() => {
     const interval = setInterval(() => {
       localStorage.removeItem("token");
       window.location.href = "/user/login";
     }, 3600000); // 1 hour in milliseconds
-=======
->>>>>>> 72b2d3fcbec2a5e914279f69bf51ee7a61d5e522
 
     return () => clearInterval(interval);
   }, []);   
