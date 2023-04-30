@@ -9,6 +9,11 @@ function UserRegister() {
   const [phone_number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [failedRegister,setError]=useState("");
+  const [succesfulRegister,setSuccess]=useState("");
   const history = useNavigate();
 
   function handleUsernameChange(event) {
@@ -28,23 +33,45 @@ function UserRegister() {
 
   function handlePasswordChange(event) {
     setPassword(event.target.value);
+    setPasswordError("");
+    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    if (!pattern.test(event.target.value)) {
+      setPasswordError(
+        "Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters long"
+      );
+    }
   }
 
   function handleConfirmPasswordChange(event) {
     setConfirmPassword(event.target.value);
+
   }
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
+    setEmailError("");
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!pattern.test(event.target.value)) {
+      setEmailError("Please enter a valid email address");
+    }
   }
 
   function handleNumberChange(event) {
     setNumber(event.target.value);
+    setPhoneError("");
+    const pattern = /^\+?[0-9]{8,}$/;
+    if (!pattern.test(event.target.value)) {
+      setPhoneError("Please enter a valid phone number");
+    }
   }
 
   function handleSubmit(event) {
     event.preventDefault();
 
+    if (!username || !email || !phone_number || !password || !confirm_password) {
+      setError("Please fill in all required fields");
+      return;
+    }
     // Check if passwords match
     if (password !== confirm_password) {
       alert("Passwords do not match");
@@ -67,18 +94,25 @@ function UserRegister() {
     })
       .then((response) => {
         console.log("Registration successful");
-        alert(
-          "Registration successful... Also fix this so that it does smth cool (aka move to another page)"
-        );
-        history("/user/homepage");
-        // Add any desired behavior on successful registration
+        setSuccess("Registration successful");
+        setTimeout(() => {
+          history("/user/login");
+        }, 3000);
       })
       .catch((error) => {
         console.error(error);
-        alert(
-          'Registration failed,  Ka edhe Error te JSON e bjen ni message munesh me perdor qata se psh useri already exists ose najsen PHS MESSAGE: "ERRORI I CAKTUM " '
-        );
-        // Add any desired behavior on failed registration
+        if (error.response) {
+          const data = error.response.data;
+          if (data.message === "Username already exists") {
+            setError("Username is already taken");
+          } else if (data.message === "Email has already been used") {
+            setError("Email is already used");
+          } else {
+            setError("Registration failed, please try again or contact support for assistance");
+          }
+        } else {
+          setError("Registration failed, please try again or contact support for assistance");
+        }
       });
   }
 
@@ -87,37 +121,45 @@ function UserRegister() {
       <form onSubmit={handleSubmit} className="register-form">
         <label>
           <div className="label-text">Username:</div>
-          <input type="text" value={username} onChange={handleUsernameChange} />
+          <input type="text" placeholder="Enter Username" value={username} onChange={handleUsernameChange} />
         </label>
         <label>
           <div className="label-text">Email:</div>
-          <input type="text" value={email} onChange={handleEmailChange} />
+          <input type="text"  placeholder="Enter Email" value={email} onChange={handleEmailChange} />
         </label>
+        <div className="error-message">{emailError}</div>
         <label>
           <div className="label-text">Phone Number:</div>
           <input
             type="text"
             value={phone_number}
+            placeholder="Enter Phone Number"
             onChange={handleNumberChange}
           />
+           <div className="error-message">{phoneError}</div>
         </label>
+        
         <label>
           <div className="label-text">Password:</div>
           <input
             type="password"
+            placeholder="Enter Password"
             value={password}
             onChange={handlePasswordChange}
           />
         </label>
+        <div className="error-message">{passwordError}</div>
         <label>
           <div className="label-text">Confirm Password:</div>
           <input
             type="password"
+            placeholder="Confirm Password"
             value={confirm_password}
             onChange={handleConfirmPasswordChange}
           />
         </label>
-
+        <div className="error-message">{failedRegister}</div>
+        <div className="error-message">{succesfulRegister}</div>
         <button type="submit">Register</button>
       </form>
     </div>
