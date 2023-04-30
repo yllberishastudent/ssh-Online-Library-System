@@ -3,14 +3,12 @@ import "./HomePage.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-
 const token = localStorage.getItem("token");
 const images = {};
 
 function importAll(r) {
   r.keys().forEach((key) => (images[key] = r(key)));
 }
-
 
 importAll(require.context("../..", true, /\.jpg$/));
 
@@ -20,7 +18,7 @@ function HomePage() {
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [popular, setPopular] = useState(false);
-  const [genreOption, setGenreOption] = useState('');
+  const [genreOption, setGenreOption] = useState("");
 
   useEffect(() => {
     Promise.all([
@@ -38,21 +36,27 @@ function HomePage() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      }),
+    ])
+      .then((responses) => {
+        const [booksRes, reviewsRes, categoriesRes] = responses;
+        setBooks(booksRes.data);
+        setReviews(reviewsRes.data);
+        setCategories(categoriesRes.data);
       })
-    ]).then((responses) => {
-      const [booksRes, reviewsRes, categoriesRes] = responses;
-      setBooks(booksRes.data);
-      setReviews(reviewsRes.data);
-      setCategories(categoriesRes.data);
-    }).catch((error) => {
-      console.log(error);
-    });
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/books${genreOption ? `/category/${genreOption}` : ''}`);
+        const response = await axios.get(
+          `http://localhost:5001/books${
+            genreOption ? `/category/${genreOption}` : ""
+          }`
+        );
         setBooks(response.data);
       } catch (error) {
         console.log(error);
@@ -60,12 +64,15 @@ function HomePage() {
     };
     fetchData();
   }, [genreOption]);
+<<<<<<< HEAD
   
   useEffect(() => {
     const interval = setInterval(() => {
       localStorage.removeItem("token");
       window.location.href = "/user/login";
     }, 3600000); // 1 hour in milliseconds
+=======
+>>>>>>> 72b2d3fcbec2a5e914279f69bf51ee7a61d5e522
 
     return () => clearInterval(interval);
   }, []);   
@@ -101,28 +108,32 @@ function HomePage() {
     const fullStars = Math.floor(averageRating);
     const hasHalfStar = averageRating - fullStars >= 0.5;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-  
-    const starIcon = (filled) => filled ? '★' : '☆';
-  
+
+    const starIcon = (filled) => (filled ? "★" : "☆");
+
     return (
       <span>
-        {[...Array(fullStars)].map((_, i) => <span key={i}>{starIcon(true)}</span>)}
+        {[...Array(fullStars)].map((_, i) => (
+          <span key={i}>{starIcon(true)}</span>
+        ))}
         {hasHalfStar && <span>{starIcon(false)}½</span>}
-        {[...Array(emptyStars)].map((_, i) => <span key={i}>{starIcon(false)}</span>)}
+        {[...Array(emptyStars)].map((_, i) => (
+          <span key={i}>{starIcon(false)}</span>
+        ))}
       </span>
     );
   }
-  
+
   const handleClickPopular = () => {
-    setGenreOption('');
+    setGenreOption("");
     setPopular(true);
   };
 
   const handleClickAllBooks = () => {
-    setGenreOption('');
+    setGenreOption("");
     setPopular(false);
-  }
-  
+  };
+
   let sortedBooks = filteredBooks;
   if (popular) {
     sortedBooks = filteredBooks.sort((book1, book2) => {
@@ -142,14 +153,17 @@ function HomePage() {
     setGenreOption(event.target.value);
   };
 
-
   return (
     <div className="wrapper">
       <div className="titles">
-      <h2 onClick={handleClickAllBooks}>All books</h2>
+        <h2 onClick={handleClickAllBooks}>All books</h2>
         <h2 onClick={handleClickPopular}>Popular</h2>
         <label htmlFor="genre-select">Genre:</label>
-        <select id="genre-select" value={genreOption} onChange={handleGenreChange}>
+        <select
+          id="genre-select"
+          value={genreOption}
+          onChange={handleGenreChange}
+        >
           <option value="">All genres</option>
           {categories.map((category) => (
             <option key={category.category_id} value={category.category_name}>
@@ -170,7 +184,7 @@ function HomePage() {
         {sortedBooks.map((book) => (
           <Link
             key={book.book_id}
-            to={`/books/${book.book_id}`}
+            to={`/user/books/${book.book_id}`}
             className="grid-item-homepage"
           >
             <img
@@ -178,9 +192,9 @@ function HomePage() {
               alt={`${book.title}`}
             />
             <div className="book--info">
-            <h2>{book.title}</h2>
-            <p>{book.author}</p>
-            <p>{renderRatingStars(calculateAverageRating(book.book_id))}</p>
+              <h2>{book.title}</h2>
+              <p>{book.author}</p>
+              <p>{renderRatingStars(calculateAverageRating(book.book_id))}</p>
             </div>
           </Link>
         ))}

@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
 const updateUser = require("./middleware/updateUser");
+const updateMembershipStatus = require("./middleware/updateMembershipStatus");
 
 // Initialize the app
 const app = express();
@@ -15,10 +16,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.put("/users/:id", updateUser, (req, res) => {
+app.put(
+  "/users/membership",
+  authMiddleware.authenticateToken,
+  updateMembershipStatus
+);
+
+app.put("/users-update/:id", updateUser, (req, res) => {
   res.status(200).json({ success: true, data: req.user });
 });
-
 
 app.get("/users/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -34,16 +40,15 @@ app.get("/users/:id", async (req, res, next) => {
       res.status(200).json({ user });
     } else {
       // If the user is not found, return a 404 error
-      throw new ErrorHandler(404, "User not found");
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      throw error;
     }
   } catch (error) {
-    // Handle any errors
+    // Pass the error to the default error handler
     next(error);
   }
 });
-
-
-
 
 app.post("/signup", async (req, res) => {
   try {
@@ -140,6 +145,22 @@ app.get("/books/category/:categoryName", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.get("/books/:id", async (req, res) => {
+  try {
+    const book = await db.Book.findByPk(req.params.id, {
+      include: db.Category, // include the categories associated with the book
+    });
+    if (book) {
+      res.status(200).json(book);
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
