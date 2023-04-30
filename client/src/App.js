@@ -1,14 +1,15 @@
-import React from "react";
+import React,  { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import UserLogin from "./component/user/userLogin";
 import UserRegister from "./component/user/userRegister";
 import HomePage from "./component/user/HomePage";
 import FirstPage from "./component/user/FirstPage";
 import Books from "./component/user/Books";
+import Membership from "./component/user/Membership";
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-
 import "./App.css"; // Import CSS styles
+
 
 function App() {
   
@@ -57,7 +58,7 @@ function App() {
           <Route path="/user/register" element={<UserRegister />} />
           <Route path="/user/homepage/" element={<HomePage />} />
           <Route path="/user/books/" element={<Books />} />
-          
+          <Route path="/user/membership/" element={<Membership />} />
 
         </Routes>
       </div>
@@ -78,10 +79,11 @@ function AuthNav({ userName }) {
       {userName ? (
         <>
           <li className="emri">{userName}</li>
-          
-            <li className="logout_button" onClick={logout}>
+          <li className="logout_button" onClick={logout}>
               Logout
-            </li>
+          </li>
+
+           
           
         </>
       ) : (
