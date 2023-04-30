@@ -53,7 +53,7 @@ function Books() {
                         <span className="fw-6 fs-24">{book.title}</span>
                     </div>
                     <div className="book-details-item author">
-                        <span className="fw-6 fs-24">{book.author}</span>
+                        <span className="fw-6 fs-24">Author: {book.author}</span>
                     </div>
                     <div className="book-details-item description">
                         <span className="fw-6 fs-24">{book.description}</span>
