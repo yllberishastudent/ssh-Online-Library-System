@@ -76,11 +76,14 @@ function AuthNav({ userName }) {
   const goToMembership = () => {
     navigate(`/user/membership/${userName}`);
   }
+  const gotoHomepage = () => {
+    navigate('user/homepage');
+  }
   return (
     <ul className="nav-right">
       {userName ? (
         <>
-          <li className="emri">{userName}</li>
+          <li className="emri" onClick={gotoHomepage}>{userName}</li>
           <li className="membership" onClick={goToMembership}>Membership</li>
           <li className="logout_button" onClick={logout}>
               Logout
