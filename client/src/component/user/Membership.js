@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import jwtDecode from 'jwt-decode';
+
 import './membership.css'
+
+const token = localStorage.getItem("token");
 
 function Membership() {
   const [name, setName] = useState('');
@@ -8,33 +12,84 @@ function Membership() {
   const [cardNumber, setCardNumber] = useState('');
   const [cvv, setCvv] = useState('');
   const [cardDate, setCardDate] = useState('');
+  const [membershipStatus, setMembershipStatus] = useState('');
+  
+  let token = localStorage.getItem("token");
+  let userId = null;
+  const decodedToken = jwtDecode(token);
+  userId = decodedToken.id;
 
-  const handleSubmit = (event) => {
+  useEffect(() => {
+    async function fetchUser() {
+      const response = await fetch(`/users/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}` 
+        }
+      });
+      if (response.ok) {
+        const userData = await response.json();
+        setMembershipStatus(userData.user.membership_status); 
+        console.log(membershipStatus);
+      }
+    }
+    fetchUser();
+  }, []);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // TODO: Implement submission logic
+    if (membershipStatus === 'active') {
+      alert("Your membership is already active"); // show message if membership is already active
+    } else {
+      // Validate card number
+      if (!/^\d{16}$/.test(cardNumber)) {
+        alert("Invalid credit card number");
+        return;
+      }
+
+      // Validate CVV
+      if (!/^\d{3}$/.test(cvv)) {
+        alert("Invalid CVV");
+        return;
+      }
+
+      const regex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+     if (!regex.test(cardDate)) {
+      alert("Please enter a valid date in the MM/YY format");
+      return;
+      }
+
+      // Validate expiration date
+      const currentDate = new Date();
+      const [month, year] = cardDate.split('/');
+      const expirationDate = new Date(parseInt(`20${year}`, 10), parseInt(month, 10) - 1);
+      if (expirationDate <= currentDate) {
+        alert("Credit card has expired");
+        return;
+      }
+
+      
+  const response = await fetch('/users/membership', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // Replace token with the user's JWT token
+    },
+    body: JSON.stringify({
+      membership_status: 'active' // Set the membership status to active
+    })
+  });
+  if (response.ok) {
+    alert("Membership updated successfully")
+    window.location.reload();
+  } else {
+    alert("Something went wrong")
   }
-
-
-  const handleCardNumberChange = (event) => {
-    // Only allow 16 digit numbers
-    const value = event.target.value.replace(/\D/g, '').slice(0, 16);
-    setCardNumber(value);
   }
-
-  const handleCvvChange = (event) => {
-    // Only allow 3 digit numbers
-    const value = event.target.value.replace(/\D/g, '').slice(0, 3);
-    setCvv(value);
   }
-
-  const handleCardDateChange = (event) => {
-    // Only allow date in YYYY-MM format
-    const value = event.target.value.replace(/[^\d-]/g, '').slice(0, 7);
-    setCardDate(value);
-  }
-
   return (
     <div className="membership-container">
+      {membershipStatus === 'active' && <div className="membership__active"><p>Your membership is already active</p></div>} 
+      {membershipStatus !== 'active' &&
       <form onSubmit={handleSubmit}>
         <div className="membership__element">
           <label htmlFor="name">Name:</label>
@@ -63,10 +118,11 @@ function Membership() {
         </div>
         <div className="membership__element">
           <label htmlFor="card-date">Card Date:</label>
-          <input type="text" id="card-date" placeholder="Enter expiration date" value={cardDate} onChange={(e) => setCardDate(e.target.value)} required />
+          <input type="text" id="card-date" placeholder="Enter expiration date MM/YY" value={cardDate} onChange={(e) => setCardDate(e.target.value)} required />
         </div>
         <button type="submit">Purchase</button>
       </form>
+}
     </div>
   );
 }
