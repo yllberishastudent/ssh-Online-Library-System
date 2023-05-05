@@ -12,12 +12,21 @@ importAll(require.context("../..", true, /\.jpg$/));
 
 function FirstPage() {
   const [books, setBooks] = useState([]);
-
+  const [reviews, setReviews] = useState([]);
+  const [popular, setPopular] = useState(false);
   useEffect(() => {
     axios
       .get("http://localhost:5001/books")
       .then(response => {
         setBooks(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      axios
+      .get("http://localhost:5001/reviews")
+      .then(response => {
+        setReviews(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -34,13 +43,40 @@ function FirstPage() {
     .sort((a, b) => a.title.localeCompare(b.title))
     .slice(0, 10);
 
+    const filteredPopularBooks = popular
+    ? books.filter(book => {
+        const bookReviews = reviews.filter(
+          review => review.book_id === book.id
+        );
+        const averageRating =
+          bookReviews.reduce((sum, review) => sum + review.rating, 0) /
+          bookReviews.length;
+        return averageRating >= 4.5;
+      })
+    : books;
     
   return (
     <div className="wrapper">
       
       <div className="books-container">
+      <div>
+          <h2 id="popular">Popular Books</h2>
+          <div className="grid-container">
+            {filteredPopularBooks.map(book => (
+              <div key={book.id} className="grid-item">
+                <img
+                  src={images[`./${book.cover_image_url}`]}
+                  alt={book.title}
+                />
+                <h3>{book.title}</h3>
+                <p>{book.author}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div>
-          <h2 class="books-categories__titles">Newest Books</h2>
+          <h2 class="books-categories__titles" id="newest">Newest Books</h2>
           <div className="grid-container">
             {filteredNewestBooks.map(book => (
               <div key={book.id} className="grid-item">
@@ -55,7 +91,7 @@ function FirstPage() {
           </div>
         </div>
         <div>
-          <h2>A-Z Books</h2>
+          <h2 id="a-z">A-Z Books</h2>
           <div className="grid-container">
             {filteredAZBooks.map(book => (
               <div key={book.id} className="grid-item">
@@ -69,6 +105,7 @@ function FirstPage() {
             ))}
           </div>
         </div>
+
       </div>
     </div>
   );

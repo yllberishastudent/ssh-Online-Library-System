@@ -38,9 +38,9 @@ function App() {
               </>
             ):
             <>
-              <li><a href="/">POPULAR</a></li>
-              <li><a href="/">NEWEST</a></li>
-              <li><a href="/">A-Z</a></li>
+              <li><a href="#popular">POPULAR</a></li>
+              <li><a href="#newest">NEWEST</a></li>
+              <li><a href="#a-z">A-Z</a></li>
             </>
             }
             
