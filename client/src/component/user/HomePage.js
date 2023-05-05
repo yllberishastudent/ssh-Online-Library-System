@@ -64,16 +64,7 @@ function HomePage() {
     };
     fetchData();
   }, [genreOption]);
-
   
-  useEffect(() => {
-    const interval = setInterval(() => {
-      localStorage.removeItem("token");
-      window.location.href = "/user/login";
-    }, 3600000); // 1 hour in milliseconds
-
-    return () => clearInterval(interval);
-  }, []);   
   
   const filteredBooks = books.filter((book) => {
     const titleMatch = book.title

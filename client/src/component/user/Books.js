@@ -6,9 +6,7 @@ import { useParams, navigate, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 const images = {};
-let token = localStorage.getItem("token");
-let user_id=jwtDecode(token).id;
-console.log(user_id);
+
 function importAll(r) {
   r.keys().forEach((key) => (images[key] = r(key)));
 }
@@ -52,10 +50,14 @@ function Books() {
   };
 
   const handleNewReviewSubmit = () => {
+    const token = localStorage.getItem("token");
+    const decodedToken = jwtDecode(token);
+    let userId = decodedToken.id;
+    console.log(userId);
     // send the new review to the server
     axios
       .post(`http://localhost:5001/addreview`, {
-        user_id: user_id, // replace with the actual user ID
+        user_id: userId, // replace with the actual user ID
         book_id: id,
         review_text: newReviewText,
         star: 1, // replace with the actual rating
