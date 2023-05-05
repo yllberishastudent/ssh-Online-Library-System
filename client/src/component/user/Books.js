@@ -119,7 +119,7 @@ function Books() {
 
                     <div class="content--review">
                     {review.review_text}<br></br>
-                      <time datetime="2016-1-1">{review.review_date.slice(0, 10)}</time>
+                      <time datetime="2016-1-1" class="time">{review.review_date.slice(0, 10)}</time>
                     </div>
                   </div>
                 </div>
