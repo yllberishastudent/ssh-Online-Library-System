@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./UserLogin.css"; // Import CSS styles
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const token = localStorage.getItem("token");
 
@@ -51,7 +52,16 @@ function UserLogin() {
       );
       console.log(response.data);
       localStorage.setItem("token", response.data.token); // save token to local storage
-      history(`/user/homepage`); //tek useri me kon useri?prej tokeni?
+      const decodedToken = jwt_decode(response.data.token);
+      const userRole = decodedToken.role;
+      
+      if (userRole == "admin") {
+        history("/user/admin");
+      } else if (userRole == "member") {
+        history("/user/homepage");
+      } else {
+        console.error("Unknown user role:", userRole);
+      }
       window.location.reload();
     } catch (error) {
       console.error(error);
