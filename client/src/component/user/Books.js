@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Books.css";
 import jwtDecode from 'jwt-decode';
+import Rating from "./Rating";
 import { useParams, navigate, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -18,6 +19,7 @@ function Books() {
   const [book, setBook] = useState(null); // initialize book state
   const [reviews, setReviews] = useState([]); // initialize reviews state
   const [newReviewText, setNewReviewText] = useState(""); // initialize new review text state
+  const [rating, setRating] = useState(0);
   const history = useNavigate();
 
   useEffect(() => {
@@ -45,6 +47,10 @@ function Books() {
     return <div>Loading...</div>; // show a loading message while book information is being retrieved
   }
 
+  const handleRatingChange = (newRating) => {
+    setRating(newRating);
+  };
+
   const handleNewReviewChange = (event) => {
     setNewReviewText(event.target.value); // update newReviewText state with the value of the textarea
   };
@@ -60,13 +66,14 @@ function Books() {
         user_id: userId, // replace with the actual user ID
         book_id: id,
         review_text: newReviewText,
-        star: 1, // replace with the actual rating
+        star:rating, // replace with the actual rating
       })
       .then((response) => {
         // add the new review to the state
         setReviews([...reviews, response.data.review]);
         // clear the new review text
         setNewReviewText("");
+        setRating(0);
       })
       .catch((error) => {
         console.log(error);
@@ -113,11 +120,13 @@ function Books() {
                     {review.review_text}<br></br>
                       <div class="time"><time datetime="2016-1-1">{review.review_date.slice(0, 10)}</time></div>
                     </div>
+                   <Rating rating={review.star}/>
                   </div>
                 </div>
               </div>
             ))}
               <textarea class="textarea" placeholder="Add review"   value={newReviewText} onChange={handleNewReviewChange}></textarea>
+              <Rating rating={rating} onRatingChange={handleRatingChange} />
           <p onClick={handleNewReviewSubmit} class="button is-primary review-area" >Add review</p>
           </div>
         

@@ -1,0 +1,18 @@
+.rating {
+    
+    font-size: 2em;
+    line-height: 1em;
+  }
+  
+  .star {
+    display: inline-block;
+    font-size: 1em;
+    line-height: 1em;
+    cursor: pointer;
+    color: #ccc;
+  }
+  
+  .star.filled {
+    color: #ffcc00;
+  }
+  
