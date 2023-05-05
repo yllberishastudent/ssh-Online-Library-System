@@ -1,3 +1,7 @@
+html{
+  scroll-behavior: smooth;
+}
+
 .wrapper {
     max-width: 100%;
     margin: 80px;
@@ -5,7 +9,7 @@
   }  
 .content{
 background-image: url(https://picsum.photos/id/496/1780/800?blur=7);
-height: 600px;
+height: 100%;
 }
   .grid-container {
     display: grid;
@@ -18,6 +22,12 @@ height: 600px;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    margin: 2%;
+  }
+  .grid-item:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: ease-in 0.1s;
   }
 
   
@@ -25,6 +35,14 @@ height: 600px;
     max-width: 80%;
     height: 80%;
     margin-bottom: 10px;
+  }
+  .books-categories__titles{
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 2%;
+    border-bottom-style: solid;
+    border-width: 2px;
+    padding-bottom: 3px;
   }
   
   @media (max-width: 1024px) {
@@ -45,22 +63,57 @@ height: 600px;
       margin-right: 0;
     }
   }
-  .grid-container-top {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    margin-bottom: 100px;
-  }
-  
-  .grid-item-top{
+
+
+
+
+  /* Book of the week section */
+  .content__title{
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    padding-top: 4%;
+
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+  }
+  .grid-container-top {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    justify-content:center;
+    width: 70%;
+    margin: 0 15%;
+    padding: 5% 0;
+    gap: 80px;
+  }
+  
+   .grid-item-top{
+    width: 90%;
+    height:90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column-reverse;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.822);
+    padding: 20px 20px;
+    border-radius: 3%;
+    box-shadow: rgba(255, 255, 255, 0.205) 0px 7px 29px 0px;
+  }
+  .grid-item-top:hover{
+    background-color: rgb(255, 255, 255);
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: ease-in 0.1s;
   }
 
-  .grid-item-top img {
-    max-width: 30%;
-    width: 100%;
-    height: 80%;
-   
-  }
+ .grid-item-top img {
+  max-width: 250px;
+  width: 100%;
+  height: 90%;
+  
+ 
+}
