@@ -110,7 +110,11 @@ body{
   .register_button{
     background-color: black;
     color: white;
+    
   }
+ .btn_white{
+  color: white;
+ }
   .nav-left a:visited {
     color: rgb(0, 0, 0);
   }

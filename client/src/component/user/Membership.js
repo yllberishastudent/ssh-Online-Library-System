@@ -88,6 +88,7 @@ function Membership() {
   }
   return (
     <div className="membership-container">
+      <div class="membership__wrapper">
       {membershipStatus === 'active' && <div className="membership__active"><p>Your membership is already active</p></div>} 
       {membershipStatus !== 'active' &&
       <form onSubmit={handleSubmit}>
@@ -123,6 +124,7 @@ function Membership() {
         <button type="submit">Purchase</button>
       </form>
 }
+</div>
     </div>
   );
 }

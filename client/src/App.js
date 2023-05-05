@@ -97,7 +97,7 @@ function AuthNav({ userName }) {
             <Link to="/user/login">Login</Link>
           </li>
           <li className="register_button">
-            <Link to="/user/register">Register</Link>
+            <Link to="/user/register"> <span class="btn_white">Register</span></Link>
           </li>
         </>
       )}
