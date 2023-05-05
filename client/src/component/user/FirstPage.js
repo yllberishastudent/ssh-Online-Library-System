@@ -53,7 +53,7 @@ function FirstPage() {
           bookReviews.length;
         return averageRating >= 4.5;
       })
-    : books;
+    : books.slice(3, 20);
 
     const top3 = popular
     ? books.filter(book => {
@@ -65,7 +65,7 @@ function FirstPage() {
           bookReviews.length;
         return averageRating >= 4.5;
       })
-    : books.slice(0, 3);;
+    : books.slice(0, 3);
     
   return (
 
