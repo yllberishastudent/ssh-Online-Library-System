@@ -77,14 +77,6 @@ function Books() {
   return (
     <section className="book-details">
       <div className="container">
-        <button
-          type="button"
-          className="button is-primary"
-          onClick={() => history("/user/homepage")}
-        >
-          <FaArrowLeft size={20} />
-          <span className="fs-18 fw-6">Back</span>
-        </button>
         <div className="book-details-content grid">
           <div className="book-details-img">
             <img src={images[`./${book.cover_image_url}`]} alt={book.title} />
@@ -99,7 +91,7 @@ function Books() {
             <div className="book-details-item description">
               <span className="fw-6 fs-24">{book.description}</span>
             </div>
-            <button class="button is-primary">READ</button>
+            <button class="button is-primary review-area ">READ</button>
         
           </div>
         </div>
@@ -113,21 +105,22 @@ function Books() {
                   <div class="card-content">
                     <div class="media">
                       <div class="media-content">
-                      {review && review.User && <p className="is-5">{review.User.username}</p>}
+                      {review && review.User && <p className="is-5 username--name">{review.User.username}</p>}
                       </div>
                     </div>
 
                     <div class="content--review">
                     {review.review_text}<br></br>
-                      <time datetime="2016-1-1" class="time">{review.review_date.slice(0, 10)}</time>
+                      <div class="time"><time datetime="2016-1-1">{review.review_date.slice(0, 10)}</time></div>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
-          </div>
-          <textarea class="textarea" placeholder="Add review"   value={newReviewText} onChange={handleNewReviewChange}></textarea>
+              <textarea class="textarea" placeholder="Add review"   value={newReviewText} onChange={handleNewReviewChange}></textarea>
           <p onClick={handleNewReviewSubmit} class="button is-primary review-area" >Add review</p>
+          </div>
+        
     </section>
   );
 }
