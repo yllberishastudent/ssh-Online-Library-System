@@ -54,10 +54,44 @@ function FirstPage() {
         return averageRating >= 4.5;
       })
     : books;
+
+    const top3 = popular
+    ? books.filter(book => {
+        const bookReviews = reviews.filter(
+          review => review.book_id === book.id
+        );
+        const averageRating =
+          bookReviews.reduce((sum, review) => sum + review.rating, 0) /
+          bookReviews.length;
+        return averageRating >= 4.5;
+      })
+    : books.slice(0, 3);;
     
   return (
-    <div className="wrapper">
-      
+
+    <div className="container">
+
+      <div class="content">
+      <div>
+          <h2>Books of the week</h2>
+          <div className="grid-container-top" >
+            {top3.map(book => (
+              <div key={book.id} className="grid-item-top">
+                <img
+                  src={images[`./${book.cover_image_url}`]}
+                  alt={book.title}
+                />
+                <h3>{book.title}</h3>
+                <p>{book.author}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+
+
+      <div className="wrapper">
       <div className="books-container">
       <div>
           <h2 id="popular">Popular Books</h2>
@@ -107,6 +141,7 @@ function FirstPage() {
         </div>
 
       </div>
+    </div>
     </div>
   );
 }
