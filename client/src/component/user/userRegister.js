@@ -139,6 +139,7 @@ function UserRegister() {
            <div className="error-message">{phoneError}</div>
         </label>
         
+        
         <label>
           <div className="label-text">Password:</div>
           <input
@@ -147,8 +148,9 @@ function UserRegister() {
             value={password}
             onChange={handlePasswordChange}
           />
+             <div className="error-message">{passwordError}</div>
         </label>
-        <div className="error-message">{passwordError}</div>
+     
         <label>
           <div className="label-text">Confirm Password:</div>
           <input

@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: center;
     margin: 20px auto;
-    padding: 20px;
+    padding: 40px 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 300px;
@@ -66,4 +66,13 @@
     color:#007bff;
     font-size: 12px;
     
+  }
+  .register{
+    color:#007bff;
+    font-size: 16px;
+    padding-top: 15px;
+    margin-top: 10px;
+  }
+  .register:hover{
+    color:#0362c7;
   }

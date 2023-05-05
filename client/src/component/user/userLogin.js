@@ -87,7 +87,11 @@ function UserLogin() {
         </div>
         <button type="submit">Log in</button>
         {errorMessage && <p className="error">{errorMessage}</p>}
+
+        <a href="/user/register" class="register">No account? Sign up here</a>
       </form>
+
+    
     </div>
   );
 }
