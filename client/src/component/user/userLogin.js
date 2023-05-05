@@ -82,6 +82,9 @@ function UserLogin() {
             onChange={handlePasswordChange}
           />
         </label>
+        <div class="forgot-password__wrapper">
+        <a href="/client/src/App.js" class="forgot-password">Forgot password?</a>
+        </div>
         <button type="submit">Log in</button>
         {errorMessage && <p className="error">{errorMessage}</p>}
       </form>
