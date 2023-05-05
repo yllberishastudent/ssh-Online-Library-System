@@ -159,7 +159,7 @@ app.get("/books/:id", async (req, res) => {
 
 app.post("/addreview", async (req, res) => {
   try {
-    const { user_id, book_id, review_text } = req.body;
+    const { user_id, book_id, review_text, star} = req.body;
 
     // Check if the user and book exist
     const userExists = await db.User.findByPk(user_id);
@@ -172,7 +172,7 @@ app.post("/addreview", async (req, res) => {
       user_id,
       book_id,
       review_text,
-      rate,
+      star,
       review_date: new Date(),
     });
 
