@@ -7,6 +7,7 @@ import { useParams, navigate, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 const images = {};
+let userName=null;
 
 function importAll(r) {
   r.keys().forEach((key) => (images[key] = r(key)));
@@ -54,12 +55,12 @@ function Books() {
   const handleNewReviewChange = (event) => {
     setNewReviewText(event.target.value); // update newReviewText state with the value of the textarea
   };
-
+  
   const handleNewReviewSubmit = () => {
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
     let userId = decodedToken.id;
-    console.log(userId);
+    userName=decodedToken.username;
     // send the new review to the server
     axios
       .post(`http://localhost:5001/addreview`, {
@@ -112,10 +113,9 @@ function Books() {
                   <div class="card-content">
                     <div class="media">
                       <div class="media-content">
-                      {review && review.User && <p className="is-5 username--name">{review.User.username}</p>}
+                      <p className="is-5 username--name">{userName ? userName : review.User.username}</p>
                       </div>
                     </div>
-
                     <div class="content--review">
                     {review.review_text}<br></br>
                       <div class="time"><time datetime="2016-1-1">{review.review_date.slice(0, 10)}</time></div>
