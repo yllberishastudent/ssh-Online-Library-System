@@ -27,19 +27,20 @@ function FirstPage() {
   const filteredNewestBooks = books
     .slice()
     .sort((a, b) => new Date(b.release_date) - new Date(a.release_date))
-    .slice(0, 5);
+    .slice(0, 10);
 
   const filteredAZBooks = books
     .slice()
     .sort((a, b) => a.title.localeCompare(b.title))
-    .slice(0, 5);
+    .slice(0, 10);
 
+    
   return (
     <div className="wrapper">
       
       <div className="books-container">
         <div>
-          <h2>Newest Books</h2>
+          <h2 class="books-categories__titles">Newest Books</h2>
           <div className="grid-container">
             {filteredNewestBooks.map(book => (
               <div key={book.id} className="grid-item">

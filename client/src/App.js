@@ -39,7 +39,6 @@ function App() {
             ):
             <>
               <li><a href="/">POPULAR</a></li>
-              <li><a href="/">GENRES</a></li>
               <li><a href="/">NEWEST</a></li>
               <li><a href="/">A-Z</a></li>
             </>
