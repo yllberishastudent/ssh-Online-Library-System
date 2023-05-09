@@ -147,7 +147,7 @@ function HomePage() {
 
   return (
     <div className="wrapper">
-      <div className="titles">
+      {/* <div className="titles">
         <h2 onClick={handleClickAllBooks}>All books</h2>
         <h2 onClick={handleClickPopular}>Popular</h2>
         <label htmlFor="genre-select">Genre:</label>
@@ -163,7 +163,7 @@ function HomePage() {
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
       <div className="filters-homepage">
         <input
           type="text"
