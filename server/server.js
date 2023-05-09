@@ -8,12 +8,91 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
 const updateUser = require("./middleware/updateUser");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
+
 
 // Initialize the app
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+
+let oottpp=null;
+app.post("/password-recovery", async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+   
+    const OTP = generateOTP();
+    oottpp=OTP; //per verifikim 
+    console.log("Sending email to:", email);
+
+   
+    await sendEmail({ email, OTP });
+    
+    res.status(200).json({ message: "Password recovery email sent" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to send password recovery email" });
+  }
+});
+
+function sendEmail({ email, OTP }) {
+  return new Promise((resolve, reject) => {
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "????????",
+        pass: "????????",
+      },
+    });
+
+    const mailConfig = {
+      from: "?????????",
+      to: email,
+      subject: "KODING 101 PASSWORD RECOVERY",
+      text: `Your one-time password (OTP) for password recovery is: ${OTP}`,
+    };
+
+    transporter.sendMail(mailConfig, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+        reject(error);
+      } else {
+        console.log("Email sent:", info.response);
+        resolve();
+      }
+    });
+  });
+}
+
+function generateOTP() {
+ //random 6dig num
+  const OTP = Math.floor(100000 + Math.random() * 900000);
+  return OTP.toString();
+}
+
+app.post("/otp-verification", async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    // Verify the OTP
+    if (verifyOTP({ email, otp })) {
+      res.status(200).json({ message: "OTP verification successful" });
+    } else {
+      res.status(400).json({ message: "Invalid OTP" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to verify OTP" });
+  }
+});
+
+function verifyOTP({ email, otp }) {
+  return otp == oottpp;
+}
+
 
 app.put("/users-update/:id", updateUser, (req, res) => {
   res.status(200).json({ success: true, data: req.user });

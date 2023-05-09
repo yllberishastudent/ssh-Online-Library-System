@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Books.css";
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 import Rating from "./Rating";
 import { useParams, navigate, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 const images = {};
-let userName=null;
+let userName = null;
 
 function importAll(r) {
   r.keys().forEach((key) => (images[key] = r(key)));
@@ -45,7 +45,12 @@ function Books() {
   }, [id]);
 
   if (!book) {
-    return <div>Loading...</div>; // show a loading message while book information is being retrieved
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+        <div className="loader-text">Loading...</div>
+      </div>
+    ); 
   }
 
   const handleRatingChange = (newRating) => {
@@ -55,19 +60,19 @@ function Books() {
   const handleNewReviewChange = (event) => {
     setNewReviewText(event.target.value); // update newReviewText state with the value of the textarea
   };
-  
+
   const handleNewReviewSubmit = () => {
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
     let userId = decodedToken.id;
-    userName=decodedToken.username;
+    userName = decodedToken.username;
     // send the new review to the server
     axios
       .post(`http://localhost:5001/addreview`, {
         user_id: userId, // replace with the actual user ID
         book_id: id,
         review_text: newReviewText,
-        star:rating, // replace with the actual rating
+        star: rating, // replace with the actual rating
       })
       .then((response) => {
         // add the new review to the state
@@ -82,23 +87,23 @@ function Books() {
   };
 
   const handleButtonClick = () => {
-    const bookId = id; 
+    const bookId = id;
     fetch(`/readd/${bookId}/pdf`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-            "Custom-Header": "value",
-      }
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        "Custom-Header": "value",
+      },
     })
-      .then(response => response.blob())
-      .then(blob => {
+      .then((response) => response.blob())
+      .then((blob) => {
         const pdfUrl = URL.createObjectURL(blob);
         console.log(pdfUrl);
-        window.open(pdfUrl, '_blank');
+        window.open(pdfUrl, "_blank");
       })
-      .catch(error => {
-        console.error('Error fetching PDF:', error);
+      .catch((error) => {
+        console.error("Error fetching PDF:", error);
       });
   };
 
@@ -120,37 +125,56 @@ function Books() {
             <div className="book-details-item description">
               <span className="fw-6 fs-24">{book.description}</span>
             </div>
-            <button class="button is-primary review-area" onClick={handleButtonClick}>READ</button>
-        
+            <button
+              class="button is-primary review-area"
+              onClick={handleButtonClick}
+            >
+              READ
+            </button>
           </div>
         </div>
-       
       </div>
       <div className="reviews-container">
-            <h2 className="reviews">Reviews</h2>
-            {reviews.map((review) => (
-              <div key={review.review_id} className="review">
-                <div class="card">
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content">
-                      <p className="is-5 username--name">{userName ? userName : review.User.username}</p>
-                      </div>
-                    </div>
-                    <div class="content--review">
-                    {review.review_text}<br></br>
-                      <div class="time"><time datetime="2016-1-1">{review.review_date.slice(0, 10)}</time></div>
-                    </div>
-                   <Rating rating={review.star}/>
+        <h2 className="reviews">Reviews</h2>
+        {reviews.map((review) => (
+          <div key={review.review_id} className="review">
+            <div class="card">
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p className="is-5 username--name">
+                      {userName ? userName : review.User.username}
+                    </p>
                   </div>
                 </div>
+                <div class="content--review">
+                  {review.review_text}
+                  <br></br>
+                  <div class="time">
+                    <time datetime="2016-1-1">
+                      {review.review_date.slice(0, 10)}
+                    </time>
+                  </div>
+                </div>
+                <Rating rating={review.star} />
               </div>
-            ))}
-              <textarea class="textarea" placeholder="Add review"   value={newReviewText} onChange={handleNewReviewChange}></textarea>
-              <Rating rating={rating} onRatingChange={handleRatingChange} />
-          <p onClick={handleNewReviewSubmit} class="button is-primary review-area" >Add review</p>
+            </div>
           </div>
-        
+        ))}
+        <textarea
+          class="textarea"
+          placeholder="Add review"
+          value={newReviewText}
+          onChange={handleNewReviewChange}
+        ></textarea>
+        <Rating rating={rating} onRatingChange={handleRatingChange} />
+        <p
+          onClick={handleNewReviewSubmit}
+          class="button is-primary review-area"
+        >
+          Add review
+        </p>
+      </div>
     </section>
   );
 }

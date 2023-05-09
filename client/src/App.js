@@ -6,6 +6,7 @@ import HomePage from "./component/user/HomePage";
 import FirstPage from "./component/user/FirstPage";
 import Books from "./component/user/Books";
 import Membership from "./component/user/Membership";
+import Email from "./component/user/email";
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import "./App.css"; // Import CSS styles
@@ -58,7 +59,7 @@ function App() {
           <Route path="/user/homepage/" element={<HomePage />} />
           <Route path="/user/books/:id" element={<Books />} />
           <Route path="/user/membership/:userName" element={<Membership />} />
-
+          <Route path="/user/email" element={<Email />} />
         </Routes>
       </div>
     </Router>
