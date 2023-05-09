@@ -43,13 +43,13 @@ function sendEmail({ email, OTP }) {
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "????????",
-        pass: "????????",
+        user: "??????",
+        pass: "??????",
       },
     });
 
     const mailConfig = {
-      from: "?????????",
+      from: "?????",
       to: email,
       subject: "KODING 101 PASSWORD RECOVERY",
       text: `Your one-time password (OTP) for password recovery is: ${OTP}`,
@@ -92,6 +92,30 @@ app.post("/otp-verification", async (req, res) => {
 function verifyOTP({ email, otp }) {
   return otp == oottpp;
 }
+app.post("/change-password", async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password in the database
+    const [affectedRows] = await db.User.update(
+      { password: hashedPassword },
+      { where: { email } }
+    );
+
+    if (affectedRows === 0) {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      res.status(200).json({ message: "Password changed successfully" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to change password" });
+  }
+});
+
 
 
 app.put("/users-update/:id", updateUser, (req, res) => {

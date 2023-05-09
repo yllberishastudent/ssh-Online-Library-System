@@ -93,7 +93,7 @@ function UserLogin() {
           />
         </label>
         <div class="forgot-password__wrapper">
-        <a href="/client/src/App.js" class="forgot-password">Forgot password?</a>
+        <a href="/user/email" class="forgot-password">Forgot password?</a>
         </div>
         <button type="submit">Log in</button>
         {errorMessage && <p className="error">{errorMessage}</p>}
