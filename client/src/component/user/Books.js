@@ -81,6 +81,27 @@ function Books() {
       });
   };
 
+  const handleButtonClick = () => {
+    const bookId = id; 
+    fetch(`/readd/${bookId}/pdf`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Custom-Header": "value",
+      }
+    })
+      .then(response => response.blob())
+      .then(blob => {
+        const pdfUrl = URL.createObjectURL(blob);
+        console.log(pdfUrl);
+        window.open(pdfUrl, '_blank');
+      })
+      .catch(error => {
+        console.error('Error fetching PDF:', error);
+      });
+  };
+
   // display the retrieved book information
   return (
     <section className="book-details">
@@ -99,7 +120,7 @@ function Books() {
             <div className="book-details-item description">
               <span className="fw-6 fs-24">{book.description}</span>
             </div>
-            <button class="button is-primary review-area ">READ</button>
+            <button class="button is-primary review-area" onClick={handleButtonClick}>READ</button>
         
           </div>
         </div>

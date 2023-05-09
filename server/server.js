@@ -239,7 +239,7 @@ app.get(
       if (!book) {
         return res.status(404).send({ error: "Book not found" });
       }
-      const filePath = path.join(__dirname, "..", book.pdf_file_url);
+      const filePath = path.join(__dirname,book.pdf_file_url);
       const stat = fs.statSync(filePath);
       const fileSize = stat.size;
       const range = req.headers.range;

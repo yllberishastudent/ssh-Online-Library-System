@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./FirstPage.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const images = {};
 
@@ -14,7 +15,13 @@ function FirstPage() {
   const [books, setBooks] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [popular, setPopular] = useState(false);
+  const history = useNavigate();
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      history("/user/homepage"); // Redirect to the homepage if token doesn't exist
+      return;
+    }
     axios
       .get("http://localhost:5001/books")
       .then(response => {

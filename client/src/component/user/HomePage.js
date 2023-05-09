@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./HomePage.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const token = localStorage.getItem("token");
 const images = {};
@@ -19,6 +20,8 @@ function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [popular, setPopular] = useState(false);
   const [genreOption, setGenreOption] = useState("");
+  const history = useNavigate();
+
 
   useEffect(() => {
     Promise.all([
@@ -50,6 +53,10 @@ function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (!token) {
+      history("/"); // Redirect to the homepage if token doesn't exist
+      return;
+    }
     const fetchData = async () => {
       try {
         const response = await axios.get(
