@@ -4,6 +4,7 @@
   "description": "Server Side",
   "main": "server.js",
   "scripts": {
+    "20230406183348-synchronise.js": "node 20230406183348-synchronise.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
     "dev": "nodemon server"

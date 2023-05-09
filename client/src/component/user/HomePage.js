@@ -53,10 +53,6 @@ function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (!token) {
-      history("/"); // Redirect to the homepage if token doesn't exist
-      return;
-    }
     const fetchData = async () => {
       try {
         const response = await axios.get(
