@@ -1,4 +1,4 @@
-import React,  { useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import UserLogin from "./component/user/userLogin";
 import UserRegister from "./component/user/userRegister";
@@ -7,13 +7,11 @@ import FirstPage from "./component/user/FirstPage";
 import Books from "./component/user/Books";
 import Membership from "./component/user/Membership";
 import Email from "./component/user/email";
-import jwtDecode from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
+import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 import "./App.css"; // Import CSS styles
 
-
 function App() {
-  
   let token = localStorage.getItem("token");
   let userName = null;
 
@@ -25,35 +23,38 @@ function App() {
       console.log(error);
     }
   }
-  
+
   return (
     <Router>
       <div class="container">
         <nav class="main-nav">
           <ul class="nav-left">
-          <div class="logo">
-            <Link to="/">LIB</Link>
+            <div class="logo">
+              <Link to="/">LIB</Link>
             </div>
             {userName ? (
+              <></>
+            ) : (
               <>
+                <li>
+                  <a href="#popular">POPULAR</a>
+                </li>
+                <li>
+                  <a href="#newest">NEWEST</a>
+                </li>
+                <li>
+                  <a href="#a-z">A-Z</a>
+                </li>
               </>
-            ):
-            <>
-              <li><a href="#popular">POPULAR</a></li>
-              <li><a href="#newest">NEWEST</a></li>
-              <li><a href="#a-z">A-Z</a></li>
-            </>
-            }
-            
-        
+            )}
           </ul>
-        
-         
-         
+
           <AuthNav userName={userName} />
         </nav>
-        <Routes> --!
-        <Route path="/" element={<FirstPage />} />
+        <Routes>
+          {" "}
+          --!
+          <Route path="/" element={<FirstPage />} />
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
           <Route path="/user/homepage/" element={<HomePage />} />
@@ -75,22 +76,36 @@ function AuthNav({ userName }) {
   };
   const goToMembership = () => {
     navigate(`/user/membership/${userName}`);
-  }
+  };
   const gotoHomepage = () => {
-    navigate('user/homepage');
-  }
+    navigate("user/homepage");
+  };
+  const handleSelectionChange = (event) => {
+    const selectedOption = event.target.value;
+
+    if (selectedOption === "home") {
+      gotoHomepage();
+    } else if (selectedOption === "membership") {
+      goToMembership();
+    } else if (selectedOption === "logout") {
+      logout();
+    }
+  };
   return (
     <ul className="nav-right">
       {userName ? (
         <>
-          <li className="emri" onClick={gotoHomepage}>{userName}</li>
-          <li className="membership" onClick={goToMembership}>Membership</li>
-          <li className="logout_button" onClick={logout}>
-              Logout
-          </li>
-
-           
-          
+          <select className="custom-select" onChange={handleSelectionChange}>
+            <option value="home">{userName}</option>
+            <option value="membership">Membership</option>
+            <optgroup label="Settings">
+              <option value="changeUsername">Change Username</option>
+              <option value="changePassword">Change Password</option>
+              <option value="changeEmail">Change Email</option>
+              <option value="info">Info</option>
+            </optgroup>
+            <option value="logout">Logout</option>
+          </select>
         </>
       ) : (
         <>
@@ -98,7 +113,10 @@ function AuthNav({ userName }) {
             <Link to="/user/login">Login</Link>
           </li>
           <li className="register_button">
-            <Link to="/user/register"> <span class="btn_white">Register</span></Link>
+            <Link to="/user/register">
+              {" "}
+              <span class="btn_white">Register</span>
+            </Link>
           </li>
         </>
       )}
