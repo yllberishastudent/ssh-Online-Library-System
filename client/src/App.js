@@ -7,8 +7,7 @@ import FirstPage from "./component/user/FirstPage";
 import Books from "./component/user/Books";
 import Membership from "./component/user/Membership";
 import Email from "./component/user/email";
-import ContactForm from './component/user/Contact';
-import Admin from './component/user/Admin';
+import Contact from './component/user/Contact';
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import "./App.css"; // Import CSS styles
@@ -31,7 +30,7 @@ function App() {
       <div class="container">
         <nav class="main-nav">
           <ul class="nav-left">
-          <div class="logo">
+            <div class="logo">
               <Link to="/">LIB</Link>
             </div>
             {userName ? (
@@ -46,6 +45,9 @@ function App() {
                 </li>
                 <li>
                   <a href="#a-z">A-Z</a>
+                </li>
+                <li>
+                  <Link to="/user/contact">Contact Us</Link>
                 </li>
               </>
             )}
@@ -62,8 +64,7 @@ function App() {
           <Route path="/user/homepage/" element={<HomePage />} />
           <Route path="/user/books/:id" element={<Books />} />
           <Route path="/user/membership/:userName" element={<Membership />} />
-          <Route path="/user/admin" element= { <Admin />} />
-          <Route path="/user/contact" element={<ContactForm />} />
+          <Route path="/user/contact" element={<Contact />} />
           <Route path="/user/email" element={<Email />} />
         </Routes>
       </div>
