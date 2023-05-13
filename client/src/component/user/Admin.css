@@ -1,13 +1,14 @@
+/* Admin.css */
 .admin-page {
     display: flex;
     height: 84vh;
   }
-
+  
   .sidebar {
     width: 200px;
-    background:#f6f5f5;
+    background: #f6f5f5;
     color: #000;
-    padding: 20px;
+    padding: 5px 20px;
     display: flex;
     flex-direction: column;
   }
@@ -32,12 +33,12 @@
     color: #000;
     font-size: 16px;
     padding: 10px;
-    transition:  0.3s ease;
+    transition: 0.3s ease;
   }
   
   .sidebar-nav button:hover {
-    color: #FF0055;
-    background: #FFE5EE;
+    color: #ff0055;
+    background: #ffe5ee;
     cursor: pointer;
   }
   
@@ -48,17 +49,34 @@
   .logout-button {
     margin-top: auto;
   }
-
+  
   .admin-content {
-    display: flex;
-    justify-content: end;
-    flex-direction: column;
-    width: 100%;
+    width: calc(100% - 200px); /* Adjust the width based on the sidebar's width */
     background: #fff;
+    padding: 20px;
+    overflow-y: auto; /* Enable vertical scrolling if needed */
   }
-
-  .admin-content footer {
-   background: #f6f5f5 ;
-   padding: 20px;
-   font-weight: 600;
+  
+  /* User Table Styles */
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
   }
+  
+  .user-table th,
+  .user-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .user-table th {
+    background: #f6f6f6;
+    font-weight: bold;
+  }
+  
+  .user-table tbody tr:hover {
+    background: #f9f9f9;
+    cursor: pointer;
+  }
+  

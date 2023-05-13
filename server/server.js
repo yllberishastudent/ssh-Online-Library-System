@@ -425,6 +425,17 @@ app.get("/readtest/:user_id/:book_id", async (req, res) => {
   }
 });
 
+//Get users endpoint
+app.get("/users", async (req, res) => {
+  try {
+    const users = await db.User.findAll();
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 app.get(
   "/user/membership",
   authMiddleware.authenticateToken,
