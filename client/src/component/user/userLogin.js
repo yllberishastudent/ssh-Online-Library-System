@@ -55,9 +55,9 @@ function UserLogin() {
       const decodedToken = jwt_decode(response.data.token);
       const userRole = decodedToken.role;
       
-      if (userRole == "admin") {
+      if (userRole === "admin") {
         history("/user/admin");
-      } else if (userRole == "member") {
+      } else if (userRole === "member") {
         history("/user/homepage");
       } else {
         console.error("Unknown user role:", userRole);

@@ -4,6 +4,7 @@ import UserLogin from "./component/user/userLogin";
 import UserRegister from "./component/user/userRegister";
 import HomePage from "./component/user/HomePage";
 import FirstPage from "./component/user/FirstPage";
+import Admin from "./component/user/Admin";
 import Books from "./component/user/Books";
 import Membership from "./component/user/Membership";
 import Email from "./component/user/email";
@@ -62,6 +63,7 @@ function App() {
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
           <Route path="/user/homepage/" element={<HomePage />} />
+          <Route path="/user/admin" element={<Admin />} />
           <Route path="/user/books/:id" element={<Books />} />
           <Route path="/user/membership/:userName" element={<Membership />} />
           <Route path="/user/contact" element={<Contact />} />
