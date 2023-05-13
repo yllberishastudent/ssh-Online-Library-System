@@ -163,6 +163,7 @@ function UserRegister() {
         <div className="error-message">{failedRegister}</div>
         <div className="error-message">{succesfulRegister}</div>
         <button type="submit">Register</button>
+        <a href="/user/login" class="login">Already have an account? Log in!</a>
       </form>
     </div>
   );
