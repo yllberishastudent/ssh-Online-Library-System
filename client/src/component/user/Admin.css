@@ -80,8 +80,19 @@
   cursor: pointer;
 }
 
-h2.admin-content__title{
+.admin-content__title, .admin-content__link{
   padding: 20px 0;
   font-weight: 600;
   font-size: 20px;
+}
+
+.admin-content__link:hover {
+  color: rgb(22, 135, 201);
+  cursor: pointer;
+}
+
+.admin-content__header {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
 }

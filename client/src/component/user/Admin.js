@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Admin.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartLine, faBookOpen, faUsers, faListAlt, faUser, faQuestionCircle, faSignOutAlt, faEdit,faTrashAlt, faSave,faTimes} from "@fortawesome/free-solid-svg-icons";
+import { faChartLine, faBookOpen, faUsers, faUser, faQuestionCircle, faSignOutAlt, faEdit,faTrashAlt, faSave,faTimes} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 function Admin() {
@@ -184,13 +184,17 @@ function Admin() {
                         </>
                     )}
                     {activeButton === "Users" && ( <>
+                        <div className="admin-content__header">
                         <h2 className="admin-content__title">Users</h2>
+                        <a className="admin-content__link">Create User</a>
+                        </div>
                         <table>
                           <thead>
                             <tr>
                               <th>ID</th>
                               <th>Username</th>
                               <th>Email</th>
+                              <th>Phone</th>
                               <th>Role</th>
                               <th>Actions</th>
                             </tr>
@@ -201,6 +205,7 @@ function Admin() {
                                 <td>{user.user_id}</td>
                                 <td>{user.username}</td>
                                 <td>{user.email}</td>
+                                <td>{user.phone_number}</td>
                                 <td>{user.role}</td>
                                 <td>
                                   {editingUser && editingUser.user_id === user.user_id ? (

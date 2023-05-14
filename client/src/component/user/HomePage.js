@@ -22,7 +22,6 @@ function HomePage() {
   const [genreOption, setGenreOption] = useState("");
   const history = useNavigate();
 
-
   useEffect(() => {
     Promise.all([
       axios.get("http://localhost:5001/books", {
@@ -67,31 +66,22 @@ function HomePage() {
     };
     fetchData();
   }, [genreOption]);
-  
-  
+
   const filteredBooks = books.filter((book) => {
-    const titleMatch = book.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const authorMatch = book.author
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+    const titleMatch =
+      book.title && book.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const authorMatch =
+      book.author && book.author.toLowerCase().includes(searchTerm.toLowerCase());
     return titleMatch || authorMatch;
   });
 
   const calculateAverageRating = (bookId) => {
-    const reviewsForBook = reviews.filter(
-      (review) => review.book_id === bookId
-    );
-    console.log(reviewsForBook);
+    const reviewsForBook = reviews.filter((review) => review.book_id === bookId);
     const numReviews = reviewsForBook.length;
     if (numReviews === 0) {
       return null;
     }
-    const totalRating = reviewsForBook.reduce(
-      (sum, review) => sum + review.star,
-      0
-    );
+    const totalRating = reviewsForBook.reduce((sum, review) => sum + review.star, 0);
     const averageRating = totalRating / numReviews;
     return averageRating;
   };
