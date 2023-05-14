@@ -12,9 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      author: {
-        type: DataTypes.STRING,
+      author_id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: "Author",
+          key: "author_id",
+        },
       },
       description: {
         type: DataTypes.TEXT,
@@ -36,6 +40,9 @@ module.exports = (sequelize, DataTypes) => {
     Book.belongsToMany(models.Category, {
       through: "BookCategory",
       foreignKey: "book_id",
+    });
+    Book.belongsTo(models.Author, {
+      foreignKey: "author_id",
     });
   };
   return Book;

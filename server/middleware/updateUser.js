@@ -1,4 +1,5 @@
 const db = require("../models");
+const bcrypt = require("bcrypt");
 const User = db.User;
 
 const updateUser = async (req, res, next) => {
@@ -21,11 +22,15 @@ const updateUser = async (req, res, next) => {
 
     // Update the user data
     if (user) {
+      let hashedPassword = user.password; // use existing password by default
+      if (password) {
+        hashedPassword = await bcrypt.hash(password, 10); // hash the new password
+      }
       await user.update({
         username: username || user.username,
         email: email || user.email,
         phone_number: phone_number || user.phone_number,
-        password: password || user.password,
+        password: hashedPassword,
         membership_status: membership_status || user.membership_status,
         account_balance: account_balance || user.account_balance,
         role: role || user.role,
