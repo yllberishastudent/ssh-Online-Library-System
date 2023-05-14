@@ -11,26 +11,23 @@ const updateUser = require("./middleware/updateUser");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-
 // Initialize the app
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-let oottpp=null;
+let oottpp = null;
 app.post("/password-recovery", async (req, res) => {
   try {
     const { email } = req.body;
-    
-   
+
     const OTP = generateOTP();
-    oottpp=OTP; //per verifikim 
+    oottpp = OTP; //per verifikim
     console.log("Sending email to:", email);
 
-   
     await sendEmail({ email, OTP });
-    
+
     res.status(200).json({ message: "Password recovery email sent" });
   } catch (error) {
     console.error(error);
@@ -68,7 +65,7 @@ function sendEmail({ email, OTP }) {
 }
 
 function generateOTP() {
- //random 6dig num
+  //random 6dig num
   const OTP = Math.floor(100000 + Math.random() * 900000);
   return OTP.toString();
 }
@@ -116,7 +113,44 @@ app.post("/change-password", async (req, res) => {
   }
 });
 
+app.get("/authors/:id/books", async (req, res, next) => {
+  const { id } = req.params;
 
+  try {
+    // Find the author by ID
+    const author = await db.Author.findOne({
+      where: { author_id: id },
+      include: [{ model: db.Book }],
+    });
+
+    // If the author is found, return their books
+    if (author) {
+      const books = author.Books;
+      res.status(200).json({ books });
+    } else {
+      // If the author is not found, return a 404 error
+      const error = new Error("Author not found");
+      error.statusCode = 404;
+      throw error;
+    }
+  } catch (error) {
+    // Pass the error to the default error handler
+    next(error);
+  }
+});
+
+app.get("/authors", async (req, res, next) => {
+  try {
+    // Find all authors
+    const authors = await db.Author.findAll();
+
+    // Return the authors
+    res.status(200).json({ authors });
+  } catch (error) {
+    // Pass the error to the default error handler
+    next(error);
+  }
+});
 
 app.put("/users-update/:id", updateUser, (req, res) => {
   res.status(200).json({ success: true, data: req.user });
@@ -262,7 +296,7 @@ app.get("/books/:id", async (req, res) => {
 
 app.post("/addreview", async (req, res) => {
   try {
-    const { user_id, book_id, review_text, star} = req.body;
+    const { user_id, book_id, review_text, star } = req.body;
 
     // Check if the user and book exist
     const userExists = await db.User.findByPk(user_id);
@@ -342,7 +376,7 @@ app.get(
       if (!book) {
         return res.status(404).send({ error: "Book not found" });
       }
-      const filePath = path.join(__dirname,book.pdf_file_url);
+      const filePath = path.join(__dirname, book.pdf_file_url);
       const stat = fs.statSync(filePath);
       const fileSize = stat.size;
       const range = req.headers.range;
