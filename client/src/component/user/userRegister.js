@@ -79,7 +79,7 @@ function UserRegister() {
     }
 
     // Send request to server using Axios
-    axios.post("/signup", {
+    axios.post("/auth/signup", {
       username,
       email,
       phone_number,

@@ -36,7 +36,7 @@ function UserLogin() {
     console.log(`Submitting username ${username} and password ${password}`);
     try {
       const response = await axios.post(
-        "/login",
+        "/auth/login",
         {
           username,
           password,

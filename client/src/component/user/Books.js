@@ -35,7 +35,7 @@ function Books() {
       });
     // retrieve the reviews for the book from the server
     axios
-      .get(`http://localhost:5001/books/${id}/reviews`)
+      .get(`http://localhost:5001/reviews/books/${id}`)
       .then((response) => {
         setReviews(response.data.reviews); // set the reviews state with the retrieved reviews data
       })
@@ -68,7 +68,7 @@ function Books() {
     userName = decodedToken.username;
     // send the new review to the server
     axios
-      .post(`http://localhost:5001/addreview`, {
+      .post(`http://localhost:5001/reviews/add`, {
         user_id: userId, // replace with the actual user ID
         book_id: id,
         review_text: newReviewText,
