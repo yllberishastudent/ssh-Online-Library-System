@@ -35,8 +35,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+
   User_History.associate = function (models) {
-    // associations can be defined here
+    User_History.belongsTo(models.Book, { foreignKey: "book_id" });
   };
+
   return User_History;
 };
