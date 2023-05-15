@@ -3,10 +3,11 @@ const router = express.Router();
 const { User_History, Book, User } = require("../models");
 const { authenticateToken } = require("../middleware/authMiddleware");
 
-router.post("/user/history", authenticateToken, async (req, res) => {
+router.post("/user", authenticateToken, async (req, res) => {
   const { user } = req; // Access the user object from req
 
-  const { bookId, activityType, activityDate } = req.body;
+  const { bookId, activityType } = req.body;
+  const activityDate = new Date(); // Get the current date
 
   try {
     const book = await Book.findByPk(bookId);
@@ -16,7 +17,7 @@ router.post("/user/history", authenticateToken, async (req, res) => {
     }
 
     const history = await User_History.create({
-      user_id: user.id, // Use the user ID from req.user
+      user_id: user.id, // Use the user ID from token
       book_id: bookId,
       activity_type: activityType,
       activity_date: activityDate,
@@ -32,7 +33,7 @@ router.post("/user/history", authenticateToken, async (req, res) => {
 });
 
 //get users history
-router.get("/user/history", authenticateToken, async (req, res) => {
+router.get("/user", authenticateToken, async (req, res) => {
   const { id } = req.user; // Access the user ID from req.user
 
   try {
@@ -49,7 +50,7 @@ router.get("/user/history", authenticateToken, async (req, res) => {
 });
 
 // Delete one book from history
-router.delete("/user/history/:bookId", authenticateToken, async (req, res) => {
+router.delete("/user/:bookId", authenticateToken, async (req, res) => {
   const { id } = req.user; // Make sure req.user has the correct structure and contains the user_id property
 
   const { bookId } = req.params;
@@ -72,7 +73,7 @@ router.delete("/user/history/:bookId", authenticateToken, async (req, res) => {
   }
 });
 
-router.delete("/user/history", authenticateToken, async (req, res) => {
+router.delete("/all/user", authenticateToken, async (req, res) => {
   const { id } = req.user;
 
   try {
