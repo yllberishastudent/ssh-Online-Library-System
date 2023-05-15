@@ -9,6 +9,7 @@ function UserRegister() {
   const [phone_number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirmPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -17,18 +18,12 @@ function UserRegister() {
   const history = useNavigate();
 
   function handleUsernameChange(event) {
-    setUsername(event.target.value);
-
-    // -- DUHET MI VALIDU, BOHEN SI QIKJO TAJ PER SECILEN.
-    // const { value } = event.target;
-    // setEmail(value);
-
-    // // Validate email using regex
-    // const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // if (!pattern.test(value)) {
-    //   setEmailError("Please enter a valid email address");
-    // } else {
-    //   setEmailError("");
+  setUsername(event.target.value);
+  setUsernameError("");
+  const pattern = /^[a-zA-Z0-9]{3,}$/;
+  if (!pattern.test(event.target.value)) {
+    setUsernameError("Username must contain at least 3 alphanumeric characters");
+  }
   }
 
   function handlePasswordChange(event) {
@@ -71,7 +66,12 @@ function UserRegister() {
     if (!username || !email || !phone_number || !password || !confirm_password) {
       setError("Please fill in all required fields");
       return;
+    } else  if (usernameError || emailError || phoneError || passwordError) {
+      setError("Please enter the correct information");
+      return;
     }
+     // Check if there are any validation errors
+    
     // Check if passwords match
     if (password !== confirm_password) {
       alert("Passwords do not match");
@@ -108,10 +108,14 @@ function UserRegister() {
           } else if (data.message === "Email has already been used") {
             setError("Email is already used");
           } else {
-            setError("Registration failed, please try again or contact support for assistance");
+            setError(
+              "Registration failed, please try again or contact support for assistance"
+            );
           }
         } else {
-          setError("Registration failed, please try again or contact support for assistance");
+          setError(
+            "Registration failed, please try again or contact support for assistance"
+          );
         }
       });
   }
@@ -122,6 +126,7 @@ function UserRegister() {
         <label>
           <div className="label-text">Username:</div>
           <input type="text" placeholder="Enter Username" value={username} onChange={handleUsernameChange} />
+           <div className="error-message">{usernameError}</div>
         </label>
         <label>
           <div className="label-text">Email:</div>
