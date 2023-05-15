@@ -5,8 +5,21 @@ html{
 .wrapper {
     max-width: 100%;
     margin: 80px;
-    
-  }  
+  } 
+  .titles{
+    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    gap:150px;
+    background-color: rgb(255, 255, 255);
+  } 
+  a{
+    color: rgba(14, 22, 83, 0.851);
+    padding-left: 100px;
+  }
+  a:hover{
+   color: rgb(40, 164, 236);;
+  
+  }
 .content{
 background-image: url(https://picsum.photos/id/496/1780/800?blur=7);
 height: 100%;
