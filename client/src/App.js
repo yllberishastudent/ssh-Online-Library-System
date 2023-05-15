@@ -11,6 +11,7 @@ import Email from "./component/user/email";
 import Contact from './component/user/Contact';
 import Privacy from "./component/user/Privacy";
 import jwtDecode from "jwt-decode";
+import Author from "./component/user/Author";
 import { useNavigate } from "react-router-dom";
 import "./App.css"; // Import CSS styles
 
@@ -60,6 +61,7 @@ function App() {
           <Route path="/user/membership/:userName" element={<Membership />} />
           <Route path="/user/contact" element={<Contact />} />
           <Route path="/user/privacy" element={<Privacy />} />
+          <Route path="/user/:id/info" element={<Author />} />
           <Route path="/user/email" element={<Email />} />
         </Routes>
       </div>

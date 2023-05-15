@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Books.css";
 import jwtDecode from "jwt-decode";
 import Rating from "./Rating";
-import { useParams, navigate, useNavigate } from "react-router-dom";
+import { useParams, navigate, useNavigate, Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 const images = {};
@@ -50,7 +50,7 @@ function Books() {
         <div className="loader"></div>
         <div className="loader-text">Loading...</div>
       </div>
-    ); 
+    );
   }
 
   const handleRatingChange = (newRating) => {
@@ -119,18 +119,22 @@ function Books() {
             <div className="book-details-item title">
               <span className="fw-6 fs-24">{book.title}</span>
             </div>
-            <div className="book-details-item author">
-              <span className="fw-6 fs-24">Author: {book.author}</span>
-            </div>
             <div className="book-details-item description">
               <span className="fw-6 fs-24">{book.description}</span>
             </div>
+            <div class="readnauthor">
             <button
               class="button is-primary review-area"
               onClick={handleButtonClick}
             >
               READ
             </button>
+            <span className="fw-6 fs-24 author__f">
+              Author:{" "}
+              <Link to={`/user/${book.author_id}/info`}>Click here to read more</Link>
+            </span>
+            </div>
+           
           </div>
         </div>
       </div>
