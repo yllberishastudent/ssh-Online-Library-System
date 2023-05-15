@@ -25,17 +25,18 @@ const categoryRouter = require("./routes/category");
 const authRouter = require("./routes/auth");
 const faqRouter = require("./routes/faq");
 const UserHistoryRouter = require("./routes/userHistory");
+const favoriteRouter = require("./routes/favorite"); // Update the import statement
 
 app.use("/authors", authorRoutes);
 app.use("/books", bookRoutes);
 app.use("/users", usersRoutes);
 app.use("/reviews", reviewsRouter);
-app.use("/memberships", membershipRouter);
+app.use("/membership", membershipRouter);
 app.use("/categories", categoryRouter);
 app.use("/auth", authRouter);
 app.use("/faq", faqRouter);
 app.use("/history", UserHistoryRouter);
-
+app.use("/favorite", favoriteRouter); 
 
 let oottpp = null;
 app.post("/password-recovery", async (req, res) => {

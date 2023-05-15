@@ -5,7 +5,7 @@ const db = require("../models");
 const router = express.Router();
 
 // get membership status
-router.get("", authMiddleware.authenticateToken, async (req, res) => {
+router.get("/", authMiddleware.authenticateToken, async (req, res) => {
   const userId = req.user.id;
 
   try {
