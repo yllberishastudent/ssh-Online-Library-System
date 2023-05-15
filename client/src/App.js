@@ -4,7 +4,7 @@ import UserLogin from "./component/user/userLogin";
 import UserRegister from "./component/user/userRegister";
 import HomePage from "./component/user/HomePage";
 import FirstPage from "./component/user/FirstPage";
-import Admin from "./component/user/Admin";
+import Admin from "./component/admin/Admin";
 import Books from "./component/user/Books";
 import Membership from "./component/user/Membership";
 import Email from "./component/user/email";

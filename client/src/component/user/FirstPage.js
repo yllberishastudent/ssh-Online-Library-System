@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./FirstPage.css";
+import "./style/FirstPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";

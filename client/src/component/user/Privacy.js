@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
-import "./Privacy.css"; // Import CSS styles
+import "./style/Privacy.css"; // Import CSS styles
 
 const Privacy = () => {
   const [user, setUser] = useState(null);

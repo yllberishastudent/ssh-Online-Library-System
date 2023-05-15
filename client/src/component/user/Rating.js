@@ -1,5 +1,5 @@
 import React from "react";
-import "./Rating.css";
+import "./style/Rating.css";
 
 const Rating = ({ rating, onRatingChange }) => {
   const MAX_RATING = 5;

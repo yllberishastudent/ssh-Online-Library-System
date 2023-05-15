@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
 
-import "./membership.css";
+import "./style/membership.css";
 
 const token = localStorage.getItem("token");
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import './Email.css'; // Import the CSS file for Email component
+import './style/Email.css'; // Import the CSS file for Email component
 
 function Email() {
   const [email, setEmail] = useState('');
