@@ -9,6 +9,7 @@ import Books from "./component/user/Books";
 import Membership from "./component/user/Membership";
 import Email from "./component/user/email";
 import Contact from './component/user/Contact';
+import Privacy from "./component/user/Privacy";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import "./App.css"; // Import CSS styles
@@ -67,6 +68,7 @@ function App() {
           <Route path="/user/books/:id" element={<Books />} />
           <Route path="/user/membership/:userName" element={<Membership />} />
           <Route path="/user/contact" element={<Contact />} />
+          <Route path="/user/privacy" element={<Privacy />} />
           <Route path="/user/email" element={<Email />} />
         </Routes>
       </div>
@@ -106,10 +108,7 @@ function AuthNav({ userName }) {
             <option value="home">{userName}</option>
             <option value="membership">Membership</option>
             <optgroup label="Settings">
-              <option value="changeUsername">Change Username</option>
-              <option value="changePassword">Change Password</option>
-              <option value="changeEmail">Change Email</option>
-              <option value="info">Info</option>
+              <option value="info">Privacy</option>
             </optgroup>
             <option value="logout">Logout</option>
           </select>
