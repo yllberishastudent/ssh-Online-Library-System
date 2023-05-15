@@ -4,8 +4,8 @@ const db = require("../models");
 
 const router = express.Router();
 
-// tell to change the link at front from user/membership to /memberships/user
-router.get("/user", authMiddleware.authenticateToken, async (req, res) => {
+// get membership status
+router.get("", authMiddleware.authenticateToken, async (req, res) => {
   const userId = req.user.id;
 
   try {
@@ -44,8 +44,8 @@ router.get("/user", authMiddleware.authenticateToken, async (req, res) => {
     });
   }
 });
-// from membership to memberships/add
-router.post("/add", authMiddleware.authenticateToken, async (req, res) => {
+// add a membership 
+router.post("/", authMiddleware.authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const membershipType = "normal";
@@ -79,8 +79,8 @@ router.post("/add", authMiddleware.authenticateToken, async (req, res) => {
       .json({ error: "An error occurred while creating a membership" });
   }
 });
-//tell to remove from memberships to memberships/remove
-router.delete("/remove", authMiddleware.authenticateToken, async (req, res) => {
+// to remove membership status
+router.delete("/", authMiddleware.authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
 
