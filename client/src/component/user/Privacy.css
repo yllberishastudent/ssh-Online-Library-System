@@ -1,0 +1,119 @@
+.profile-container {
+  max-width: 400px;
+  margin: 5% auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.profile-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.profile-info {
+  margin-top: 20px;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.profile-info div {
+  margin-bottom: 10px;
+}
+
+.profile-info strong {
+  font-weight: bold;
+}
+
+.profile-info span {
+  color: #555;
+}
+
+.password-verification {
+  margin-bottom: 20px;
+}
+
+.password-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.verify-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #10A9F6;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.verify-button:hover {
+  background-color: #10A9F6;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.update-info {
+  margin-bottom: 20px;
+}
+
+.update-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.update-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.update-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #428bca;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.update-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.update-button:hover:not(:disabled) {
+  background-color: #3071a9;
+}
+
+.success-message{
+  text-align: center;
+  color: green;
+  margin: auto;
+  margin-top: 10px;
+}
