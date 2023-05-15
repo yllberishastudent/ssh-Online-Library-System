@@ -12,6 +12,7 @@ import Contact from './component/user/Contact';
 import Privacy from "./component/user/Privacy";
 import jwtDecode from "jwt-decode";
 import Author from "./component/user/Author";
+import FAQ from "./component/user/FAQ";
 import { useNavigate } from "react-router-dom";
 import "./App.css"; // Import CSS styles
 
@@ -43,6 +44,9 @@ function App() {
                 <li>
                   <Link to="/user/contact">Contact Us</Link>
                 </li>
+                <li>
+                  <Link to="/user/faq">FAQ</Link>
+                </li>
               </>
             )}
           </ul>
@@ -63,6 +67,7 @@ function App() {
           <Route path="/user/privacy" element={<Privacy />} />
           <Route path="/user/:id/info" element={<Author />} />
           <Route path="/user/email" element={<Email />} />
+          <Route path="/user/faq" element={<FAQ />} />
         </Routes>
       </div>
     </Router>

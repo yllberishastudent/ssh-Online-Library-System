@@ -1,6 +1,7 @@
 const express = require("express");
+const db = require("../models");
+
 const router = express.Router();
-const db = require("../models"); // assuming your FAQ model is in a file called models.js
 
 // GET all FAQs
 router.get("/", async (req, res) => {
@@ -9,8 +10,23 @@ router.get("/", async (req, res) => {
       include: [db.User], // eager load associated user data
     });
     res.json(faqs);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// GET FAQs based on the status
+router.get("/status/:status", async (req, res) => {
+  const { status } = req.params;
+  try {
+    const faqs = await db.FAQ.findAll({
+      where: { status },
+      include: [db.User], // eager load associated user data
+    });
+    res.json(faqs);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -26,9 +42,9 @@ router.get("/:faq_id", async (req, res) => {
     } else {
       res.status(404).json({ message: "FAQ not found" });
     }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -43,14 +59,14 @@ router.post("/", async (req, res) => {
       user_id,
     });
     res.status(201).json(faq);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
 // PUT update an existing FAQ by ID
-router.put("/faqs/:faq_id", async (req, res) => {
+router.put("/:faq_id", async (req, res) => {
   try {
     const faq = await db.FAQ.findByPk(req.params.faq_id);
     if (faq) {
@@ -64,8 +80,8 @@ router.put("/faqs/:faq_id", async (req, res) => {
     } else {
       res.status(404).json({ message: "FAQ not found" });
     }
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -80,8 +96,8 @@ router.delete("/:faq_id", async (req, res) => {
     } else {
       res.status(404).json({ message: "FAQ not found" });
     }
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
