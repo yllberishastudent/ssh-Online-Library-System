@@ -41,4 +41,53 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// Update an author
+router.patch("/authors/:id", async (req, res) => {
+  const { id } = req.params;
+  const { first_name, last_name, pen_name, gender, country, active } = req.body;
+
+  try {
+    const author = await Author.findByPk(id);
+
+    if (!author) {
+      return res.status(404).json({ error: "Author not found" });
+    }
+
+    // Update the author's properties
+    author.first_name = first_name;
+    author.last_name = last_name;
+    author.pen_name = pen_name;
+    author.gender = gender;
+    author.country = country;
+    author.active = active;
+
+    await author.save();
+
+    res.status(200).json({ message: "Author updated successfully", author });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Delete an author
+router.delete("/authors/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const author = await Author.findByPk(id);
+
+    if (!author) {
+      return res.status(404).json({ error: "Author not found" });
+    }
+
+    await author.destroy();
+
+    res.status(200).json({ message: "Author deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
