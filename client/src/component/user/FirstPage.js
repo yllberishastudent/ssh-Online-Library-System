@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./FirstPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const images = {};
 
@@ -118,12 +120,14 @@ function FirstPage() {
           <div className="grid-container">
             {filteredPopularBooks.map(book => (
               <div key={book.id} className="grid-item">
+                  <Link to="/user/login" className="grid-item">
                 <img
                   src={images[`./${book.cover_image_url}`]}
                   alt={book.title}
                 />
                 <h3>{book.title}</h3>
                 <p>{book.author}</p>
+                </Link>
               </div>
             ))}
           </div>
@@ -134,12 +138,14 @@ function FirstPage() {
           <div className="grid-container">
             {filteredNewestBooks.map(book => (
               <div key={book.id} className="grid-item">
+                 <Link to="/user/login" className="grid-item">
                 <img
                   src={images[`./${book.cover_image_url}`]}
                   alt={book.title}
                 />
                 <h3>{book.title}</h3>
                 <p>{book.author}</p>
+                </Link>
               </div>
             ))}
           </div>
@@ -149,12 +155,14 @@ function FirstPage() {
           <div className="grid-container">
             {filteredAZBooks.map(book => (
               <div key={book.id} className="grid-item">
+                 <Link to="/user/login" className="grid-item">
                 <img
                   src={images[`./${book.cover_image_url}`]}
                   alt={book.title}
                 />
                 <h3>{book.title}</h3>
                 <p>{book.author}</p>
+                </Link>
               </div>
             ))}
           </div>
