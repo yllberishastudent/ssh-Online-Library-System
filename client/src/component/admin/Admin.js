@@ -156,9 +156,9 @@ function Admin() {
             </li></ul>
             </div>
                   <div className="admin-content">
-                    {activeButton === "Dashboard" && <h2>Dashboard Content Goes Here</h2>}
+                    {activeButton === "Dashboard" && <h3>Dashboard Content Goes Here</h3>}
                     {activeButton === "Books" && ( <>
-                        <h2 className="admin-content__title">Books</h2>
+                        <h3 className="admin-content__title">Books</h3>
                         <table>
                           <thead>
                             <tr>
@@ -185,7 +185,7 @@ function Admin() {
                     )}
                     {activeButton === "Users" && ( <>
                         <div className="admin-content__header">
-                        <h2 className="admin-content__title">Users</h2>
+                        <h3 className="admin-content__title">Users</h3>
                         <a className="admin-content__link">Create User</a>
                         </div>
                         <table>
@@ -275,8 +275,8 @@ function Admin() {
             )}
           </>
         )}
-        {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
-        {activeButton === "FAQ" && <h2>FAQ Content Goes Here</h2>}
+        {activeButton === "Authors" && <h3>Authors Content Goes Here</h3>}
+        {activeButton === "FAQ" && <h3>FAQ Content Goes Here</h3>}
       </div>
     </div>
   );
