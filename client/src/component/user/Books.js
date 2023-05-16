@@ -4,7 +4,7 @@ import "./style/Books.css";
 import jwtDecode from "jwt-decode";
 import Rating from "./Rating";
 import { useParams, navigate, useNavigate, Link } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaHeart, FaRegHeart } from "react-icons/fa";
 
 const images = {};
 let userName = null;
@@ -21,6 +21,7 @@ function Books() {
   const [reviews, setReviews] = useState([]); // initialize reviews state
   const [newReviewText, setNewReviewText] = useState(""); // initialize new review text state
   const [rating, setRating] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
   const history = useNavigate();
 
   useEffect(() => {
@@ -42,6 +43,21 @@ function Books() {
       .catch((error) => {
         console.log(error);
       });
+    axios
+      .get(`http://localhost:5001/favorite/${id}/liked`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          "Custom-Header": "value",
+        },
+      })
+      .then((response) => {
+        setIsLiked(response.data.liked);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [id]);
 
   if (!book) {
@@ -52,6 +68,11 @@ function Books() {
       </div>
     );
   }
+
+  const toggleLike = () => {
+    setIsLiked(!isLiked);
+    handleFavoriteClick(id, isLiked);
+  };
 
   const handleRatingChange = (newRating) => {
     setRating(newRating);
@@ -107,6 +128,71 @@ function Books() {
       });
   };
 
+  // Function to handle adding or removing a favorite book
+  async function handleFavoriteClick(bookId, isLiked) {
+    try {
+      if (isLiked) {
+        // If book is already liked, remove it from favorites
+        await removeFavorite(bookId);
+        console.log("Book removed from favorites");
+      } else {
+        // If book is not liked, add it to favorites
+        await addFavorite(bookId);
+        console.log("Book added to favorites");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function addFavorite(bookId) {
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/favorite",
+        { bookId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Custom-Header": "value",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Book added to favorites successfully");
+      } else {
+        console.log("Failed to add book to favorites");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function removeFavorite(bookId) {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5001/favorite/${bookId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "Custom-Header": "value",
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log("Favorite removed successfully");
+      } else {
+        console.log("Failed to remove favorite");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   // display the retrieved book information
   return (
     <section className="book-details">
@@ -123,18 +209,28 @@ function Books() {
               <span className="fw-6 fs-24">{book.description}</span>
             </div>
             <div class="readnauthor">
-            <button
-              class="button is-primary review-area"
-              onClick={handleButtonClick}
-            >
-              READ
-            </button>
-            <span className="fw-6 fs-24 author__f">
-              Author:{" "}
-              <Link to={`/user/${book.author_id}/info`}>Click here to read more</Link>
-            </span>
+              <button
+                class="button is-primary review-area"
+                onClick={handleButtonClick}
+              >
+                READ
+              </button>
+              <span className="fw-6 fs-24 author__f">
+                Author:{" "}
+                <Link to={`/user/${book.author_id}/info`}>
+                  Click here to read more
+                </Link>
+              </span>
             </div>
-           
+            <div className="like-button" style={{ marginTop: "10px" }}>
+              <span
+                className={`like-icon ${isLiked ? "liked" : ""}`}
+                onClick={toggleLike}
+              >
+                <span>Add to favorites:</span>
+                {isLiked ? <FaHeart /> : <FaRegHeart />}
+              </span>
+            </div>
           </div>
         </div>
       </div>

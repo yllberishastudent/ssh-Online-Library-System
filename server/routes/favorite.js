@@ -74,4 +74,27 @@ router.delete("/:bookId", authenticateToken, async (req, res) => {
   }
 });
 
+
+// Check if a book is liked
+router.get("/:bookId/liked", authenticateToken, async (req, res) => {
+  const { user } = req;
+  const userId = user.id;
+  const { bookId } = req.params;
+
+  try {
+    const favorite = await Favorite.findOne({
+      where: { book_id: bookId, user_id: userId },
+    });
+
+    if (favorite) {
+      res.status(200).json({ liked: true });
+    } else {
+      res.status(200).json({ liked: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
