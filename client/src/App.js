@@ -44,9 +44,6 @@ function App() {
                 <li>
                   <Link to="/user/contact">Contact Us</Link>
                 </li>
-                <li>
-                  <Link to="/user/faq">FAQ</Link>
-                </li>
               </>
             )}
           </ul>
@@ -90,6 +87,9 @@ function AuthNav({ userName }) {
   const goToProfile = () => {
     navigate("user/profile");
   }
+  const goToFAQ = () => {
+    navigate("user/faq");
+  }
   const handleSelectionChange = (event) => {
     const selectedOption = event.target.value;
 
@@ -97,9 +97,11 @@ function AuthNav({ userName }) {
       gotoHomepage();
     } else if (selectedOption === "membership") {
       goToMembership();
-    } else if (selectedOption === "logout") {
+    } else if (selectedOption === "help") {
+      goToFAQ();
+    }else if (selectedOption === "logout") {
       logout();
-    } else if (selectedOption === "info") {
+    }  else if (selectedOption === "info") {
       goToProfile();
     }
   };
@@ -110,6 +112,7 @@ function AuthNav({ userName }) {
           <select className="custom-select" onChange={handleSelectionChange}>
             <option value="home">{userName}</option>
             <option value="membership">Membership</option>
+            <option value="help">Help</option>
             <optgroup label="Settings">
               <option value="info">Profile</option>
             </optgroup>

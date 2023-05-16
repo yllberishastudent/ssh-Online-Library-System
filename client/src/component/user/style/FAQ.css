@@ -5,14 +5,14 @@
     flex-direction: column;
     gap: 50px;
     margin: 0 100px;
-    background-color: rgba(163, 163, 163, 0.185);
-    padding: 50px;
+    background-color: white;
+    padding: 100px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 .FAQ-grid-item{
-    background-color: rgba(255, 255, 255, 0.592);
+    background-color: rgba(163, 163, 163, 0.185);
     width: 100%;
-    padding: 10px;
+    
 }
 .FAQ__title{
     
@@ -27,12 +27,13 @@ text-decoration: underline;
     font-size: 20px;
     font-weight: bolder;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    padding-bottom: 10px;
+    padding: 10px 0;
+    background-color: rgb(142, 204, 237);
     
 }
 .FAQ__answers{
-    padding-bottom: 6px;
+    padding: 10px;
 }
 .question-input{
-    
+
 }
