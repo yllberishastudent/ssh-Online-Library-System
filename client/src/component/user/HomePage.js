@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style/HomePage.css";
 import axios from "axios";
+import Rating from './Rating';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -86,25 +87,6 @@ function HomePage() {
     return averageRating;
   };
 
-  function renderRatingStars(averageRating) {
-    const fullStars = Math.floor(averageRating);
-    const hasHalfStar = averageRating - fullStars >= 0.5;
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-    const starIcon = (filled) => (filled ? "★" : "☆");
-
-    return (
-      <span>
-        {[...Array(fullStars)].map((_, i) => (
-          <span key={i}>{starIcon(true)}</span>
-        ))}
-        {hasHalfStar && <span>{starIcon(false)}½</span>}
-        {[...Array(emptyStars)].map((_, i) => (
-          <span key={i}>{starIcon(false)}</span>
-        ))}
-      </span>
-    );
-  }
 
   if (!books) {
     return (
@@ -185,7 +167,7 @@ function HomePage() {
             <div className="book--info">
               <h2>{book.title}</h2>
               <p>{book.author}</p>
-              <p>{renderRatingStars(calculateAverageRating(book.book_id))}</p>
+              <Rating rating={calculateAverageRating(book.book_id)} />
             </div>
           </Link>
         ))}

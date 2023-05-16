@@ -1,18 +1,28 @@
 .rating {
-    
-    font-size: 2em;
-    line-height: 1em;
-  }
-  
-  .star {
-    display: inline-block;
-    font-size: 1em;
-    line-height: 1em;
-    cursor: pointer;
-    color: #ccc;
-  }
-  
-  .star.filled {
-    color: #ffcc00;
-  }
-  
+  font-size: 2em;
+  line-height: 1em;
+}
+
+.star {
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1em;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.star.filled {
+  color: #ffcc00;
+}
+
+.star.half-filled {
+  position: relative;
+}
+
+.star.half-filled:before {
+  content: "★";
+  position: absolute;
+  width: 50%;
+  overflow: hidden;
+  color: #ffcc00;
+}

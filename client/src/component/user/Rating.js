@@ -11,11 +11,20 @@ const Rating = ({ rating, onRatingChange }) => {
   };
 
   const renderStar = (starNumber) => {
-    const filled = starNumber <= rating;
+    const filled = starNumber <= Math.floor(rating); // Check if the star should be filled
+    const halfFilled = starNumber === Math.ceil(rating) && rating % 1 !== 0; // Check if the star should be half-filled
+
+    let starClassName = "star";
+    if (filled) {
+      starClassName += " filled";
+    } else if (halfFilled) {
+      starClassName += " half-filled";
+    }
+
     return (
       <span
         key={starNumber}
-        className={filled ? "star filled" : "star"}
+        className={starClassName}
         onClick={() => handleStarClick(starNumber)}
       >
         ★
