@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./style/FirstPage.css";
+import "./style/FAQ.css";
 import axios from "axios";
 
 function FAQ() {
@@ -21,15 +21,16 @@ function FAQ() {
       <div className="wrapper">
         <div className="books-container">
           <div>
-            <h2 id="faq" className="books-categories__titles">
-              Frequently Asked Questions
-            </h2>
+            <h3 id="faq" className="FAQ__title">
+              FREQUENTLY ASKED QUESTIONS
+            </h3>
             <div className="FAQ-grid">
               {faq.map((item, index) => (
                 <div key={index} className="FAQ-grid-item">
-                  <h3>{item.question}</h3>
-                  <br></br>
-                  <p>{item.answer}</p>
+                  <details>
+                  <summary className="FAQ__questions">{item.question}</summary>
+                  <p className="FAQ__answers">{item.answer}</p>
+                  </details>
                 </div>
               ))}
             </div>
