@@ -2,6 +2,30 @@ const express = require("express");
 const db = require("../models");
 const router = express.Router();
 
+// Get author info
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    // Find the author by ID
+    const author = await db.Author.findByPk(id);
+
+    // If the author is found, return the author info
+    if (author) {
+      res.status(200).json({ author });
+    } else {
+      // If the author is not found, return a 404 error
+      const error = new Error("Author not found");
+      error.statusCode = 404;
+      throw error;
+    }
+  } catch (error) {
+    // Pass the error to the default error handler
+    next(error);
+  }
+});
+
+
 router.get("/:id/books", async (req, res, next) => {
   const { id } = req.params;
 

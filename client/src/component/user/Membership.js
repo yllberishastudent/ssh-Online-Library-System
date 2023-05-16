@@ -22,7 +22,7 @@ function Membership() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const response = await fetch(`/user/membership`, {
+        const response = await fetch(`/mm`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

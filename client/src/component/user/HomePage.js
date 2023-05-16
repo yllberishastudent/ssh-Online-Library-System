@@ -106,6 +106,15 @@ function HomePage() {
     );
   }
 
+  if (!books) {
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+        <div className="loader-text">Loading...</div>
+      </div>
+    );
+  }
+
   const handleClickPopular = () => {
     setGenreOption("");
     setPopular(true);
@@ -140,7 +149,7 @@ function HomePage() {
       <div className="titles">
         <h2 onClick={handleClickAllBooks}>All books</h2>
         <h2 onClick={handleClickPopular}>Popular</h2>
-        <label htmlFor="genre-select">Genre:</label>
+        <label htmlFor="genre-select"><h2>Genre:</h2></label>
         <select
           id="genre-select"
           value={genreOption}

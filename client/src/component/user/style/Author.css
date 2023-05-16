@@ -1,0 +1,74 @@
+.author-container {
+    text-align: center;
+    margin:50px 20px;
+  }
+  
+  .author-name {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .author-details {
+    font-size: 18px;
+    color: #777;
+    margin-bottom: 20px;
+  }
+  
+  .books-heading {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .book-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .book-item {
+    margin: 20px;
+  }
+  
+  .book-item:hover{
+    background-color: rgb(255, 255, 255);
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: ease-in 0.1s;
+  }
+  .book-link {
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .book-link:hover {
+    transform: scale(1.05);
+  }
+  
+  .book-cover {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  
+  .book-info {
+    text-align: center;
+  }
+  
+  .book-title {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  
+  .book-author {
+    font-size: 16px;
+    color: #777;
+  }
+  

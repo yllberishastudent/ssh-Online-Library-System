@@ -5,7 +5,9 @@ const Rating = ({ rating, onRatingChange }) => {
   const MAX_RATING = 5;
 
   const handleStarClick = (newRating) => {
-    onRatingChange(newRating);
+    if (onRatingChange) {
+      onRatingChange(newRating);
+    }
   };
 
   const renderStar = (starNumber) => {

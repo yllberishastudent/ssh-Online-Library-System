@@ -8,7 +8,7 @@ import Admin from "./component/admin/Admin";
 import Books from "./component/user/Books";
 import Membership from "./component/user/Membership";
 import Email from "./component/user/email";
-import Contact from './component/user/Contact';
+import Contact from "./component/user/Contact";
 import Privacy from "./component/user/Privacy";
 import jwtDecode from "jwt-decode";
 import Author from "./component/user/Author";
@@ -64,7 +64,7 @@ function App() {
           <Route path="/user/books/:id" element={<Books />} />
           <Route path="/user/membership/:userName" element={<Membership />} />
           <Route path="/user/contact" element={<Contact />} />
-          <Route path="/user/privacy" element={<Privacy />} />
+          <Route path="/user/profile" element={<Privacy />} />
           <Route path="/user/:id/info" element={<Author />} />
           <Route path="/user/email" element={<Email />} />
           <Route path="/user/faq" element={<FAQ />} />
@@ -87,6 +87,9 @@ function AuthNav({ userName }) {
   const gotoHomepage = () => {
     navigate("user/homepage");
   };
+  const goToProfile = () => {
+    navigate("user/profile");
+  }
   const handleSelectionChange = (event) => {
     const selectedOption = event.target.value;
 
@@ -96,6 +99,8 @@ function AuthNav({ userName }) {
       goToMembership();
     } else if (selectedOption === "logout") {
       logout();
+    } else if (selectedOption === "info") {
+      goToProfile();
     }
   };
   return (
@@ -106,7 +111,7 @@ function AuthNav({ userName }) {
             <option value="home">{userName}</option>
             <option value="membership">Membership</option>
             <optgroup label="Settings">
-              <option value="info">Privacy</option>
+              <option value="info">Profile</option>
             </optgroup>
             <option value="logout">Logout</option>
           </select>

@@ -9,7 +9,7 @@ a {
 
 .grid-container-homepage{
   display:grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
@@ -161,4 +161,19 @@ a {
 
 .grid-item-homepage:hover .book--info {
   transform: scale(1.1);
+}
+
+.titles{
+  font-size: 20px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  gap:150px;
+  background-color: rgb(255, 255, 255);
+} 
+h2{
+  color: rgba(14, 22, 83, 0.851);
+  padding-left: 100px;
+}
+h2:hover{
+ color: rgb(40, 164, 236);;
+
 }
