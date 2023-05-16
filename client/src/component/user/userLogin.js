@@ -3,43 +3,20 @@ import "./style/UserLogin.css"; // Import CSS styles
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
-const token = localStorage.getItem("token");
 
 function UserLogin() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const history = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  function handleUsernameChange(event) {
-    setUsername(event.target.value);
-  }
-
-  function handlePasswordChange(event) {
-    setPassword(event.target.value);
-  }
-
-  function validateForm() {
-    if (username.trim() === "" || password.trim() === "") {
-      setErrorMessage("Please enter your username and password");
-      return false;
-    }
-    return true;
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
-    console.log(`Submitting username ${username} and password ${password}`);
+  async function handleSubmit(values, { setSubmitting }) {
     try {
       const response = await axios.post(
         "/auth/login",
         {
-          username,
-          password,
+          username: values.username,
+          password: values.password,
         },
         {
           headers: {
@@ -54,7 +31,7 @@ function UserLogin() {
       localStorage.setItem("token", response.data.token); // save token to local storage
       const decodedToken = jwt_decode(response.data.token);
       const userRole = decodedToken.role;
-      
+
       if (userRole === "admin") {
         history("/user/admin");
       } else if (userRole === "member") {
@@ -64,44 +41,61 @@ function UserLogin() {
       }
       window.location.reload();
     } catch (error) {
-      console.error(error);
       setErrorMessage("Incorrect username or password");
     }
   }
 
   return (
     <div className="login-wrap">
-      <form onSubmit={handleSubmit} className="login-form" method="POST">
-        <label>
-          <div className="label-text">Username:</div>
-          <input
-            type="text"
-            id="username"
-            placeholder="Enter username"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-        </label>
-        <label>
-          <div className="label-text">Password:</div>
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </label>
-        <div class="forgot-password__wrapper">
-        <a href="/user/email" class="forgot-password">Forgot password?</a>
-        </div>
-        <button type="submit">Log in</button>
-        {errorMessage && <p className="error">{errorMessage}</p>}
+      <Formik
+        initialValues={{ username: "", password: "" }}
+        validate={(values) => {
+          const errors = {};
+          if (!values.username.trim()) {
+            errors.username = "Please enter your username";
+          }
+          if (!values.password.trim()) {
+            errors.password = "Please enter your password";
+          }
+          return errors;
+        }}
+        onSubmit={handleSubmit}
+      >
+        <Form className="login-form">
+          <label>
+            <div className="label-text">Username:</div>
+            <Field
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter username"
+            />
+            <ErrorMessage name="username" component="div" className="error" />
+          </label>
+          <label>
+            <div className="label-text">Password:</div>
+            <Field
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter password"
+            />
+            <ErrorMessage name="password" component="div" className="error" />
+          </label>
+          <div className="forgot-password__wrapper">
+            <a href="/user/email" className="forgot-password">
+              Forgot password?
+            </a>
+          </div>
+          <button type="submit">Log in</button>
+          <ErrorMessage name="errorMessage" component="p" className="error" />
+          {errorMessage && <p className="error">{errorMessage}</p>}
 
-        <a href="/user/register" class="register">No account? Sign up here</a>
-      </form>
-
-    
+          <a href="/user/register" className="register">
+            No account? Sign up here
+          </a>
+        </Form>
+      </Formik>
     </div>
   );
 }
