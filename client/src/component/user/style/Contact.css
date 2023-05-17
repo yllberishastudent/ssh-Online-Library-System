@@ -20,7 +20,7 @@
     margin-bottom: 30px;
     font-size: 24px;
   }
-  input[type="text"] {
+  input[name="user_name"],input[name="user_email"],input[name="subject"] {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -36,7 +36,7 @@
     border-radius: 10px;
   }
   
-  .register-form button[type="submit"] {
+  /* .register-form button[type="submit"] {
     display: block;
     width: 100%;
     padding: 10px;
@@ -47,10 +47,19 @@
     font-size: 18px;
     cursor: pointer;
     margin-bottom: 25px;
-  }
+  } */
 
-  button[type="submit"] {
+  .contactSubmitButton{
     margin-left: 250px;
+    display: block;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 25px;
   }
   
   /* .register-form button[type="submit"]:hover {

@@ -13,6 +13,7 @@ import Privacy from "./component/user/Privacy";
 import jwtDecode from "jwt-decode";
 import Author from "./component/user/Author";
 import FAQ from "./component/user/FAQ";
+import UserHistoryPage from "./component/user/UserHistoryPage";
 import { useNavigate } from "react-router-dom";
 import "./App.css"; // Import CSS styles
 
@@ -65,6 +66,7 @@ function App() {
           <Route path="/user/:id/info" element={<Author />} />
           <Route path="/user/email" element={<Email />} />
           <Route path="/user/faq" element={<FAQ />} />
+          <Route path="/user/history" element={<UserHistoryPage/>}/>
         </Routes>
       </div>
     </Router>
