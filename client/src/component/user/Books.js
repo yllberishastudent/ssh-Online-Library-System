@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./style/Books.css";
 import jwtDecode from "jwt-decode";
 import Rating from "./Rating";
-import { useParams, navigate, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaArrowLeft, FaHeart, FaRegHeart } from "react-icons/fa";
+import { Document, Page } from "react-pdf";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
+// Rest of your code...
 const images = {};
 let userName = null;
 
@@ -23,7 +29,10 @@ function Books() {
   const [rating, setRating] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const history = useNavigate();
-
+  // const [showPdfViewer, setShowPdfViewer] = useState(false);
+  // const [pdfUrl, setPdfUrl] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
+  const [viewPdf, setViewPdf] = useState(null);
   useEffect(() => {
     // retrieve the book information from the database based on the ID
     axios
@@ -106,7 +115,6 @@ function Books() {
         console.log(error);
       });
   };
-
   const handleButtonClick = () => {
     const bookId = id;
     fetch(`/readd/${bookId}/pdf`, {
@@ -120,8 +128,8 @@ function Books() {
       .then((response) => response.blob())
       .then((blob) => {
         const pdfUrl = URL.createObjectURL(blob);
-        console.log(pdfUrl);
-        window.open(pdfUrl, "_blank");
+        setPdfFile(blob);
+        setViewPdf(pdfUrl);
       })
       .catch((error) => {
         console.error("Error fetching PDF:", error);
@@ -234,6 +242,14 @@ function Books() {
           </div>
         </div>
       </div>
+      {viewPdf && (
+        <div className="pdf-viewer">
+          <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+            <Viewer fileUrl={viewPdf} />
+          </Worker>
+        </div>
+      )}
+
       <div className="reviews-container">
         <h2 className="reviews">Reviews</h2>
         {reviews.map((review) => (

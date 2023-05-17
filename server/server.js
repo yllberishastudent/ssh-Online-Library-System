@@ -36,7 +36,7 @@ app.use("/categories", categoryRouter);
 app.use("/auth", authRouter);
 app.use("/faq", faqRouter);
 app.use("/history", UserHistoryRouter);
-app.use("/favorite", favoriteRouter); 
+app.use("/favorite", favoriteRouter);
 
 let oottpp = null;
 app.post("/password-recovery", async (req, res) => {
@@ -133,7 +133,6 @@ app.post("/change-password", async (req, res) => {
     res.status(500).json({ message: "Failed to change password" });
   }
 });
-
 app.get(
   "/readd/:id/pdf",
   authMiddleware.authenticateToken,
@@ -148,30 +147,13 @@ app.get(
       }
       const filePath = path.join(__dirname, book.pdf_file_url);
       const stat = fs.statSync(filePath);
-      const fileSize = stat.size;
-      const range = req.headers.range;
 
-      const user = await db.User.findByPk(req.user.id);
-      if (!user) {
-        return res.status(404).send({ error: "User not found" });
-      }
-
-      let end;
-      if (user.membership_status === "active") {
-        end = fileSize;
-      } else {
-        end = 5 * 1024 * 1024; // 5 MB limit
-      }
-      const start = 0;
-      const chunksize = end - start + 1;
-      const file = fs.createReadStream(filePath, { start, end });
-      const head = {
-        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-        "Accept-Ranges": "bytes",
-        "Content-Length": chunksize,
+      res.writeHead(200, {
         "Content-Type": "application/pdf",
-      };
-      res.writeHead(206, head);
+        "Content-Length": stat.size,
+      });
+
+      const file = fs.createReadStream(filePath);
       file.pipe(res);
     } catch (error) {
       console.error(error);

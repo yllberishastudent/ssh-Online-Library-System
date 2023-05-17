@@ -136,7 +136,7 @@
 }
 .review-area {
   margin-top: 5px;
-  background-color: #10A9F6;
+  background-color: #10a9f6;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -178,8 +178,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loader-text {
@@ -187,14 +191,32 @@
   color: #555;
 }
 
-.readnauthor{
+.readnauthor {
   display: flex;
   gap: 10px;
 
   align-items: center;
 }
 
-.likebtn{
+.likebtn {
   display: flex;
   justify-content: center;
+}
+
+.pdf-container {
+  width: 100%;
+  height: 9eepx;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: 9eepx;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
