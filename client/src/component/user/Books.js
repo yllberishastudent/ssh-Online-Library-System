@@ -6,10 +6,18 @@ import Rating from "./Rating";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaArrowLeft, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Document, Page } from "react-pdf";
-import { Viewer, Worker } from "@react-pdf-viewer/core";
-import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import Swal from "sweetalert2";
+import {
+  Card,
+  CardContent,
+  Typography,
+  TextareaAutosize,
+  Button,
+} from "@mui/material";
 
 // Rest of your code...
 const images = {};
@@ -33,6 +41,9 @@ function Books() {
   // const [pdfUrl, setPdfUrl] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
   const [viewPdf, setViewPdf] = useState(null);
+
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
   useEffect(() => {
     // retrieve the book information from the database based on the ID
     axios
@@ -116,17 +127,83 @@ function Books() {
       });
   };
   const handleButtonClick = () => {
+    // Check if the user has a membership
+    axios
+      .get("http://localhost:5001/membership", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        if (data.hasMembership) {
+          // User has a membership, proceed with fetching the PDF
+          fetchPDF();
+
+          // Add the book to user's history
+          const historyData = {
+            bookId: 34,
+            activityType: "Read",
+          };
+
+          axios
+            .post("http://localhost:5001/history/user", historyData, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+            .then((response) => {
+              console.log("Book added to user's history:", response.data);
+            })
+            .catch((error) => {
+              console.error("Error adding book to user's history:", error);
+            });
+        } else {
+          // User doesn't have a membership, show the Swal modal
+          Swal.fire({
+            icon: "warning",
+            title: "Membership not found!",
+            text: "Membership is required to read this book!",
+            footer: `<a href="/user/membership/${getUsername()}">Get a membership now?</a>`,
+            showCancelButton: false,
+          }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel) {
+              redirectToMembershipPage();
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking membership:", error);
+      });
+  };
+
+  const getUsername = () => {
+    // Extract the username from the token stored in localStorage
+    const token = localStorage.getItem("token");
+    const decodedToken = jwtDecode(token);
+    return decodedToken.username;
+  };
+
+  const redirectToMembershipPage = () => {
+    // Redirect the user to the membership page
+    window.location.href = `/user/membership/${getUsername()}`;
+  };
+
+  const fetchPDF = () => {
     const bookId = id;
-    fetch(`/readd/${bookId}/pdf`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-        "Custom-Header": "value",
-      },
-    })
-      .then((response) => response.blob())
-      .then((blob) => {
+    axios
+      .get(`/readd/${bookId}/pdf`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          "Custom-Header": "value",
+        },
+        responseType: "blob",
+      })
+      .then((response) => {
+        const blob = response.data;
         const pdfUrl = URL.createObjectURL(blob);
         setPdfFile(blob);
         setViewPdf(pdfUrl);
@@ -235,62 +312,61 @@ function Books() {
                 className={`like-icon ${isLiked ? "liked" : ""}`}
                 onClick={toggleLike}
               >
-                <span>Add to favorites:</span>
+                <span>Add to favorites: </span>
                 {isLiked ? <FaHeart /> : <FaRegHeart />}
               </span>
             </div>
           </div>
         </div>
       </div>
+
       {viewPdf && (
         <div className="pdf-viewer">
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-            <Viewer fileUrl={viewPdf} />
+            <Viewer
+              fileUrl={viewPdf}
+              plugins={[defaultLayoutPluginInstance]} // Add defaultLayoutPluginInstance as a plugin
+            />
           </Worker>
         </div>
       )}
-
-      <div className="reviews-container">
+      <section className="reviews-container">
         <h2 className="reviews">Reviews</h2>
         {reviews.map((review) => (
-          <div key={review.review_id} className="review">
-            <div class="card">
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-content">
-                    <p className="is-5 username--name">
-                      {userName ? userName : review.User.username}
-                    </p>
-                  </div>
-                </div>
-                <div class="content--review">
-                  {review.review_text}
-                  <br></br>
-                  <div class="time">
-                    <time datetime="2016-1-1">
-                      {review.review_date.slice(0, 10)}
-                    </time>
-                  </div>
-                </div>
-                <Rating rating={review.star} />
-              </div>
-            </div>
-          </div>
+          <Card key={review.review_id} className="review">
+            <CardContent>
+              <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                {userName ? userName : review.User.username}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                {review.review_text}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <time dateTime="2016-01-01">
+                  {review.review_date.slice(0, 10)}
+                </time>
+              </Typography>
+              <Rating rating={review.star} />
+            </CardContent>
+          </Card>
         ))}
-        <textarea
-          class="textarea"
+        <TextareaAutosize
+          className="textarea"
           placeholder="Add review"
           value={newReviewText}
           onChange={handleNewReviewChange}
-        ></textarea>
+          style={{ flex: "1", resize: "none" }}
+        />
         <Rating rating={rating} onRatingChange={handleRatingChange} />
-        <p
+        <br></br>
+        <Button
           onClick={handleNewReviewSubmit}
-          class="button is-primary review-area"
+          variant="contained"
+          color="primary"
         >
           Add review
-        </p>
-      </div>
+        </Button>
+      </section>
     </section>
   );
 }
