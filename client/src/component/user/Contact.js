@@ -1,6 +1,7 @@
 import { useRef} from "react";
 import emailjs from '@emailjs/browser';
 import "./style/Contact.css";
+import Swal from "sweetalert2";
 // npm install @emailjs/browser
 
 const Contact = () =>{
@@ -10,9 +11,17 @@ const Contact = () =>{
     
         emailjs.sendForm('service_6n8js5q', 'template_ychp5pb', form.current, 'RJMjYDZbbv_3wFrq6')
           .then((result) => {
-              console.log(result.text);
+            Swal.fire(
+                'Your email was sent',
+                'Thank you for contacting us!',
+                'success'
+              )
           }, (error) => {
-              console.log(error.text);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!'
+              })
           });
           e.target.reset()
       };

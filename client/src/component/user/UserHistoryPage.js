@@ -6,16 +6,9 @@ const UserHistoryPage = ({ userId }) => {
   const [readingHistory, setReadingHistory] = useState([]);
 
   useEffect(() => {
-    const fetchUserHistory = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5001/history/user`);
-        setReadingHistory(response.data);
-      } catch (error) {
-        console.error('Error fetching user history:', error);
-      }
-    };
-
-    fetchUserHistory();
+    axios.get(`http://localhost:5001/history/user`)
+      .then(response => setReadingHistory(response.data))
+      .catch(error => console.error('Error fetching user history:', error));
   }, [userId]);
 
   return (
