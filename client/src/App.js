@@ -38,15 +38,9 @@ function App() {
             <div class="logo">
               <Link to="/">LIB</Link>
             </div>
-            {userName ? (
-              <></>
-            ) : (
-              <>
                 <li>
                   <Link to="/user/contact">Contact Us</Link>
                 </li>
-              </>
-            )}
           </ul>
 
           <AuthNav userName={userName} />
