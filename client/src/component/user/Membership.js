@@ -5,6 +5,9 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 
+import { Form } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import "./style/membership.css";
 
 const token = localStorage.getItem("token");
@@ -92,7 +95,10 @@ function Membership() {
         parseInt(month, 10) - 1
       );
       if (expirationDate <= currentDate) {
-        alert("Credit card has expired");
+        Swal.fire({
+          icon: "error",
+          text: "Credit card has expired",
+        });
         return;
       }
 
@@ -108,17 +114,74 @@ function Membership() {
           }
         );
         if (response.status === 200) {
-          alert("Membership created successfully");
-          window.location.reload();
+          Swal.fire({
+            icon: "success",
+            text: "Membership created successfully",
+          }).then(() => {
+            window.location.reload();
+          });
         } else {
-          alert("Something went wrong");
+          Swal.fire({
+            icon: "error",
+            text: "Something went wrong",
+          });
         }
       } catch (error) {
         console.error(error);
-        alert("An error occurred while creating the membership");
+        Swal.fire({
+          icon: "error",
+          text: "An error occurred while creating the membership",
+        });
       }
     }
   };
+
+  const handleCancelMembership = () => {
+    Swal.fire({
+      icon: "warning",
+      title: "Are you sure?",
+      text: "This action will cancel your membership.",
+      showCancelButton: true,
+      confirmButtonColor: "#dc3545",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Yes, cancel membership",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Make DELETE request to cancel membership
+        axios
+          .delete("http://localhost:5001/membership", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              Swal.fire({
+                icon: "success",
+                title: "Membership Cancelled",
+                text: "Your membership has been successfully cancelled.",
+              });
+              setMembershipStatus("inactive");
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "An error occurred while cancelling the membership.",
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error cancelling membership:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "An error occurred while cancelling the membership.",
+            });
+          });
+      }
+    });
+  };
+
   return (
     <div className="membership-container">
       <div className="membership__wrapper">
@@ -142,35 +205,41 @@ function Membership() {
                 </p>
               </div>
             </div>
+            <button className="btn btn-danger" onClick={handleCancelMembership}>
+              Cancel Membership
+            </button>
           </div>
         )}
         {membershipStatus !== "active" && (
           <form onSubmit={handleSubmit}>
-            <div className="membership__element">
+            <div className="form-group mb-3">
               <label htmlFor="name">Name:</label>
               <input
                 type="text"
-                placeholder="Enter name"
+                className="form-control"
                 id="name"
+                placeholder="Enter name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
-            <div className="membership__element">
+            <div className="form-group mb-3">
               <label htmlFor="lastName">Lastname:</label>
               <input
                 type="text"
-                placeholder="Enter lastname"
+                className="form-control"
                 id="lastName"
+                placeholder="Enter lastname"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required
               />
             </div>
-            <div className="membership__element">
+            <div className="form-group mb-3">
               <label htmlFor="card-type">Card Type:</label>
               <select
+                className="form-control"
                 id="card-type"
                 value={cardType}
                 onChange={(e) => setCardType(e.target.value)}
@@ -182,22 +251,24 @@ function Membership() {
                 <option value="amex">American Express</option>
               </select>
             </div>
-            <div className="membership__element">
+            <div className="form-group mb-3">
               <label htmlFor="card-number">Card Number:</label>
               <input
                 type="text"
-                placeholder="Enter card number"
+                className="form-control"
                 id="card-number"
+                placeholder="Enter card number"
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
                 maxLength={16}
                 required
               />
             </div>
-            <div className="membership__element">
+            <div className="form-group mb-3">
               <label htmlFor="cvv">CVV:</label>
               <input
                 type="text"
+                className="form-control"
                 id="cvv"
                 placeholder="Enter cvv"
                 value={cvv}
@@ -206,10 +277,11 @@ function Membership() {
                 required
               />
             </div>
-            <div className="membership__element">
+            <div className="form-group mb-3">
               <label htmlFor="card-date">Card Date:</label>
               <input
                 type="text"
+                className="form-control"
                 id="card-date"
                 placeholder="Enter expiration date MM/YY"
                 value={cardDate}
@@ -217,7 +289,9 @@ function Membership() {
                 required
               />
             </div>
-            <button type="submit">Purchase</button>
+            <button type="submit" className="btn btn-primary">
+              Purchase
+            </button>
           </form>
         )}
       </div>
