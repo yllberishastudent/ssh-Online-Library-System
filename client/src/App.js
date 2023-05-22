@@ -86,6 +86,9 @@ function AuthNav({ userName }) {
   const goToFAQ = () => {
     navigate("user/faq");
   }
+  const gotoHistory = () => {
+    navigate("user/history");
+  };
   const handleSelectionChange = (event) => {
     const selectedOption = event.target.value;
 
@@ -99,6 +102,8 @@ function AuthNav({ userName }) {
       logout();
     }  else if (selectedOption === "info") {
       goToProfile();
+    }else if(selectedOption=="history"){
+      gotoHistory();
     }
   };
   return (
@@ -109,6 +114,7 @@ function AuthNav({ userName }) {
             <option value="home">{userName}</option>
             <option value="membership">Membership</option>
             <option value="help">Help</option>
+            <option value="history">User History</option>
             <optgroup label="Settings">
               <option value="info">Profile</option>
             </optgroup>
