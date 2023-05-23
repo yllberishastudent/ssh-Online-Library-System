@@ -14,6 +14,7 @@ router.post("/signup", async (req, res) => {
     if (usernameExists) {
       return res.status(400).json({ message: "Username already exists" });
     }
+
     // Check if user already exists
     const userExists = await db.User.findOne({ where: { email } });
     if (userExists) {
@@ -23,12 +24,13 @@ router.post("/signup", async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user in the database
+    // Create the user in the database with roleId defaulting to 2
     const newUser = await db.User.create({
       username,
       email,
       phone_number,
       password: hashedPassword, // Save the hashed password in the database
+      roleId: 2, // Set the roleId to 2 as the default value
     });
 
     // Respond with the new user

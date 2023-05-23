@@ -3,8 +3,11 @@ const bodyParser = require("body-parser");
 const db = require("./models");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
-const authMiddleware = require("./middleware/authMiddleware");
-const jwt = require("jsonwebtoken");
+const {
+  authenticateToken,
+  checkPermission,
+} = require("./middleware/authMiddleware");
+// const jwt = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
@@ -133,34 +136,30 @@ app.post("/change-password", async (req, res) => {
     res.status(500).json({ message: "Failed to change password" });
   }
 });
-app.get(
-  "/readd/:id/pdf",
-  authMiddleware.authenticateToken,
-  async (req, res) => {
-    try {
-      const book = await db.Book.findOne({
-        where: { book_id: req.params.id },
-        attributes: ["pdf_file_url"],
-      });
-      if (!book) {
-        return res.status(404).send({ error: "Book not found" });
-      }
-      const filePath = path.join(__dirname, book.pdf_file_url);
-      const stat = fs.statSync(filePath);
-
-      res.writeHead(200, {
-        "Content-Type": "application/pdf",
-        "Content-Length": stat.size,
-      });
-
-      const file = fs.createReadStream(filePath);
-      file.pipe(res);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ error: "Server error" });
+app.get("/readd/:id/pdf", authenticateToken, async (req, res) => {
+  try {
+    const book = await db.Book.findOne({
+      where: { book_id: req.params.id },
+      attributes: ["pdf_file_url"],
+    });
+    if (!book) {
+      return res.status(404).send({ error: "Book not found" });
     }
+    const filePath = path.join(__dirname, book.pdf_file_url);
+    const stat = fs.statSync(filePath);
+
+    res.writeHead(200, {
+      "Content-Type": "application/pdf",
+      "Content-Length": stat.size,
+    });
+
+    const file = fs.createReadStream(filePath);
+    file.pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error" });
   }
-);
+});
 
 const { PDFDocument } = require("pdf-lib");
 //test without authentification
@@ -210,6 +209,16 @@ app.get("/readtest/:user_id/:book_id", async (req, res) => {
     res.status(500).send({ error: "Server error" });
   }
 });
+
+app.get(
+  "/protected",
+  authenticateToken,
+  checkPermission("EditGenre"),
+  (req, res) => {
+    // This route handler will only be executed if the user has the required permission
+    res.json({ message: "Access granted" });
+  }
+);
 
 // Start the server
 const PORT = 5001;
