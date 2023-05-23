@@ -36,12 +36,22 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: "member",
       },
+      roleId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Role",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
     },
     {}
   );
 
   User.associate = function (models) {
-    User.hasMany(models.Membership, { foreignKey: 'userId' });
+    User.hasMany(models.Membership, { foreignKey: "userId" });
+    User.belongsTo(models.Role, { foreignKey: "roleId" });
   };
 
   return User;
