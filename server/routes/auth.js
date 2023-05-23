@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/authMiddleware");
 const db = require("../models");
-
+const otp = require("../middleware/OTP-retrieve");
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
@@ -61,6 +61,42 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Unable to login" });
+  }
+});
+
+
+let oottpp = null;
+router.post("/password-recovery", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const OTP = otp.generateOTP();
+    oottpp = OTP; //per verifikim
+    console.log("Sending email to:", email);
+
+    await otp.sendEmail({ email, OTP });
+
+    res.status(200).json({ message: "Password recovery email sent" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to send password recovery email" });
+  }
+});
+
+
+router.post("/otp-verification", async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    // Verify the OTP
+    if (otp.verifyOTP({ email, otp })) {
+      res.status(200).json({ message: "OTP verification successful" });
+    } else {
+      res.status(400).json({ message: "Invalid OTP" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to verify OTP" });
   }
 });
 

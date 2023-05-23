@@ -194,7 +194,7 @@ function Books() {
   const fetchPDF = () => {
     const bookId = id;
     axios
-      .get(`/readd/${bookId}/pdf`, {
+      .get(`/read/pdf/${bookId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
