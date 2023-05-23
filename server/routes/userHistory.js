@@ -16,8 +16,19 @@ router.post("/user", authenticateToken, async (req, res) => {
       return res.status(404).json({ error: "Book not found" });
     }
 
+    const existingHistory = await User_History.findOne({
+      where: {
+        user_id: user.id, // Find history for the current user
+        book_id: bookId,
+      },
+    });
+
+    if (existingHistory) {
+      return res.status(200).json({ message: "History already exists" });
+    }
+
     const history = await User_History.create({
-      user_id: user.id, // Use the user ID from token
+      user_id: user.id,
       book_id: bookId,
       activity_type: activityType,
       activity_date: activityDate,

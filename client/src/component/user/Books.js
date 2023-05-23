@@ -140,9 +140,9 @@ function Books() {
           // User has a membership, proceed with fetching the PDF
           fetchPDF();
 
-          // Add the book to user's history
+          // Add the book to the user's history
           const historyData = {
-            bookId: 34,
+            bookId: id,
             activityType: "Read",
           };
 
@@ -150,6 +150,7 @@ function Books() {
             .post("http://localhost:5001/history/user", historyData, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
               },
             })
             .then((response) => {
