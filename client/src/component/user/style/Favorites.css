@@ -1,0 +1,25 @@
+.favorites__btn{
+    background-color: rgba(14, 22, 83, 0.851);
+    justify-self: center;
+}
+.favorites__wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    justify-content: center;
+}
+
+.favorites-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.favorites-item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    height: 350px;
+    width: 300px;
+  }

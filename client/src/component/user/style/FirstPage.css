@@ -11,10 +11,14 @@ html{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     gap:150px;
     background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: space-around;
+    padding: 25px;
   } 
   a{
     color: rgba(14, 22, 83, 0.851);
     padding-left: 100px;
+    text-decoration: none;
   }
   a:hover{
    color: rgb(40, 164, 236);;
@@ -36,8 +40,7 @@ height: 100%;
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    height: 500px;
-    
+    height: 400px;
   }
   .grid-item:hover{
     cursor: pointer;

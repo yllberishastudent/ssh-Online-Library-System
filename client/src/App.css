@@ -56,8 +56,9 @@ body{
 .logo{
   display: flex;
   align-items: center;
-  padding: 10px;
-  width: 50px;
+  justify-content: center;
+  padding: 25px;
+  width: 80px;
   height: 30px;
   font-size: 40px;
   font-style: oblique;
@@ -84,18 +85,20 @@ body{
   .main-nav a{
     text-decoration: none;
   }
-
+  a {
+    text-decoration: none;
+    color: rgba(14, 22, 83, 0.851);
+  }
   .nav-left{
     cursor: pointer;
     font-size: 20px;
     font-weight: 500;
     line-height: 22px;
-  
   }
   .nav-right li{
     padding: 17px;
     border-radius: 60px;
-    width:70px;
+    width:100px;
     text-align: center;
     
   }

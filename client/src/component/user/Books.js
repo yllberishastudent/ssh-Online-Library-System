@@ -308,13 +308,12 @@ function Books() {
                 </Link>
               </span>
             </div>
-            <div className="like-button" style={{ marginTop: "10px" }}>
+            <div className="like-button">
               <span
                 className={`like-icon ${isLiked ? "liked" : ""}`}
                 onClick={toggleLike}
               >
-                <span>Add to favorites: </span>
-                {isLiked ? <FaHeart /> : <FaRegHeart />}
+                {isLiked ? <FaHeart size={30} /> : <FaRegHeart />}
               </span>
             </div>
           </div>

@@ -14,6 +14,7 @@ import jwtDecode from "jwt-decode";
 import Author from "./component/user/Author";
 import FAQ from "./component/user/FAQ";
 import UserHistoryPage from "./component/user/UserHistoryPage";
+import Favorites from "./component/user/Favorites";
 import { useNavigate } from "react-router-dom";
 import "./App.css"; // Import CSS styles
 
@@ -38,9 +39,9 @@ function App() {
             <div class="logo">
               <Link to="/">LIB</Link>
             </div>
-                <li>
-                  <Link to="/user/contact">Contact Us</Link>
-                </li>
+            <li>
+              <Link to="/user/contact">Contact Us</Link>
+            </li>
           </ul>
 
           <AuthNav userName={userName} />
@@ -60,7 +61,8 @@ function App() {
           <Route path="/user/:id/info" element={<Author />} />
           <Route path="/user/email" element={<Email />} />
           <Route path="/user/faq" element={<FAQ />} />
-          <Route path="/user/history" element={<UserHistoryPage/>}/>
+          <Route path="/user/history" element={<UserHistoryPage />} />
+          <Route path="/user/favorites" element={<Favorites />} />
         </Routes>
       </div>
     </Router>
@@ -82,12 +84,15 @@ function AuthNav({ userName }) {
   };
   const goToProfile = () => {
     navigate("user/profile");
-  }
+  };
   const goToFAQ = () => {
     navigate("user/faq");
-  }
+  };
   const gotoHistory = () => {
     navigate("user/history");
+  };
+  const gotoFavorites = () => {
+    navigate("user/favorites");
   };
   const handleSelectionChange = (event) => {
     const selectedOption = event.target.value;
@@ -98,12 +103,14 @@ function AuthNav({ userName }) {
       goToMembership();
     } else if (selectedOption === "help") {
       goToFAQ();
-    }else if (selectedOption === "logout") {
+    } else if (selectedOption === "logout") {
       logout();
-    }  else if (selectedOption === "info") {
+    } else if (selectedOption === "info") {
       goToProfile();
-    }else if(selectedOption=="history"){
+    } else if (selectedOption === "history") {
       gotoHistory();
+    } else if (selectedOption === "favorites") {
+      gotoFavorites();
     }
   };
   return (
@@ -115,6 +122,7 @@ function AuthNav({ userName }) {
             <option value="membership">Membership</option>
             <option value="help">Help</option>
             <option value="history">User History</option>
+            <option value="favorites">Favorites</option>
             <optgroup label="Settings">
               <option value="info">Profile</option>
             </optgroup>
