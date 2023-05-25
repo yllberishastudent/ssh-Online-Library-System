@@ -96,3 +96,51 @@
   justify-content: space-between;
   text-align: center;
 }
+
+/* CreateUserForm.css */
+
+.create-user-form {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+}
+
+.create-user-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.create-user-form input[type="text"],
+.create-user-form input[type="password"],
+.create-user-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.create-user-form button {
+  padding: 10px 20px;
+  background-color: #ff0055;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.create-user-form button:hover {
+  background-color: #d4004e;
+}
+
+.create-user-title {
+  padding-bottom: 20px;
+  font-size: 24px;
+}
+
+.neymar {
+  width: 5px;
+}
