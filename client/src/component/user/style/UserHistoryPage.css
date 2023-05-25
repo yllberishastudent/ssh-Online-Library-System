@@ -13,7 +13,8 @@
 
 }
 .book-details-history {
-  padding: 4rem 0;
+    margin-top: 45px;
+  /* padding: 3rem 0; */
 }
 .book-history-content {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -48,10 +49,15 @@
   display: flex;
   margin-left: 720px;
   margin-top: -51px;
+  background-color: #3498db;
+  border-radius: 14px;
 }
 .delete-all-btn{
     float: right;
     margin-right: 181px;
+    background-color: #3498db;
+    border-radius: 14px;
+
 }
 .title {
   font-size: 36px;

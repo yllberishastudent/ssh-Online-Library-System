@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./style/UserHistoryPage.css";
 import axios from "axios";
+import Swal from "sweetalert2";
 
+
+const images = {};
+
+function importAll(r) {
+  r.keys().forEach((key) => (images[key] = r(key)));
+}
+
+importAll(require.context("../..", true, /\.jpg$/));
 const UserHistoryPage = ({ userId }) => {
   const [readingHistory, setReadingHistory] = useState([]);
 
@@ -19,6 +28,7 @@ const UserHistoryPage = ({ userId }) => {
         setReadingHistory(response.data);
       } catch (error) {
         console.error("Error fetching user history:", error);
+        
       }
     };
 
@@ -40,6 +50,12 @@ const UserHistoryPage = ({ userId }) => {
         prevHistory.filter((entry) => entry.book_id !== bookId)
       );
       console.log("Book deleted successfully.");
+      Swal.fire({
+        icon: 'success',
+        title: 'Book deleted successfully.',
+        showConfirmButton: false,
+        timer: 1500
+      })
     } catch (error) {
       console.error("Error deleting book:", error);
     }
@@ -58,8 +74,20 @@ const UserHistoryPage = ({ userId }) => {
       // Clear the reading history
       setReadingHistory([]);
       console.log("All books deleted successfully.");
+      Swal.fire({
+        icon: 'success',
+        title: 'All books deleted successfully.',
+        showConfirmButton: false,
+        timer: 1500
+      })
     } catch (error) {
-      console.error("Error deleting books:", error);
+      console.error("Error deleting books", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error deleting books',
+      
+      })
     }
   };
 
@@ -76,10 +104,10 @@ const UserHistoryPage = ({ userId }) => {
               <div className="container">
                 <div className="book-history-content grid">
                   <div className="book-details-img">
-                    <img
-                      src={`/images/${entry.Book.cover_image_url}`}
-                      alt={entry.Book.title}
-                    />
+                  <img
+                    src={images[`./${entry.Book.cover_image_url}`]}
+                    alt={`${entry.Book.title}`}
+                  />
                   </div>
                   <div className="book-history-info">
                     <div className="book-history-item title">
