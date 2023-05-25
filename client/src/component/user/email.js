@@ -16,7 +16,7 @@ function Email() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/password-recovery', {
+      const response = await fetch('/auth/password-recovery', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ function Email() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/otp-verification', {
+      const response = await fetch('/auth/otp-verification', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ function Email() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/change-password', {
+      const response = await fetch('/auth/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

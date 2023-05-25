@@ -104,6 +104,7 @@ const UserHistoryPage = ({ userId }) => {
               <div className="container">
                 <div className="book-history-content grid">
                   <div className="book-details-img">
+
                   <img
                     src={images[`./${entry.Book.cover_image_url}`]}
                     alt={`${entry.Book.title}`}

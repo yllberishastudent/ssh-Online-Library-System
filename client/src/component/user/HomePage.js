@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style/HomePage.css";
 import axios from "axios";
-import Rating from './Rating';
+import Rating from "./Rating";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -55,10 +55,16 @@ function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.get(
           `http://localhost:5001/books${
             genreOption ? `/category/${genreOption}` : ""
-          }`
+          }`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setBooks(response.data);
       } catch (error) {
@@ -71,20 +77,28 @@ function HomePage() {
   const filteredBooks = books.filter((book) => {
     const titleMatch =
       book.title && book.title.toLowerCase().includes(searchTerm.toLowerCase());
-    return titleMatch;
+
+    const authorMatch =
+      book.author &&
+      book.author.toLowerCase().includes(searchTerm.toLowerCase());
+    return titleMatch || authorMatch;
   });
 
   const calculateAverageRating = (bookId) => {
-    const reviewsForBook = reviews.filter((review) => review.book_id === bookId);
+    const reviewsForBook = reviews.filter(
+      (review) => review.book_id === bookId
+    );
     const numReviews = reviewsForBook.length;
     if (numReviews === 0) {
       return null;
     }
-    const totalRating = reviewsForBook.reduce((sum, review) => sum + review.star, 0);
+    const totalRating = reviewsForBook.reduce(
+      (sum, review) => sum + review.star,
+      0
+    );
     const averageRating = totalRating / numReviews;
     return averageRating;
   };
-
 
   if (!books) {
     return (
@@ -125,6 +139,7 @@ function HomePage() {
   };
 
   return (
+
     <div className="wrapper__homepage">
       <div className="titles__homepage">
         <h2 onClick={handleClickAllBooks}>ALL BOOKS</h2>
