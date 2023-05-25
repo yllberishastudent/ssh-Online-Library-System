@@ -18,6 +18,7 @@ import {
   TextareaAutosize,
   Button,
 } from "@mui/material";
+const token = localStorage.getItem("token");
 
 // Rest of your code...
 const images = {};
@@ -47,7 +48,11 @@ function Books() {
   useEffect(() => {
     // retrieve the book information from the database based on the ID
     axios
-      .get(`http://localhost:5001/books/${id}`)
+      .get(`http://localhost:5001/books/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setBook(response.data); // set the book state with the retrieved book data
       })
@@ -56,7 +61,11 @@ function Books() {
       });
     // retrieve the reviews for the book from the server
     axios
-      .get(`http://localhost:5001/reviews/books/${id}`)
+      .get(`http://localhost:5001/reviews/books/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setReviews(response.data.reviews); // set the reviews state with the retrieved reviews data
       })
@@ -66,7 +75,7 @@ function Books() {
     axios
       .get(`http://localhost:5001/favorite/${id}/liked`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
           "Custom-Header": "value",
@@ -79,7 +88,6 @@ function Books() {
         console.log(error);
       });
   }, [id]);
-
   if (!book) {
     return (
       <div className="loader-container">
@@ -138,26 +146,36 @@ function Books() {
         const data = response.data;
         if (data.hasMembership) {
           // User has a membership, proceed with fetching the PDF
-          fetchPDF();
+          fetchPDF()
+            .then(() => {
+              // PDF fetched successfully, add the book to the user's history
+              const historyData = {
+                bookId: id,
+                activityType: "Read",
+              };
 
-          // Add the book to the user's history
-          const historyData = {
-            bookId: id,
-            activityType: "Read",
-          };
-
-          axios
-            .post("http://localhost:5001/history/user", historyData, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-              },
+              axios
+                .post("http://localhost:5001/history/user", historyData, {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    "Content-Type": "application/json",
+                  },
+                })
+                .then((response) => {
+                  console.log("Book added to user's history:", response.data);
+                })
+                .catch((error) => {
+                  // console.error("Error adding book to user's history:", error);
+                });
             })
-            .then((response) => {
-              console.log("Book added to user's history:", response.data);
-            })
-            .catch((error) => {
-              console.error("Error adding book to user's history:", error);
+            .catch(() => {
+              // PDF fetching failed, show SweetAlert modal
+              // Swal.fire({
+              //   icon: "error",
+              //   title: "Book not available",
+              //   text: "This book is currently unavailable.",
+              //   showCancelButton: false,
+              // });
             });
         } else {
           // User doesn't have a membership, show the Swal modal
@@ -175,7 +193,7 @@ function Books() {
         }
       })
       .catch((error) => {
-        console.error("Error checking membership:", error);
+        // console.error("Error checking membership:", error);
       });
   };
 
@@ -193,7 +211,7 @@ function Books() {
 
   const fetchPDF = () => {
     const bookId = id;
-    axios
+    return axios
       .get(`/read/pdf/${bookId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -211,9 +229,15 @@ function Books() {
       })
       .catch((error) => {
         console.error("Error fetching PDF:", error);
+        Swal.fire({
+          icon: "info",
+          title: "Book not available",
+          text: "This book is currently unavailable.",
+          showCancelButton: false,
+        });
+        // throw error;
       });
   };
-
   // Function to handle adding or removing a favorite book
   async function handleFavoriteClick(bookId, isLiked) {
     try {

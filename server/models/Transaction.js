@@ -1,13 +1,9 @@
 "use strict";
+
 module.exports = (sequelize, DataTypes) => {
   const Transaction = sequelize.define(
     "Transaction",
     {
-      transaction_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -16,28 +12,37 @@ module.exports = (sequelize, DataTypes) => {
           key: "user_id",
         },
       },
-      book_id: {
-        type: DataTypes.INTEGER,
+      first_name: {
+        type: DataTypes.STRING,
         allowNull: false,
-        references: {
-          model: "Books",
-          key: "book_id",
-        },
       },
-      transaction_date: {
+      last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      card_type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      card_number: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      ccv: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      card_date: {
         type: DataTypes.DATE,
-        allowNull: false,
-      },
-      transaction_amount: {
-        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
     },
     {}
   );
+
   Transaction.associate = function (models) {
     Transaction.belongsTo(models.User, { foreignKey: "user_id" });
-    Transaction.belongsTo(models.Book, { foreignKey: "book_id" });
   };
+
   return Transaction;
 };

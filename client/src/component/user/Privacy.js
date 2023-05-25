@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 import "./style/Privacy.css"; // Import CSS styles
 
 const Privacy = () => {
@@ -19,14 +20,14 @@ const Privacy = () => {
         const token = localStorage.getItem("token");
         const decodedToken = jwt_decode(token);
         const id = decodedToken.id;
-        const response = await fetch(`/users/${id}`);
 
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
-        } else {
-          throw new Error("Failed to fetch user data");
-        }
+        const response = await axios.get(`/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data.user);
       } catch (error) {
         console.error(error);
         // Handle error
