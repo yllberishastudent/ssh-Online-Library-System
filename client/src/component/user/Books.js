@@ -113,35 +113,19 @@ function Books() {
   const handleNewReviewSubmit = () => {
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
-    const userId = decodedToken.id;
-    const username = decodedToken.username; // Get the username from the decoded token
-
+    let userId = decodedToken.id;
+    userName = decodedToken.username;
     // send the new review to the server
     axios
-      .post(
-        `http://localhost:5001/reviews/add`,
-        {
-          user_id: userId,
-          book_id: id,
-          review_text: newReviewText,
-          star: rating,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post(`http://localhost:5001/reviews/add`, {
+        user_id: userId, // replace with the actual user ID
+        book_id: id,
+        review_text: newReviewText,
+        star: rating, // replace with the actual rating
+      })
       .then((response) => {
         // add the new review to the state
-        const newReview = {
-          review_id: response.data.review.review_id,
-          User: { username: username }, // Add the username to the new review
-          review_text: newReviewText,
-          star: rating,
-          review_date: response.data.review.review_date,
-        };
-        setReviews([...reviews, newReview]);
+        setReviews([...reviews, response.data.review]);
         // clear the new review text
         setNewReviewText("");
         setRating(0);
