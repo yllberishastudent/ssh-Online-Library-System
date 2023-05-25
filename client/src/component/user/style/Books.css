@@ -94,6 +94,12 @@
   margin-top: 2rem;
 }
 
+.reviews{
+  font-size: 40px;
+  text-align: center;
+  margin-top: 10%;
+  margin-bottom: 3%;
+}
 .review {
   border: 1px solid #ccc;
   padding: 1rem;
@@ -121,12 +127,7 @@
   line-height: 1.5;
 }
 
-.reviews {
-  margin-top: 10%;
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 10px;
-}
+
 
 .content--review {
   margin-top: 5px;
@@ -198,20 +199,15 @@
   align-items: center;
 }
 
-.likebtn {
+.like-button{
   display: flex;
-  justify-content: center;
+  margin-top: 10%;
+  justify-content: end;
 }
 
-/* .pdf-container {
-  width: 100%;
-  height: 9eepx;
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
+.liked{
+  color: red;
+}
 .pdf-viewer {
   margin-top: 20px;
   border: 1px solid #ddd;
@@ -222,4 +218,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.reviews__addTofav{
+  margin-top: 10%;
+  font-size: 20px;
 }

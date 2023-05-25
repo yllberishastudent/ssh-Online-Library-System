@@ -77,6 +77,7 @@ function HomePage() {
   const filteredBooks = books.filter((book) => {
     const titleMatch =
       book.title && book.title.toLowerCase().includes(searchTerm.toLowerCase());
+
     const authorMatch =
       book.author &&
       book.author.toLowerCase().includes(searchTerm.toLowerCase());
@@ -138,34 +139,34 @@ function HomePage() {
   };
 
   return (
-    <div className="wrapper">
-      <div className="titles">
-        <h2 onClick={handleClickAllBooks}>All books</h2>
-        <h2 onClick={handleClickPopular}>Popular</h2>
-        <label htmlFor="genre-select">
-          <h2>Genre:</h2>
-        </label>
+
+    <div className="wrapper__homepage">
+      <div className="titles__homepage">
+        <h2 onClick={handleClickAllBooks}>ALL BOOKS</h2>
+        <h2 onClick={handleClickPopular}>MOST POPULAR</h2>
+        <label htmlFor="genre-select"><h2>GENRE</h2></label>
+        <div>
         <select
           id="genre-select"
           value={genreOption}
           onChange={handleGenreChange}
         >
-          <option value="">All genres</option>
+          <option value="">ALL GENRES</option>
           {categories.map((category) => (
             <option key={category.category_id} value={category.category_name}>
               {category.category_name}
             </option>
           ))}
         </select>
-      </div>
-      <div className="filters-homepage">
+        </div>
         <input
           type="text"
-          placeholder="Search by name or author"
+          placeholder="SEARCH BY NAME"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
+  
       <div className="grid-container-homepage">
         {sortedBooks.map((book) => (
           <Link
