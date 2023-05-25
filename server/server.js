@@ -32,6 +32,7 @@ const UserHistoryRouter = require("./routes/userHistory");
 const favoriteRouter = require("./routes/favorite"); // Update the import statement
 const pdfRouter = require("./routes/pdf");
 const transactionRouter = require("./routes/transactions");
+const adminRoutes = require("./routes/admin");
 
 app.use("/authors", authorRoutes);
 app.use("/books", bookRoutes);
@@ -45,6 +46,7 @@ app.use("/history", UserHistoryRouter);
 app.use("/favorite", favoriteRouter);
 app.use("/read/pdf", pdfRouter);
 app.use("/transaction", transactionRouter);
+app.use("/admin", adminRoutes);
 
 app.get(
   "/protected",

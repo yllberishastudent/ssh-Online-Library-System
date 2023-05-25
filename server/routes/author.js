@@ -1,6 +1,9 @@
 const express = require("express");
 const db = require("../models");
-const { authenticateToken, checkPermission } = require("../middleware/authMiddleware");
+const {
+  authenticateToken,
+  checkPermission,
+} = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Get author info
@@ -25,7 +28,6 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-
 
 router.get("/:id/books", async (req, res, next) => {
   const { id } = req.params;
@@ -53,6 +55,7 @@ router.get("/:id/books", async (req, res, next) => {
   }
 });
 
+//get all authors
 router.get("/", async (req, res, next) => {
   try {
     // Find all authors
@@ -67,52 +70,63 @@ router.get("/", async (req, res, next) => {
 });
 
 // Update an author
-router.patch("/:id", authenticateToken,checkPermission("ManageBooks"), async (req, res) => {
-  const { id } = req.params;
-  const { first_name, last_name, pen_name, gender, country, active } = req.body;
+router.patch(
+  "/:id",
+  authenticateToken,
+  checkPermission("ManageBooks"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { first_name, last_name, pen_name, gender, country, active } =
+      req.body;
 
-  try {
-    const author = await Author.findByPk(id);
+    try {
+      const author = await Author.findByPk(id);
 
-    if (!author) {
-      return res.status(404).json({ error: "Author not found" });
+      if (!author) {
+        return res.status(404).json({ error: "Author not found" });
+      }
+
+      // Update the author's properties
+      author.first_name = first_name;
+      author.last_name = last_name;
+      author.pen_name = pen_name;
+      author.gender = gender;
+      author.country = country;
+      author.active = active;
+
+      await author.save();
+
+      res.status(200).json({ message: "Author updated successfully", author });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
     }
-
-    // Update the author's properties
-    author.first_name = first_name;
-    author.last_name = last_name;
-    author.pen_name = pen_name;
-    author.gender = gender;
-    author.country = country;
-    author.active = active;
-
-    await author.save();
-
-    res.status(200).json({ message: "Author updated successfully", author });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
   }
-});
+);
 
 // Delete an author
-router.delete("/:id", authenticateToken,checkPermission("ManageBooks"), async (req, res) => {
-  const { id } = req.params;
+router.delete(
+  "/:id",
+  authenticateToken,
+  checkPermission("ManageBooks"),
+  async (req, res) => {
+    const { id } = req.params;
 
-  try {
-    const author = await Author.findByPk(id);
+    try {
+      const author = await Author.findByPk(id);
 
-    if (!author) {
-      return res.status(404).json({ error: "Author not found" });
+      if (!author) {
+        return res.status(404).json({ error: "Author not found" });
+      }
+
+      await author.destroy();
+
+      res.status(200).json({ message: "Author deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
     }
-
-    await author.destroy();
-
-    res.status(200).json({ message: "Author deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
   }
-});
+);
 
 module.exports = router;
