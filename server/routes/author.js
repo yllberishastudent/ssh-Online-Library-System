@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("../models");
+const { authenticateToken, checkPermission } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Get author info
@@ -66,7 +67,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // Update an author
-router.patch("/authors/:id", async (req, res) => {
+router.patch("/:id", authenticateToken,checkPermission("ManageBooks"), async (req, res) => {
   const { id } = req.params;
   const { first_name, last_name, pen_name, gender, country, active } = req.body;
 
@@ -95,7 +96,7 @@ router.patch("/authors/:id", async (req, res) => {
 });
 
 // Delete an author
-router.delete("/authors/:id", async (req, res) => {
+router.delete("/:id", authenticateToken,checkPermission("ManageBooks"), async (req, res) => {
   const { id } = req.params;
 
   try {

@@ -8,9 +8,9 @@ const {
   checkPermission,
 } = require("./middleware/authMiddleware");
 // const jwt = require("jsonwebtoken");
-const path = require("path");
-const fs = require("fs");
-const nodemailer = require("nodemailer");
+// const path = require("path");
+// const fs = require("fs");
+// const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 // Initialize the app
@@ -18,6 +18,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+require("./swagger/swagger")(app);
 
 const authorRoutes = require("./routes/author");
 const bookRoutes = require("./routes/book");
@@ -30,6 +31,7 @@ const faqRouter = require("./routes/faq");
 const UserHistoryRouter = require("./routes/userHistory");
 const favoriteRouter = require("./routes/favorite"); // Update the import statement
 const pdfRouter = require("./routes/pdf");
+const transactionRouter = require("./routes/transactions");
 
 app.use("/authors", authorRoutes);
 app.use("/books", bookRoutes);
@@ -42,11 +44,12 @@ app.use("/faq", faqRouter);
 app.use("/history", UserHistoryRouter);
 app.use("/favorite", favoriteRouter);
 app.use("/read/pdf", pdfRouter);
+app.use("/transaction", transactionRouter);
 
 app.get(
   "/protected",
   authenticateToken,
-  checkPermission("EditGenre"),
+  checkPermission("ReadBook"),
   (req, res) => {
     // This route handler will only be executed if the user has the required permission
     res.json({ message: "Access granted" });
