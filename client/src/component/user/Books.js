@@ -4,9 +4,7 @@ import "./style/Books.css";
 import jwtDecode from "jwt-decode";
 import Rating from "./Rating";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { FaArrowLeft, FaHeart, FaRegHeart } from "react-icons/fa";
-import { Document, Page } from "react-pdf";
-import "@react-pdf-viewer/core/lib/styles/index.css";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { Viewer, Worker, SpecialZoomLevel } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
@@ -37,7 +35,7 @@ function Books() {
   const [newReviewText, setNewReviewText] = useState(""); // initialize new review text state
   const [rating, setRating] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const history = useNavigate();
+  const navigate = useNavigate();
   // const [showPdfViewer, setShowPdfViewer] = useState(false);
   // const [pdfUrl, setPdfUrl] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
@@ -46,7 +44,7 @@ function Books() {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   useEffect(() => {
-    // retrieve the book information from the database based on the ID
+    const token = localStorage.getItem("token");
     axios
       .get(`http://localhost:5001/books/${id}`, {
         headers: {

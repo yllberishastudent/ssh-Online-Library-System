@@ -21,15 +21,18 @@ import "./App.css"; // Import CSS styles
 function App() {
   let token = localStorage.getItem("token");
   let userName = null;
+  let userRole = null;
 
   if (token) {
     try {
       const decodedToken = jwtDecode(token);
       userName = decodedToken.username;
+      userRole = decodedToken.role;
     } catch (error) {
       console.log(error);
     }
   }
+  
 
   return (
     <Router>
@@ -47,22 +50,27 @@ function App() {
           <AuthNav userName={userName} />
         </nav>
         <Routes>
-          {" "}
-          --!
           <Route path="/" element={<FirstPage />} />
           <Route path="/user/login" element={<UserLogin />} />
           <Route path="/user/register" element={<UserRegister />} />
-          <Route path="/user/homepage/" element={<HomePage />} />
           <Route path="/user/admin" element={<Admin />} />
-          <Route path="/user/books/:id" element={<Books />} />
-          <Route path="/user/membership/:userName" element={<Membership />} />
-          <Route path="/user/contact" element={<Contact />} />
-          <Route path="/user/profile" element={<Privacy />} />
-          <Route path="/user/:id/info" element={<Author />} />
-          <Route path="/user/email" element={<Email />} />
-          <Route path="/user/faq" element={<FAQ />} />
-          <Route path="/user/history" element={<UserHistoryPage />} />
-          <Route path="/user/favorites" element={<Favorites />} />
+          {userRole === "member" && (
+            <>
+              <Route path="/user/homepage/" element={<HomePage />} />
+              <Route path="/user/books/:id" element={<Books />} />
+              <Route
+                path="/user/membership/:userName"
+                element={<Membership />}
+              />
+              <Route path="/user/contact" element={<Contact />} />
+              <Route path="/user/profile" element={<Privacy />} />
+              <Route path="/user/:id/info" element={<Author />} />
+              <Route path="/user/email" element={<Email />} />
+              <Route path="/user/faq" element={<FAQ />} />
+              <Route path="/user/history" element={<UserHistoryPage />} />
+              <Route path="/user/favorites" element={<Favorites />} />
+            </>
+          )}
         </Routes>
       </div>
     </Router>

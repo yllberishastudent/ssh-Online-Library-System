@@ -142,20 +142,22 @@ function HomePage() {
       <div className="titles__homepage">
         <h2 onClick={handleClickAllBooks}>ALL BOOKS</h2>
         <h2 onClick={handleClickPopular}>MOST POPULAR</h2>
-        <label htmlFor="genre-select"><h2>GENRE</h2></label>
+        <label htmlFor="genre-select">
+          <h2>GENRE</h2>
+        </label>
         <div>
-        <select
-          id="genre-select"
-          value={genreOption}
-          onChange={handleGenreChange}
-        >
-          <option value="">ALL GENRES</option>
-          {categories.map((category) => (
-            <option key={category.category_id} value={category.category_name}>
-              {category.category_name}
-            </option>
-          ))}
-        </select>
+          <select
+            id="genre-select"
+            value={genreOption}
+            onChange={handleGenreChange}
+          >
+            <option value="">ALL GENRES</option>
+            {categories.map((category) => (
+              <option key={category.category_id} value={category.category_name}>
+                {category.category_name}
+              </option>
+            ))}
+          </select>
         </div>
         <input
           type="text"
@@ -164,7 +166,7 @@ function HomePage() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-  
+
       <div className="grid-container-homepage">
         {sortedBooks.map((book) => (
           <Link

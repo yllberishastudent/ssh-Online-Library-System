@@ -3,6 +3,7 @@ import "./style/HomePage.css";
 import "./style/Favorites.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const images = {};
 
 function importAll(r) {
@@ -12,37 +13,41 @@ function importAll(r) {
 importAll(require.context("../..", true, /\.jpg$/));
 function Favorites() {
   const [books, setBooks] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
-    const getAllFavorites = async () => {
-      try {
-        const response = await axios.get("/favorite", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(response.data);
-        const favorites = response.data;
-        const bookPromises = favorites.map((book) =>
-          axios.get(`/books/${book.book_id}`, {
+    if (!token) {
+      navigate("/user/login"); // Redirect to login page if token is not available
+    } else {
+      const getAllFavorites = async () => {
+        try {
+          const response = await axios.get("/favorite", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          })
-        );
-        const bookResponses = await Promise.all(bookPromises);
-        const bookData = bookResponses.map((response) => response.data);
+          });
+          console.log(response.data);
+          const favorites = response.data;
+          const bookPromises = favorites.map((book) =>
+            axios.get(`/books/${book.book_id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+          );
+          const bookResponses = await Promise.all(bookPromises);
+          const bookData = bookResponses.map((response) => response.data);
 
-        setBooks(bookData);
-      } catch (error) {
-        console.error(error);
-        // Handle error state or display error message
-      }
-    };
+          setBooks(bookData);
+        } catch (error) {
+          console.error(error);
+          // Handle error state or display error message
+        }
+      };
 
-    getAllFavorites();
+      getAllFavorites();
+    }
   }, []);
 
   const unlikeBook = async (bookId) => {

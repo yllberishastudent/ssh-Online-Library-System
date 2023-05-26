@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
 import "./style/Admin.css";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import Sidebar from "./adminControl/Siderbar";
 import Books from "./adminControl/crudBooks";
 import Users from "./adminControl/crudUsers";
 import FAQList from "./adminControl/adminFaq";
 import AdminDashboard from "./adminControl/adminDashboard";
+import { useNavigate } from "react-router-dom";
 
 function Admin() {
-  const navigate = useNavigate();
   const [activeButton, setActiveButton] = useState("Dashboard");
   const [books, setBooks] = useState([]);
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const navigate = useNavigate();
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
@@ -25,7 +27,24 @@ function Admin() {
   useEffect(() => {
     fetchUsers();
     fetchBooks();
+    checkAdminStatus();
   }, []);
+
+  const checkAdminStatus = () => {
+    const token = localStorage.getItem("token");
+    let isAdmin = false;
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        isAdmin = decodedToken.role == "admin";
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    setIsAdmin(isAdmin);
+  };
 
   const fetchUsers = async () => {
     try {
@@ -166,34 +185,40 @@ function Admin() {
 
   return (
     <div className="admin-page">
-      <Sidebar
-        activeButton={activeButton}
-        handleButtonClick={handleButtonClick}
-        logout={logout}
-      />
+      {isAdmin && (
+        <Sidebar
+          activeButton={activeButton}
+          handleButtonClick={handleButtonClick}
+          logout={logout}
+        />
+      )}
       <div className="admin-content">
-        {activeButton === "Dashboard" && <AdminDashboard></AdminDashboard>}
-        {activeButton === "Books" && <Books books={books} />}
-        {activeButton === "Users" && (
-          <Users
-            users={users}
-            editingUser={editingUser}
-            handleEditUser={handleEditUser}
-            handleSaveUser={handleSaveUser}
-            handleCancelEdit={handleCancelEdit}
-            handleDeleteUser={handleDeleteUser}
-            showCreateForm={showCreateForm}
-            newUser={newUser}
-            handleChange={handleChange}
-            handleCreateUser={handleCreateUser}
-            setShowCreateForm={setShowCreateForm}
-            handleCreateFormClick={handleCreateFormClick}
-            setNewUser={setNewUser}
-            setEditingUser={setEditingUser} 
-          />
+        {isAdmin ? (
+          <>
+            {activeButton === "Dashboard" && <AdminDashboard></AdminDashboard>}
+            {activeButton === "Books" && <Books books={books} />}
+            {activeButton === "Users" && (
+              <Users
+                users={users}
+                editingUser={editingUser}
+                handleEditUser={handleEditUser}
+                handleSaveUser={handleSaveUser}
+                handleCancelEdit={handleCancelEdit}
+                handleDeleteUser={handleDeleteUser}
+                showCreateForm={showCreateForm}
+                newUser={newUser}
+                handleChangeNewUser={handleChangeNewUser}
+                handleCreateUser={handleCreateUser}
+                setShowCreateForm={setShowCreateForm}
+                handleCreateFormClick={handleCreateFormClick}
+              />
+            )}
+            {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
+            {activeButton === "FAQ" && <FAQList></FAQList>}
+          </>
+        ) : (
+          navigate("/user/homepage")
         )}
-        {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
-        {activeButton === "FAQ" && <FAQList></FAQList>}
       </div>
     </div>
   );

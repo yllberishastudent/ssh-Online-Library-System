@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, Link} from "react-router-dom";
-import '../user/style/Author.css';
+import { useParams, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "../user/style/Author.css";
 
 const images = {};
 
@@ -14,30 +15,35 @@ const Author = () => {
   const { id } = useParams();
   const [author, setAuthor] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAuthor = async () => {
-      try {
-        const booksResponse = await axios.get(`/authors/${id}/books`);
-        console.log(booksResponse.data.books);
-        const authorResponse = await axios.get(`/authors/${id}`);
-       
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/user/login"); // Redirect to login page if token is not available
+    } else {
+      const fetchAuthor = async () => {
+        try {
+          const booksResponse = await axios.get(`/authors/${id}/books`);
+          console.log(booksResponse.data.books);
+          const authorResponse = await axios.get(`/authors/${id}`);
 
-        if (authorResponse.status === 200 && booksResponse.status === 200) {
-          const authorData = authorResponse.data;
-          const booksData = booksResponse.data;
-          setAuthor({ ...authorData.author, books: booksData.books });
-        } else {
-          throw new Error("Failed to fetch author data");
+          if (authorResponse.status === 200 && booksResponse.status === 200) {
+            const authorData = authorResponse.data;
+            const booksData = booksResponse.data;
+            setAuthor({ ...authorData.author, books: booksData.books });
+          } else {
+            throw new Error("Failed to fetch author data");
+          }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchAuthor();
+      fetchAuthor();
+    }
   }, [id]);
 
   if (loading) {
