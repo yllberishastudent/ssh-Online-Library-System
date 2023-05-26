@@ -6,7 +6,6 @@ function Users({
   editingUser,
   showCreateForm,
   newUser,
-  handleEditUser,
   handleCancelEdit,
   handleSaveUser,
   handleDeleteUser,
@@ -15,11 +14,12 @@ function Users({
   setShowCreateForm,
   setNewUser,
   setEditingUser,
+  fetchUsers,
 }) {
   const [validationError, setValidationError] = useState(null);
 
   const handleEditClick = (user) => {
-    handleEditUser(user);
+    setEditingUser(user);
   };
 
   const handleCancelClick = () => {
@@ -86,7 +86,14 @@ function Users({
 
       const { user } = response.data;
       handleCreateUser(user);
-      setShowCreateForm(false); // Hide the create form after successful creation
+      setShowCreateForm(false);
+      fetchUsers(); 
+      setNewUser({  // Clear newUser state
+        username: "",
+        email: "",
+        role: "",
+        password: ""
+      });
     } catch (error) {
       if (error.response) {
         setValidationError(error.response.data.message);
@@ -133,7 +140,7 @@ function Users({
             <input
               type="text"
               name="username"
-              value={showCreateForm ? newUser.username : editingUser.username}
+              value={newUser.username}
               onChange={handleChangeInput}
             />
           </div>
@@ -142,7 +149,7 @@ function Users({
             <input
               type="text"
               name="email"
-              value={showCreateForm ? newUser.email: editingUser.email}
+              value={newUser.email}
               onChange={handleChangeInput}
             />
           </div>
@@ -150,7 +157,7 @@ function Users({
             <label>Role:</label>
             <select
               name="role"
-              value={showCreateForm ? newUser.role: editingUser.role}
+              value={newUser.role}
               onChange={handleChangeInput}
             >
               <option value="">Select Role</option>
@@ -163,13 +170,13 @@ function Users({
             <input
               type="password"
               name="password"
-              value={showCreateForm ? newUser.password: editingUser.password}
+              value={newUser.password}
               onChange={handleChangeInput}
             />
           </div>
           {/* Action buttons */}
           <div className="action-button__section">
-            <button className="action-button" onClick={handleCreateUserClick}>
+            <button className="action-button" onClick={handleCreateUserClick }>
               Create
             </button>
             <button className="action-button" onClick={handleCancelCreate}>
@@ -253,8 +260,7 @@ function Users({
                     <div className="action-buttons">
                       <button
                         className="action-button action-button--1"
-                        onClick={() => handleEditClick(user)}
-                      >
+                        onClick={() => handleEditClick(user)}>
                         Edit
                       </button>
                       <button

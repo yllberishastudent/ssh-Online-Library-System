@@ -193,32 +193,29 @@ function Admin() {
         />
       )}
       <div className="admin-content">
-        {isAdmin ? (
-          <>
-            {activeButton === "Dashboard" && <AdminDashboard></AdminDashboard>}
-            {activeButton === "Books" && <Books books={books} />}
-            {activeButton === "Users" && (
-              <Users
-                users={users}
-                editingUser={editingUser}
-                handleEditUser={handleEditUser}
-                handleSaveUser={handleSaveUser}
-                handleCancelEdit={handleCancelEdit}
-                handleDeleteUser={handleDeleteUser}
-                showCreateForm={showCreateForm}
-                newUser={newUser}
-                handleChangeNewUser={handleChangeNewUser}
-                handleCreateUser={handleCreateUser}
-                setShowCreateForm={setShowCreateForm}
-                handleCreateFormClick={handleCreateFormClick}
-              />
-            )}
-            {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
-            {activeButton === "FAQ" && <FAQList></FAQList>}
-          </>
-        ) : (
-          navigate("/user/homepage")
+        {activeButton === "Dashboard" && <AdminDashboard></AdminDashboard>}
+        {activeButton === "Books" && <Books books={books} />}
+        {activeButton === "Users" && (
+          <Users
+            users={users}
+            editingUser={editingUser}
+            handleEditUser={handleEditUser}
+            handleSaveUser={handleSaveUser}
+            handleCancelEdit={handleCancelEdit}
+            handleDeleteUser={handleDeleteUser}
+            showCreateForm={showCreateForm}
+            newUser={newUser}
+            handleChange={handleChange}
+            handleCreateUser={handleCreateUser}
+            setShowCreateForm={setShowCreateForm}
+            handleCreateFormClick={handleCreateFormClick}
+            setNewUser={setNewUser}
+            setEditingUser={setEditingUser} 
+            fetchUsers={fetchUsers}
+          />
         )}
+        {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
+        {activeButton === "FAQ" && <FAQList></FAQList>}
       </div>
     </div>
   );
