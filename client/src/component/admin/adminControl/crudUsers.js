@@ -17,17 +17,36 @@ function Users({
   fetchUsers,
 }) {
   const [validationError, setValidationError] = useState(null);
+  const [duplicateNameError, setDuplicateNameError] = useState(false);
+  const [duplicateEmailError, setDuplicateEmailError] = useState(false);
 
   const handleEditClick = (user) => {
-    setEditingUser({...user});
+    setEditingUser({ ...user });
   };
 
   const handleCancelClick = () => {
     handleCancelEdit();
   };
 
+  const checkDuplicate = (fieldName, fieldValue) => {
+    const isDuplicate = users.some(
+      (user) =>
+        user[fieldName] === fieldValue && user.user_id !== editingUser.user_id
+    );
+    return isDuplicate;
+  };
+
   const handleSaveClick = (editedUser) => {
-    handleSaveUser(editedUser);
+    const { username, email } = editedUser;
+    const isDuplicateName = checkDuplicate("username", username);
+    const isDuplicateEmail = checkDuplicate("email", email);
+
+    setDuplicateNameError(isDuplicateName);
+    setDuplicateEmailError(isDuplicateEmail);
+
+    if (!isDuplicateName && !isDuplicateEmail) {
+      handleSaveUser(editedUser);
+    }
   };
 
   const handleDeleteClick = (userId) => {
@@ -87,12 +106,13 @@ function Users({
       const { user } = response.data;
       handleCreateUser(user);
       setShowCreateForm(false);
-      fetchUsers(); 
-      setNewUser({  // Clear newUser state
+      fetchUsers();
+      setNewUser({
+        // Clear newUser state
         username: "",
         email: "",
         role: "",
-        password: ""
+        password: "",
       });
     } catch (error) {
       if (error.response) {
@@ -118,15 +138,16 @@ function Users({
     }
     setValidationError(null); // Clear validation error when the input changes
   };
-  
-  
 
   return (
     <div className="users-container">
       <div className="users-container__section">
         <h1 className="admin-content__title">Users</h1>
         {!showCreateForm && (
-          <div className="action-button action-button__text" onClick={handleCreateClick}>
+          <div
+            className="action-button action-button__text"
+            onClick={handleCreateClick}
+          >
             Create User
           </div>
         )}
@@ -176,7 +197,7 @@ function Users({
           </div>
           {/* Action buttons */}
           <div className="action-button__section">
-            <button className="action-button" onClick={handleCreateUserClick }>
+            <button className="action-button" onClick={handleCreateUserClick}>
               Create
             </button>
             <button className="action-button" onClick={handleCancelCreate}>
@@ -203,24 +224,36 @@ function Users({
               <tr key={user.user_id}>
                 <td>
                   {editingUser && editingUser.user_id === user.user_id ? (
-                    <input
-                      type="text"
-                      name="username"
-                      value={editingUser.username}
-                      onChange={handleChangeInput}
-                    />
+                    <div>
+                      <input
+                        type="text"
+                        name="username"
+                        value={editingUser.username}
+                        onChange={handleChangeInput}
+                        className={duplicateNameError ? "error" : ""}
+                      />
+                      {duplicateNameError && (
+                        <p className="error-message">Username taken. Please choose another.</p>
+                      )}
+                    </div>
                   ) : (
                     user.username
                   )}
                 </td>
                 <td>
                   {editingUser && editingUser.user_id === user.user_id ? (
-                    <input
-                      type="text"
-                      name="email"
-                      value={editingUser.email}
-                      onChange={handleChangeInput}
-                    />
+                    <div>
+                      <input
+                        type="text"
+                        name="email"
+                        value={editingUser.email}
+                        onChange={handleChangeInput}
+                        className={duplicateEmailError ? "error" : ""}
+                      />
+                      {duplicateEmailError && (
+                        <p className="error-message">Email taken. Please choose another.</p>
+                      )}
+                    </div>
                   ) : (
                     user.email
                   )}
@@ -260,7 +293,8 @@ function Users({
                     <div className="action-buttons">
                       <button
                         className="action-button action-button--1"
-                        onClick={() => handleEditClick(user)}>
+                        onClick={() => handleEditClick(user)}
+                      >
                         Edit
                       </button>
                       <button

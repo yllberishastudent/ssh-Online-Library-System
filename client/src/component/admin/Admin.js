@@ -101,7 +101,7 @@ function Admin() {
   const handleCancelEdit = () => {
     setEditingUser(null);
   };
-
+  
   const handleSaveUser = async (editedUser) => {
     try {
       const token = localStorage.getItem("token");
@@ -145,7 +145,6 @@ function Admin() {
       console.log(error);
     }
   };
-  
 
   const handleCreateUser = async (user) => {
     try {
@@ -170,7 +169,7 @@ function Admin() {
       console.log(error);
     }
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewUser((prevUser) => ({
@@ -210,9 +209,9 @@ function Admin() {
             setShowCreateForm={setShowCreateForm}
             handleCreateFormClick={handleCreateFormClick}
             setNewUser={setNewUser}
-            setEditingUser={setEditingUser} 
+            setEditingUser={setEditingUser}
             fetchUsers={fetchUsers}
-            handleCreateClick={handleCreateFormClick} 
+            handleCreateClick={handleCreateFormClick}
           />
         )}
         {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
