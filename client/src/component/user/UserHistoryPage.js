@@ -3,7 +3,6 @@ import "./style/UserHistoryPage.css";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-
 const images = {};
 
 function importAll(r) {
@@ -28,7 +27,6 @@ const UserHistoryPage = ({ userId }) => {
         setReadingHistory(response.data);
       } catch (error) {
         console.error("Error fetching user history:", error);
-        
       }
     };
 
@@ -51,11 +49,11 @@ const UserHistoryPage = ({ userId }) => {
       );
       console.log("Book deleted successfully.");
       Swal.fire({
-        icon: 'success',
-        title: 'Book deleted successfully.',
+        icon: "success",
+        title: "Book deleted successfully.",
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
     } catch (error) {
       console.error("Error deleting book:", error);
     }
@@ -75,19 +73,18 @@ const UserHistoryPage = ({ userId }) => {
       setReadingHistory([]);
       console.log("All books deleted successfully.");
       Swal.fire({
-        icon: 'success',
-        title: 'All books deleted successfully.',
+        icon: "success",
+        title: "All books deleted successfully.",
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
     } catch (error) {
       console.error("Error deleting books", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Error deleting books',
-      
-      })
+        icon: "error",
+        title: "Oops...",
+        text: "Error deleting books",
+      });
     }
   };
 
@@ -105,8 +102,8 @@ const UserHistoryPage = ({ userId }) => {
                 <div className="book-history-content grid">
                   <div className="book-details-img">
                     <img
-                      src={`../${entry.Book.cover_image_url}`}
-                      alt={entry.Book.title}
+                      src={images[`./${entry.Book.cover_image_url}`]}
+                      alt={`${entry.Book.title}`}
                     />
                   </div>
                   <div className="book-history-info">

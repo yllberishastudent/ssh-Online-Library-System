@@ -3,10 +3,16 @@ import "./style/HomePage.css";
 import "./style/Favorites.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const images = {}
+const images = {};
+
+function importAll(r) {
+  r.keys().forEach((key) => (images[key] = r(key)));
+}
+
+importAll(require.context("../..", true, /\.jpg$/));
 function Favorites() {
   const [books, setBooks] = useState([]);
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -20,9 +26,11 @@ function Favorites() {
         console.log(response.data);
         const favorites = response.data;
         const bookPromises = favorites.map((book) =>
-          axios.get(`/books/${book.book_id}`, {headers: {
-            Authorization: `Bearer ${token}`,
-          },})
+          axios.get(`/books/${book.book_id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
         );
         const bookResponses = await Promise.all(bookPromises);
         const bookData = bookResponses.map((response) => response.data);
@@ -78,7 +86,12 @@ function Favorites() {
                 <p>{book.author}</p>
               </div>
             </Link>
-            <button onClick={() => unlikeBook(book.book_id)} className="favorites__btn">Unlike</button>
+            <button
+              onClick={() => unlikeBook(book.book_id)}
+              className="favorites__btn"
+            >
+              Unlike
+            </button>
           </div>
         ))}
       </div>
