@@ -85,8 +85,15 @@ function Admin() {
 
   const handleSaveUser = async (editedUser) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5001/users/${editedUser.user_id}, editedUser`
+        `http://localhost:5001/users/update/${editedUser.user_id}`,
+        editedUser,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.status === 200) {
         const updatedUsers = users.map((user) =>
@@ -102,8 +109,14 @@ function Admin() {
 
   const handleDeleteUser = async (userId) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `http://localhost:5001/users/${userId}`
+        `http://localhost:5001/users/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.status === 200) {
         const updatedUsers = users.filter((user) => user.user_id !== userId);
@@ -113,13 +126,16 @@ function Admin() {
       console.log(error);
     }
   };
+  
 
-  const handleCreateUser = async () => {
+  const handleCreateUser = async (user) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5001/admin/users",
-        newUser
-      );
+      const token = localStorage.getItem("token");
+      const response = await axios.post("http://localhost:5001/users", user, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.status === 201) {
         const createdUser = response.data.user;
         setUsers([...users, createdUser]);
@@ -127,7 +143,6 @@ function Admin() {
           username: "",
           email: "",
           role: "",
-          phone_number: "",
           password: "",
         });
         setShowCreateForm(false);
@@ -136,12 +151,13 @@ function Admin() {
       console.log(error);
     }
   };
-
-  const handleChangeNewUser = (e) => {
-    setNewUser({
-      ...newUser,
-      [e.target.name]: e.target.value,
-    });
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
   };
 
   const handleCreateFormClick = () => {
@@ -168,10 +184,12 @@ function Admin() {
             handleDeleteUser={handleDeleteUser}
             showCreateForm={showCreateForm}
             newUser={newUser}
-            handleChangeNewUser={handleChangeNewUser}
+            handleChange={handleChange}
             handleCreateUser={handleCreateUser}
             setShowCreateForm={setShowCreateForm}
             handleCreateFormClick={handleCreateFormClick}
+            setNewUser={setNewUser}
+            setEditingUser={setEditingUser} 
           />
         )}
         {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}

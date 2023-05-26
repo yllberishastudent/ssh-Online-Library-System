@@ -1,91 +1,192 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faEdit, faTrashAlt, faSave,faTimes,} from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
+import axios from "axios";
 
 function Users({
   users,
   editingUser,
-  handleEditUser,
-  handleSaveUser,
-  handleCancelEdit,
-  handleDeleteUser,
   showCreateForm,
   newUser,
-  handleChangeNewUser,
+  handleEditUser,
+  handleCancelEdit,
+  handleSaveUser,
+  handleDeleteUser,
   handleCreateUser,
+  handleChange,
   setShowCreateForm,
-  handleCreateFormClick,
+  setNewUser,
+  setEditingUser,
 }) {
+  const [validationError, setValidationError] = useState(null);
+
+  const handleEditClick = (user) => {
+    handleEditUser(user);
+  };
+
+  const handleCancelClick = () => {
+    handleCancelEdit();
+  };
+
+  const handleSaveClick = (editedUser) => {
+    handleSaveUser(editedUser);
+  };
+
+  const handleDeleteClick = (userId) => {
+    handleDeleteUser(userId);
+  };
+
+  const handleCreateClick = () => {
+    setShowCreateForm(true);
+  };
+
+  const handleCancelCreate = () => {
+    setShowCreateForm(false);
+  };
+
+  const validateEmail = (email) => {
+    // Email validation regex pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const validatePassword = (password) => {
+    // Password validation regex pattern
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return passwordPattern.test(password);
+  };
+
+  const handleCreateUserClick = async () => {
+    if (
+      !newUser.username ||
+      !newUser.email ||
+      !newUser.role ||
+      !newUser.password
+    ) {
+      setValidationError("Please fill in all the required fields.");
+      return;
+    }
+
+    if (!validateEmail(newUser.email)) {
+      setValidationError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!validatePassword(newUser.password)) {
+      setValidationError(
+        "Please enter a password with at least 8 characters, including uppercase letters, lowercase letters, and numbers."
+      );
+      return;
+    }
+
+    try {
+      const response = await axios.post("/admin/users", newUser, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const { user } = response.data;
+      handleCreateUser(user);
+      setShowCreateForm(false); // Hide the create form after successful creation
+    } catch (error) {
+      if (error.response) {
+        setValidationError(error.response.data.message);
+      } else {
+        setValidationError("Internal server error");
+      }
+    }
+  };
+
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    if (showCreateForm) {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        [name]: value,
+      }));
+    } else {
+      setEditingUser((prevUser) => ({
+        ...prevUser,
+        [name]: value,
+      }));
+    }
+    setValidationError(null); // Clear validation error when the input changes
+  };
+  
+  
+
   return (
-    <>
-      <div className="admin-content__header">
-        <h2 className="admin-content__title">Users</h2>
-        <h3 className="admin-content__link" onClick={handleCreateFormClick}>
-          Create User
-        </h3>
+    <div className="users-container">
+      <div className="users-container__section">
+        <h1 className="admin-content__title">Users</h1>
+        {!showCreateForm && (
+          <div className="action-button action-button__text" onClick={handleCreateClick}>
+            Create User
+          </div>
+        )}
       </div>
       {showCreateForm ? (
+        // Create user form
         <div className="create-user-form">
-          <h3 className="create-user-title">Create User</h3>
-          <div class="admin-form">
+          {/* Form fields */}
+          <div className="form-group">
+            <label>Username:</label>
             <input
               type="text"
-              placeholder="Enter the username..."
               name="username"
-              value={newUser.username}
-              onChange={handleChangeNewUser}
-              required
+              value={showCreateForm ? newUser.username : editingUser.username}
+              onChange={handleChangeInput}
             />
-            <input
-              type="text"
-              placeholder="Enter the email..."
-              name="email"
-              value={newUser.email}
-              onChange={handleChangeNewUser}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Enter the phone number..."
-              name="phone_number"
-              value={newUser.phone_number}
-              onChange={handleChangeNewUser}
-            />
-            <input
-              type="text"
-              placeholder="Enter the role..."
-              name="role"
-              value={newUser.role}
-              onChange={handleChangeNewUser}
-              required
-            />
-              <input
-                type="password"
-                placeholder="Enter your password..."
-                name="password"
-                value={newUser.password}
-                onChange={handleChangeNewUser}
-                required
-              />
           </div>
-          <button
-            className="action-button"
-            onClick={() => {
-              handleCreateUser();
-              setShowCreateForm(false);
-            }}
-          >
-            Create
-          </button>
+          <div className="form-group">
+            <label>Email:</label>
+            <input
+              type="text"
+              name="email"
+              value={showCreateForm ? newUser.email: editingUser.email}
+              onChange={handleChangeInput}
+            />
+          </div>
+          <div className="form-group">
+            <label>Role:</label>
+            <select
+              name="role"
+              value={showCreateForm ? newUser.role: editingUser.role}
+              onChange={handleChangeInput}
+            >
+              <option value="">Select Role</option>
+              <option value="admin">Admin</option>
+              <option value="member">Member</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              name="password"
+              value={showCreateForm ? newUser.password: editingUser.password}
+              onChange={handleChangeInput}
+            />
+          </div>
+          {/* Action buttons */}
+          <div className="action-button__section">
+            <button className="action-button" onClick={handleCreateUserClick}>
+              Create
+            </button>
+            <button className="action-button" onClick={handleCancelCreate}>
+              Cancel
+            </button>
+          </div>
+          {validationError && (
+            <p className="error-message">{validationError}</p>
+          )}
         </div>
       ) : (
-        <table>
+        // User list
+        <table className="user-list">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Username</th>
               <th>Email</th>
-              <th>Phone</th>
               <th>Role</th>
               <th>Actions</th>
             </tr>
@@ -93,42 +194,76 @@ function Users({
           <tbody>
             {users.map((user) => (
               <tr key={user.user_id}>
-                <td>{user.user_id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.phone_number}</td>
-                <td>{user.role}</td>
                 <td>
                   {editingUser && editingUser.user_id === user.user_id ? (
-                    <>
-                      <button
-                        className="action-button"
-                        onClick={() => handleSaveUser(editingUser)}
-                      >
-                        <FontAwesomeIcon icon={faSave} />
-                      </button>
-                      <button
-                        className="action-button"
-                        onClick={handleCancelEdit}
-                      >
-                        <FontAwesomeIcon icon={faTimes} />
-                      </button>
-                    </>
+                    <input
+                      type="text"
+                      name="username"
+                      value={editingUser.username}
+                      onChange={handleChange}
+                    />
                   ) : (
-                    <>
+                    user.username
+                  )}
+                </td>
+                <td>
+                  {editingUser && editingUser.user_id === user.user_id ? (
+                    <input
+                      type="text"
+                      name="email"
+                      value={editingUser.email}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    user.email
+                  )}
+                </td>
+                <td>
+                  {editingUser && editingUser.user_id === user.user_id ? (
+                    <select
+                      name="role"
+                      value={editingUser.role}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select Role</option>
+                      <option value="admin">Admin</option>
+                      <option value="member">Member</option>
+                    </select>
+                  ) : (
+                    user.role
+                  )}
+                </td>
+                <td>
+                  {editingUser && editingUser.user_id === user.user_id ? (
+                    <div className="action-buttons">
                       <button
-                        className="action-button"
-                        onClick={() => handleEditUser(user)}
+                        className="action-button action-button--1"
+                        onClick={() => handleSaveClick(editingUser)}
                       >
-                        <FontAwesomeIcon icon={faEdit} />
+                        Save
                       </button>
                       <button
-                        className="action-button"
-                        onClick={() => handleDeleteUser(user.user_id)}
+                        className="action-button action-button--2"
+                        onClick={handleCancelClick}
                       >
-                        <FontAwesomeIcon icon={faTrashAlt} />
+                        Cancel
                       </button>
-                    </>
+                    </div>
+                  ) : (
+                    <div className="action-buttons">
+                      <button
+                        className="action-button action-button--1"
+                        onClick={() => handleEditClick(user)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="action-button action-button--2"
+                        onClick={() => handleDeleteClick(user.user_id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   )}
                 </td>
               </tr>
@@ -136,7 +271,7 @@ function Users({
           </tbody>
         </table>
       )}
-    </>
+    </div>
   );
 }
 
