@@ -19,7 +19,7 @@ function Users({
   const [validationError, setValidationError] = useState(null);
 
   const handleEditClick = (user) => {
-    setEditingUser(user);
+    setEditingUser({...user});
   };
 
   const handleCancelClick = () => {
@@ -207,7 +207,7 @@ function Users({
                       type="text"
                       name="username"
                       value={editingUser.username}
-                      onChange={handleChange}
+                      onChange={handleChangeInput}
                     />
                   ) : (
                     user.username
@@ -219,7 +219,7 @@ function Users({
                       type="text"
                       name="email"
                       value={editingUser.email}
-                      onChange={handleChange}
+                      onChange={handleChangeInput}
                     />
                   ) : (
                     user.email
@@ -230,7 +230,7 @@ function Users({
                     <select
                       name="role"
                       value={editingUser.role}
-                      onChange={handleChange}
+                      onChange={handleChangeInput}
                     >
                       <option value="">Select Role</option>
                       <option value="admin">Admin</option>

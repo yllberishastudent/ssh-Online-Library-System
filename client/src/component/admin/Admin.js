@@ -199,7 +199,7 @@ function Admin() {
           <Users
             users={users}
             editingUser={editingUser}
-            handleEditUser={handleEditUser}
+            handleEditClick={handleEditUser}
             handleSaveUser={handleSaveUser}
             handleCancelEdit={handleCancelEdit}
             handleDeleteUser={handleDeleteUser}
@@ -212,6 +212,7 @@ function Admin() {
             setNewUser={setNewUser}
             setEditingUser={setEditingUser} 
             fetchUsers={fetchUsers}
+            handleCreateClick={handleCreateFormClick} 
           />
         )}
         {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
