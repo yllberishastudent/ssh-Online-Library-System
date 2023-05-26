@@ -52,6 +52,8 @@ const AdminDashboard = () => {
               title: {
                 display: true,
                 text: "Membership Status",
+                padding: 0, // Adjust the padding value here,
+                margin: 0,
               },
             },
           },
@@ -67,8 +69,16 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div>
-      <canvas id="myChart" style={{ width: "100%", maxWidth: "600px" }} ref={chartRef}></canvas>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "start",
+        paddingTop: "20px",
+        height: "400px", // Set the desired height here
+        width: "600px", // Set the desired width here
+      }}
+    >
+      <canvas id="myChart" style={{ height: "100%", width: "100%" }} ref={chartRef}></canvas>
     </div>
   );
 };
