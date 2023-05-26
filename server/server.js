@@ -33,6 +33,7 @@ const favoriteRouter = require("./routes/favorite"); // Update the import statem
 const pdfRouter = require("./routes/pdf");
 const transactionRouter = require("./routes/transactions");
 const adminRoutes = require("./routes/admin");
+const UserDetailsRoutes = require("./routes/userInfo");
 
 app.use("/authors", authorRoutes);
 app.use("/books", bookRoutes);
@@ -47,6 +48,7 @@ app.use("/favorite", favoriteRouter);
 app.use("/read/pdf", pdfRouter);
 app.use("/transaction", transactionRouter);
 app.use("/admin", adminRoutes);
+app.use("/details", UserDetailsRoutes);
 
 app.get(
   "/protected",

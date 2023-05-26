@@ -30,7 +30,9 @@ const options = {
     "./swagger/swaggerAuth.js",
     "./swagger/swaggerFaq.js",
     "./swagger/swaggerCategories.js",
-    "./swagger/swaggerTransaction.js", // Include the path to swaggerUser.js
+    "./swagger/swaggerTransaction.js",
+    "./swagger/swaggerAdmin.js",
+    "./swagger/swaggerUserDetails.js", // Include the path to swaggerUser.js
   ], // Include the path to the swaggerPDF.js file
   tags: [
     {
