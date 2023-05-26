@@ -16,6 +16,7 @@ import FAQ from "./component/user/FAQ";
 import UserHistoryPage from "./component/user/UserHistoryPage";
 import Favorites from "./component/user/Favorites";
 import { useNavigate } from "react-router-dom";
+import '@fortawesome/fontawesome-free/css/all.css';
 import "./App.css"; // Import CSS styles
 
 function App() {
@@ -32,11 +33,10 @@ function App() {
       console.log(error);
     }
   }
-  
 
   return (
     <Router>
-      <div className="container">
+      <div>
         <nav className="main-nav">
           <ul className="nav-left">
             <div className="logo">
@@ -49,33 +49,38 @@ function App() {
 
           <AuthNav userName={userName} />
         </nav>
-        <Routes>
-          <Route path="/" element={<FirstPage />} />
-          <Route path="/user/login" element={<UserLogin />} />
-          <Route path="/user/register" element={<UserRegister />} />
-          <Route path="/user/admin" element={<Admin />} />
-          {userRole === "member" && (
-            <>
-              <Route path="/user/homepage/" element={<HomePage />} />
-              <Route path="/user/books/:id" element={<Books />} />
-              <Route
-                path="/user/membership/:userName"
-                element={<Membership />}
-              />
-              <Route path="/user/contact" element={<Contact />} />
-              <Route path="/user/profile" element={<Privacy />} />
-              <Route path="/user/:id/info" element={<Author />} />
-              <Route path="/user/email" element={<Email />} />
-              <Route path="/user/faq" element={<FAQ />} />
-              <Route path="/user/history" element={<UserHistoryPage />} />
-              <Route path="/user/favorites" element={<Favorites />} />
-            </>
-          )}
-        </Routes>
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<FirstPage />} />
+            <Route path="/user/login" element={<UserLogin />} />
+            <Route path="/user/register" element={<UserRegister />} />
+            <Route path="/user/admin" element={<Admin />} />
+            {userRole === "member" && (
+              <>
+                <Route path="/user/homepage/" element={<HomePage />} />
+                <Route path="/user/books/:id" element={<Books />} />
+                <Route
+                  path="/user/membership/:userName"
+                  element={<Membership />}
+                />
+                <Route path="/user/contact" element={<Contact />} />
+                <Route path="/user/profile" element={<Privacy />} />
+                <Route path="/user/:id/info" element={<Author />} />
+                <Route path="/user/email" element={<Email />} />
+                <Route path="/user/faq" element={<FAQ />} />
+                <Route path="/user/history" element={<UserHistoryPage />} />
+                <Route path="/user/favorites" element={<Favorites />} />
+              </>
+            )}
+          </Routes>
+        </div>
+        {/* Footer component */}
+        <Footer />
       </div>
     </Router>
   );
 }
+
 function AuthNav({ userName }) {
   const navigate = useNavigate();
 
@@ -121,6 +126,7 @@ function AuthNav({ userName }) {
       gotoFavorites();
     }
   };
+
   return (
     <ul className="nav-right">
       {userName ? (
@@ -151,6 +157,55 @@ function AuthNav({ userName }) {
         </>
       )}
     </ul>
+  );
+}
+
+function Footer() {
+  // const history = useHistory();
+  // const handleLinkClick = () => {
+  //   history.push('./component/user/Contact');
+  // };
+  return (
+      <footer className="footer-distributed">
+        <div className="footer-left">
+          <h3>Online<span>Library</span></h3>
+          <p className="footer-links">
+          <Link to="/user/homepage">Home</Link>
+            |
+          <Link to="./user/Contact">Go to Contact</Link> 
+          </p>
+          <p className="footer-company-name">Copyright © 2023 <strong>OnlineLibrary</strong> All rights reserved</p>
+        </div>
+  
+        <div className="footer-center">
+          <div>
+            <i className="fa fa-map-marker"></i>
+            <p><span>Location</span> Location</p>
+          </div>
+          <div>
+            <i className="fa fa-phone"></i>
+            <p>+12 1234567890</p>
+          </div>
+          <div>
+            <i className="fa fa-envelope"></i>
+            <p className="footer-email">ssh.librarysys@gmail.com</p>
+          </div>
+        </div>
+  
+        <div className="footer-right">
+          <p className="footer-company-about">
+            <span>About the company</span>
+            <b>OnlineLibrary</b> is an initiative of the Internet Archive, building a digital library of Internet sites and other cultural artifacts in digital form.
+          </p>
+          <div className="footer-icons">
+            <a href="#"><i className="fab fa-facebook"></i></a>
+            <a href="#"><i className="fab fa-instagram"></i></a>
+            <a href="#"><i className="fab fa-linkedin"></i></a>
+            <a href="#"><i className="fab fa-twitter"></i></a>
+            <a href="#"><i className="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </footer>
   );
 }
 
