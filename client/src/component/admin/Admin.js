@@ -5,6 +5,7 @@ import axios from "axios";
 import Sidebar from "./adminControl/Siderbar";
 import Books from "./adminControl/crudBooks";
 import Users from "./adminControl/crudUsers";
+import FAQList from "./adminControl/adminFaq";
 
 function Admin() {
   const navigate = useNavigate();
@@ -173,7 +174,7 @@ function Admin() {
           />
         )}
         {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
-        {activeButton === "FAQ" && <h2>FAQ Content Goes Here</h2>}
+        {activeButton === "FAQ" && <FAQList></FAQList>}
       </div>
     </div>
   );
