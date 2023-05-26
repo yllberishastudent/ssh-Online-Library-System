@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../style/adminFaq.css"; 
+import "../style/adminFaq.css";
+import Swal from "sweetalert2";
 
 const FAQList = () => {
   const [faqs, setFaqs] = useState([]);
@@ -13,7 +14,7 @@ const FAQList = () => {
   useEffect(() => {
     const fetchFaqs = async () => {
       try {
-        const response = await axios.get("/faq"); 
+        const response = await axios.get("/faq");
         setFaqs(response.data);
       } catch (error) {
         console.error(error);
@@ -48,8 +49,18 @@ const FAQList = () => {
       console.log(`Answered FAQ with ID: ${selectedFaqId}`);
       setShowAnswerInput(false);
       setAnswerInput("");
+      Swal.fire({
+        icon: "success",
+        title: "Answer Submitted",
+        text: `Answered FAQ with ID: ${selectedFaqId}`,
+      });
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text: "Failed to submit answer. Please try again.",
+      });
     }
   };
 
@@ -68,8 +79,18 @@ const FAQList = () => {
       console.log(`Updated FAQ with ID: ${selectedFaqId}`);
       setShowUpdateInput(false);
       setUpdateInput("");
+      Swal.fire({
+        icon: "success",
+        title: "Update Submitted",
+        text: `Updated FAQ with ID: ${selectedFaqId}`,
+      });
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text: "Failed to submit update. Please try again.",
+      });
     }
   };
 
@@ -78,8 +99,18 @@ const FAQList = () => {
       await axios.delete(`/faq/${faqId}`);
       setFaqs((prevFaqs) => prevFaqs.filter((faq) => faq.faq_id !== faqId));
       console.log(`Deleted FAQ with ID: ${faqId}`);
+      Swal.fire({
+        icon: "success",
+        title: "FAQ Deleted",
+        text: `Deleted FAQ with ID: ${faqId}`,
+      });
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Deletion Failed",
+        text: "Failed to delete FAQ. Please try again.",
+      });
     }
   };
 
@@ -92,7 +123,11 @@ const FAQList = () => {
       <h1>FAQs</h1>
       {faqs.map((faq) => (
         <div className="faq-item" key={faq.faq_id}>
-          <div className={`faq-status ${isAnswered(faq) ? "answered" : "unanswered"}`}>
+          <div
+            className={`faq-status ${
+              isAnswered(faq) ? "answered" : "unanswered"
+            }`}
+          >
             {isAnswered(faq) ? "Answered" : "Unanswered"}
           </div>
           <h3 className="faq-question">{faq.question}</h3>

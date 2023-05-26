@@ -7,6 +7,7 @@ const AdminDashboard = () => {
   const [membershipData, setMembershipData] = useState(null);
   const [usersData, setUsersData] = useState(null);
   const [chartInstance, setChartInstance] = useState(null);
+  const [selectedData, setSelectedData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +57,13 @@ const AdminDashboard = () => {
                 margin: 0,
               },
             },
+            onClick: (event, elements) => {
+              if (elements.length > 0) {
+                const clickedIndex = elements[0].index;
+                const clickedLabel = newChartInstance.data.labels[clickedIndex];
+                setSelectedData(clickedLabel);
+              }
+            },
           },
         });
 
@@ -67,6 +75,64 @@ const AdminDashboard = () => {
 
     fetchData();
   }, []);
+  const renderTable = () => {
+    if (selectedData === "With Membership") {
+      const usersWithMembership = usersData.filter((user) => {
+        return membershipData.find(
+          (membership) => membership.userId === user.user_id
+        );
+      });
+      return (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {usersWithMembership.map((user) => (
+              <tr key={user.user_id}>
+                <td>{user.user_id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    } else if (selectedData === "Without Membership") {
+      const usersWithoutMembership = usersData.filter((user) => {
+        return !membershipData.find(
+          (membership) => membership.userId === user.user_id
+        );
+      });
+
+      return (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {usersWithoutMembership.map((user) => (
+              <tr key={user.id}>
+                <td>{user.user_id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <div
@@ -74,11 +140,18 @@ const AdminDashboard = () => {
         display: "flex",
         justifyContent: "start",
         paddingTop: "20px",
-        height: "400px", // Set the desired height here
-        width: "600px", // Set the desired width here
+        height: "400px",
+        width: "600px",
       }}
     >
-      <canvas id="myChart" style={{ height: "100%", width: "100%" }} ref={chartRef}></canvas>
+      <canvas
+        id="myChart"
+        style={{ height: "100%", width: "100%" }}
+        ref={chartRef}
+      ></canvas>
+      <div style={{ width: "40%", height: "100%", paddingLeft: "20px" }}>
+        {renderTable()}
+      </div>
     </div>
   );
 };
