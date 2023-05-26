@@ -47,7 +47,7 @@ function App() {
             </li>
           </ul>
 
-          <AuthNav userName={userName} />
+          <AuthNav userName={userName} userRole={userRole} />
         </nav>
         <div className="container">
           <Routes>
@@ -80,8 +80,12 @@ function App() {
     </Router>
   );
 }
+<<<<<<< Updated upstream
 
 function AuthNav({ userName }) {
+=======
+function AuthNav({ userName, userRole }) {
+>>>>>>> Stashed changes
   const navigate = useNavigate();
 
   const logout = () => {
@@ -133,13 +137,17 @@ function AuthNav({ userName }) {
         <>
           <select className="custom-select" onChange={handleSelectionChange}>
             <option value="home">{userName}</option>
-            <option value="membership">Membership</option>
-            <option value="help">Help</option>
-            <option value="history">User History</option>
-            <option value="favorites">Favorites</option>
-            <optgroup label="Settings">
-              <option value="info">Profile</option>
-            </optgroup>
+            {userRole === "member" && (
+              <>
+                <option value="membership">Membership</option>
+                <option value="help">Help</option>
+                <option value="history">User History</option>
+                <option value="favorites">Favorites</option>
+                <optgroup label="Settings">
+                  <option value="info">Profile</option>
+                </optgroup>
+              </>
+            )}
             <option value="logout">Logout</option>
           </select>
         </>
