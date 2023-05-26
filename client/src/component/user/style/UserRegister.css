@@ -1,68 +1,65 @@
 .register-wrap {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 40px;
-    margin-top: 40px;
-    background-color: rgba(255, 255, 255, 0.877);
-    box-shadow: rgba(81, 136, 191, 0.611) 0px 8px 24px;
-  }
-  
-  .register-form label {
-    display: block;
-    font-weight: bold;
-   
-    
-  }
-  
-  .register-form input[type="text"],
-  .register-form input[type="email"],
-  .register-form input[type="tel"],
-  .register-form input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    
-    font-size: 16px;
-  }
-  
-  .register-form button[type="submit"] {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-    margin-bottom: 25px
-  }
-  
-  .register-form button[type="submit"]:hover {
-    background-color: #0062cc;
-  }
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+  background-color: rgba(255, 255, 255, 0.46);
+  box-shadow: rgba(116, 132, 148, 0.611) 0px 8px 24px;
+}
 
-  .register-form label div.label-text {
-    margin-bottom: 5px;
-  }
-  .login{
-    padding-top: 20px;
-    color:#007bff;
-    font-size: 14px;
-    padding-top: 15px;
-    margin-top: 10px;
-  }
-  .login:hover{
-    color:#0362c7;
-  }
-  .error-message{
-    color: rgba(255, 0, 0, 0.63);
-    font-size: 14px;
-    font-weight: 500;
-    padding-bottom: 10px;
-  }
- 
+.register-form label {
+  display: block;
+  font-weight: bold;
+}
+
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="tel"],
+.register-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  font-size: 16px;
+}
+
+.register-form button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  margin-bottom: 25px;
+}
+
+.register-form button[type="submit"]:hover {
+  background-color: #0062cc;
+}
+
+.register-form label div.label-text {
+  margin-bottom: 5px;
+}
+.login {
+  padding-top: 20px;
+  color: #007bff;
+  font-size: 14px;
+  padding-top: 15px;
+  margin-top: 10px;
+}
+.login:hover {
+  color: #0362c7;
+}
+.error-message {
+  color: rgba(255, 0, 0, 0.63);
+  font-size: 14px;
+  font-weight: 500;
+  padding-bottom: 10px;
+}

@@ -93,9 +93,9 @@ function FirstPage() {
       </ul>
       </div>
 
-      <div class="content">
+      <div className="content">
       <div>
-          <h3 class="content__tittle">BOOKS OF THE WEEK</h3>
+          <h3 className="content__tittle">BOOKS OF THE WEEK</h3>
           <div className="grid-container-top" >
             {top3.map(book => (
               <div key={book.id} className="grid-item-top">
@@ -116,7 +116,7 @@ function FirstPage() {
       <div className="wrapper">
       <div className="books-container">
       <div>
-          <h3 id="popular" class="books-categories__titles">POPULAR BOOKS</h3>
+          <h3 id="popular" className="books-categories__titles">POPULAR BOOKS</h3>
           <div className="grid-container">
             {filteredPopularBooks.map(book => (
               <div key={book.id} className="grid-item">
@@ -134,7 +134,7 @@ function FirstPage() {
         </div>
 
         <div>
-          <h3 class="books-categories__titles" id="newest">Newest Books</h3>
+          <h3 className="books-categories__titles" id="newest">Newest Books</h3>
           <div className="grid-container">
             {filteredNewestBooks.map(book => (
               <div key={book.id} className="grid-item">
@@ -151,7 +151,7 @@ function FirstPage() {
           </div>
         </div>
         <div>
-          <h3 id="a-z" class="books-categories__titles">A-Z Books</h3>
+          <h3 id="a-z" className="books-categories__titles">A-Z Books</h3>
           <div className="grid-container">
             {filteredAZBooks.map(book => (
               <div key={book.id} className="grid-item">

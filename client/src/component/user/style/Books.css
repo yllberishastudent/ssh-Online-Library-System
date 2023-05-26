@@ -25,6 +25,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: rgba(255, 255, 255, 0.179);
 }
 .book-details-img {
   max-height: 700px;
@@ -74,6 +75,7 @@
   overflow-y: scroll;
   max-height: 600px;
   padding: 1.6rem;
+  overflow: hidden;
 }
 .book-details-info::-webkit-scrollbar {
   width: 8px;
@@ -94,10 +96,18 @@
   margin-top: 2rem;
 }
 
-.reviews{
-  font-size: 40px;
-  text-align: center;
+.reviews {
+  font-size: 30px;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  color: #232729;
+  text-align: start;
   margin-top: 10%;
+}
+.reviews__underline {
+  background-color: black;
+  width: 100%;
+  height: 1px;
+  padding: 1px;
   margin-bottom: 3%;
 }
 .review {
@@ -127,8 +137,6 @@
   line-height: 1.5;
 }
 
-
-
 .content--review {
   margin-top: 5px;
   display: flex;
@@ -152,7 +160,7 @@
 }
 
 .textarea {
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
@@ -199,13 +207,22 @@
   align-items: center;
 }
 
-.like-button{
-  display: flex;
-  margin-top: 10%;
-  justify-content: end;
+.like-text {
+  padding-right: 20px;
 }
-
-.liked{
+.like-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 50px;
+  padding: 50px;
+}
+.like-icon {
+  width: 50px;
+}
+.liked {
+  display: flex;
+  align-items: center;
   color: red;
 }
 .pdf-viewer {
@@ -220,7 +237,7 @@
   align-items: center;
 }
 
-.reviews__addTofav{
+.reviews__addTofav {
   margin-top: 10%;
   font-size: 20px;
 }

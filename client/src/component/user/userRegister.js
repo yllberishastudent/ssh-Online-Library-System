@@ -163,7 +163,7 @@ function UserRegister() {
         <button type="submit" disabled={formik.isSubmitting}>
           Register
         </button>
-        <a href="/user/login" class="login">
+        <a href="/user/login" className="login">
           Already have an account? Log in!
         </a>
         <p className="success-message">{successMessage}</p>

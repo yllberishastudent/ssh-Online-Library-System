@@ -36,10 +36,10 @@ function App() {
 
   return (
     <Router>
-      <div class="container">
-        <nav class="main-nav">
-          <ul class="nav-left">
-            <div class="logo">
+      <div className="container">
+        <nav className="main-nav">
+          <ul className="nav-left">
+            <div className="logo">
               <Link to="/">LIB</Link>
             </div>
             <li>
@@ -145,7 +145,7 @@ function AuthNav({ userName }) {
           <li className="register_button">
             <Link to="/user/register">
               {" "}
-              <span class="btn_white">Register</span>
+              <span className="btn_white">Register</span>
             </Link>
           </li>
         </>

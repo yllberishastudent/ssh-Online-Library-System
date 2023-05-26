@@ -331,9 +331,9 @@ function Books() {
             <div className="book-details-item description">
               <span className="fw-6 fs-24">{book.description}</span>
             </div>
-            <div class="readnauthor">
+            <div className="readnauthor">
               <button
-                class="button is-primary review-area"
+                className="button is-primary review-area"
                 onClick={handleButtonClick}
               >
                 READ
@@ -346,11 +346,13 @@ function Books() {
               </span>
             </div>
             <div className="like-button">
+              <span className="like-text">Add to Favorites </span>
               <span
                 className={`like-icon ${isLiked ? "liked" : ""}`}
                 onClick={toggleLike}
               >
-                {isLiked ? <FaHeart size={30} /> : <FaRegHeart />}
+                {" "}
+                {isLiked ? <FaHeart size={30} /> : <FaRegHeart size={30} />}
               </span>
             </div>
           </div>
@@ -369,6 +371,7 @@ function Books() {
       )}
       <section className="reviews-container">
         <h2 className="reviews">Reviews</h2>
+        <h2 className="reviews__underline"></h2>
         {reviews.map((review) => (
           <Card key={review.review_id} className="review">
             <CardContent>
