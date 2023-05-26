@@ -16,7 +16,7 @@ import FAQ from "./component/user/FAQ";
 import UserHistoryPage from "./component/user/UserHistoryPage";
 import Favorites from "./component/user/Favorites";
 import { useNavigate } from "react-router-dom";
-import '@fortawesome/fontawesome-free/css/all.css';
+import "@fortawesome/fontawesome-free/css/all.css";
 import "./App.css"; // Import CSS styles
 
 function App() {
@@ -43,7 +43,12 @@ function App() {
               <Link to="/">LIB</Link>
             </div>
             <li>
-              <Link to="/user/contact">Contact Us</Link>
+              {" "}
+              {userRole === "member" && (
+                <>
+                  <Link to="/user/contact">Contact Us</Link>
+                </>
+              )}
             </li>
           </ul>
 
@@ -80,12 +85,7 @@ function App() {
     </Router>
   );
 }
-<<<<<<< Updated upstream
-
-function AuthNav({ userName }) {
-=======
 function AuthNav({ userName, userRole }) {
->>>>>>> Stashed changes
   const navigate = useNavigate();
 
   const logout = () => {
@@ -174,46 +174,63 @@ function Footer() {
   //   history.push('./component/user/Contact');
   // };
   return (
-      <footer className="footer-distributed">
-        <div className="footer-left">
-          <h3>Online<span>Library</span></h3>
-          <p className="footer-links">
-          <Link to="/user/homepage">Home</Link>
-            |
-          <Link to="./user/Contact">Go to Contact</Link> 
+    <footer className="footer-distributed">
+      <div className="footer-left">
+        <h3>
+          Online<span>Library</span>
+        </h3>
+        <p className="footer-links">
+          <Link to="/user/homepage">Home</Link>|
+          <Link to="./user/Contact">Go to Contact</Link>
+        </p>
+        <p className="footer-company-name">
+          Copyright © 2023 <strong>OnlineLibrary</strong> All rights reserved
+        </p>
+      </div>
+
+      <div className="footer-center">
+        <div>
+          <i className="fa fa-map-marker"></i>
+          <p>
+            <span>Location</span> Location
           </p>
-          <p className="footer-company-name">Copyright © 2023 <strong>OnlineLibrary</strong> All rights reserved</p>
         </div>
-  
-        <div className="footer-center">
-          <div>
-            <i className="fa fa-map-marker"></i>
-            <p><span>Location</span> Location</p>
-          </div>
-          <div>
-            <i className="fa fa-phone"></i>
-            <p>+12 1234567890</p>
-          </div>
-          <div>
-            <i className="fa fa-envelope"></i>
-            <p className="footer-email">ssh.librarysys@gmail.com</p>
-          </div>
+        <div>
+          <i className="fa fa-phone"></i>
+          <p>+12 1234567890</p>
         </div>
-  
-        <div className="footer-right">
-          <p className="footer-company-about">
-            <span>About the company</span>
-            <b>OnlineLibrary</b> is an initiative of the Internet Archive, building a digital library of Internet sites and other cultural artifacts in digital form.
-          </p>
-          <div className="footer-icons">
-            <a href="#"><i className="fab fa-facebook"></i></a>
-            <a href="#"><i className="fab fa-instagram"></i></a>
-            <a href="#"><i className="fab fa-linkedin"></i></a>
-            <a href="#"><i className="fab fa-twitter"></i></a>
-            <a href="#"><i className="fab fa-youtube"></i></a>
-          </div>
+        <div>
+          <i className="fa fa-envelope"></i>
+          <p className="footer-email">ssh.librarysys@gmail.com</p>
         </div>
-      </footer>
+      </div>
+
+      <div className="footer-right">
+        <p className="footer-company-about">
+          <span>About the company</span>
+          <b>OnlineLibrary</b> is an initiative of the Internet Archive,
+          building a digital library of Internet sites and other cultural
+          artifacts in digital form.
+        </p>
+        <div className="footer-icons">
+          <a href="#">
+            <i className="fab fa-facebook"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-instagram"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-linkedin"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-twitter"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
   );
 }
 
