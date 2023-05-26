@@ -1,8 +1,25 @@
 const express = require("express");
 const authMiddleware = require("../middleware/authMiddleware");
+const {
+  authenticateToken,
+  checkPermission,
+} = require("../middleware/authMiddleware");
 const db = require("../models");
 
 const router = express.Router();
+
+
+router.get("/all", authenticateToken, checkPermission("ManageUsers"), async (req, res) => {
+  try {
+    const memberships = await db.Membership.findAll({
+      include: [{ model: db.User, attributes: ["username", "email"] }],
+    });
+    res.json(memberships);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // get membership status
 router.get("/", authMiddleware.authenticateToken, async (req, res) => {

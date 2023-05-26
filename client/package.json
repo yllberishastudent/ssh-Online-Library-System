@@ -20,6 +20,7 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "bulma": "^0.9.4",
+    "chart.js": "^4.3.0",
     "formik": "^2.2.9",
     "icons": "^1.0.0",
     "jwt-decode": "^3.1.2",

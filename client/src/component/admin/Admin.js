@@ -6,6 +6,7 @@ import Sidebar from "./adminControl/Siderbar";
 import Books from "./adminControl/crudBooks";
 import Users from "./adminControl/crudUsers";
 import FAQList from "./adminControl/adminFaq";
+import AdminDashboard from "./adminControl/adminDashboard";
 
 function Admin() {
   const navigate = useNavigate();
@@ -155,7 +156,7 @@ function Admin() {
         logout={logout}
       />
       <div className="admin-content">
-        {activeButton === "Dashboard" && <h2>Dashboard Content Goes Here</h2>}
+        {activeButton === "Dashboard" && <AdminDashboard></AdminDashboard>}
         {activeButton === "Books" && <Books books={books} />}
         {activeButton === "Users" && (
           <Users
