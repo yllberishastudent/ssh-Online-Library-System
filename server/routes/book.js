@@ -18,7 +18,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Add a book
+
+// Add book
 router.post(
   "/",
   authenticateToken,
@@ -27,12 +28,25 @@ router.post(
     const { title, author_id, description, cover_image_url } = req.body;
 
     try {
-      // Create the book
+      // Find the author by ID
+      const author = await db.Author.findByPk(author_id);
+      if (!author) {
+        return res.status(404).json({ message: "Author not found" });
+      }
+
+      // Combine the first_name and last_name of the author, checking for null values
+      const authorName = `${author.first_name || ""} ${
+        author.last_name || ""
+      }`.trim();
+
+      // Create the book with the combined author's name
       const book = await db.Book.create({
         title,
         author_id,
+        author: authorName, // Set the author field
         description,
         cover_image_url,
+        price: 100,
       });
 
       res.status(201).json({ message: "Book added successfully", book });

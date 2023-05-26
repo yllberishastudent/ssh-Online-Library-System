@@ -101,32 +101,37 @@ router.post(
 //   }
 // }
 // update user
-router.put("/users/:userId",authenticateToken,checkPermission("ManageUsers"), async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const { username, email, phoneNumber, role } = req.body;
+router.put(
+  "/users/:userId",
+  authenticateToken,
+  checkPermission("ManageUsers"),
+  async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { username, email, phoneNumber, role } = req.body;
 
-    // Check if the user exists
-    const user = await db.User.findByPk(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      // Check if the user exists
+      const user = await db.User.findByPk(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Update the user
+      user.username = username || user.username;
+      user.email = email || user.email;
+      user.phone_number = phoneNumber || user.phone_number;
+      user.role = role || user.role;
+
+      await user.save();
+
+      return res.status(200).json({ user });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
     }
-
-    // Update the user
-    user.username = username || user.username;
-    user.email = email || user.email;
-    user.phone_number = phoneNumber || user.phone_number;
-    user.role = role || user.role;
-
-    await user.save();
-
-    return res.status(200).json({ user });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
   }
-});
-// delete user
+);
+
 router.delete(
   "/users/:userId",
   authenticateToken,
@@ -140,6 +145,14 @@ router.delete(
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
+
+      // Retrieve associated favorites
+      const favorites = await db.Favorite.findAll({
+        where: { user_id: userId },
+      });
+
+      // Delete each favorite
+      await Promise.all(favorites.map((favorite) => favorite.destroy()));
 
       // Delete the user
       await user.destroy();
