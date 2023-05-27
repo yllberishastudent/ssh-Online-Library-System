@@ -70,11 +70,22 @@ function Books({ books, fetchBooks }) {
   };
 
   const handleCreateBook = async () => {
+    const { author, title, description, cover_image_url, pdf_file_url } = newBook;
+  
+    if (!author || !title || !description || !cover_image_url || !pdf_file_url) {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error!",
+        text: "All fields are required.",
+      });
+      return;
+    }
+  
     try {
       const existingAuthorResponse = await axios.get(
-        `/books?author=${newBook.author}`
+        `/books?author=${author}`
       );
-
+  
       if (existingAuthorResponse.data.length > 0) {
         // Author already exists in the books table
         const author_id = existingAuthorResponse.data[0].author_id;
@@ -90,7 +101,7 @@ function Books({ books, fetchBooks }) {
       } else {
         // Author does not exist in the books table, create a new one
         const newAuthorResponse = await axios.post("/books", {
-          author: newBook.author,
+          author,
         });
         const author_id = newAuthorResponse.data.author_id;
         await axios.post(
@@ -103,7 +114,7 @@ function Books({ books, fetchBooks }) {
           }
         );
       }
-
+  
       setShowCreateForm(false);
       fetchBooks();
       setNewBook({
@@ -113,7 +124,7 @@ function Books({ books, fetchBooks }) {
         cover_image_url: "",
         pdf_file_url: "",
       });
-
+  
       Swal.fire({
         icon: "success",
         title: "Create Successful!",
@@ -127,7 +138,7 @@ function Books({ books, fetchBooks }) {
         text: "There has been an error.",
       });
     }
-  };
+  };  
 
   const handleCancelCreate = () => {
     setShowCreateForm(false);
