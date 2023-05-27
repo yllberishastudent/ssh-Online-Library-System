@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Authors() {
   const [authors, setAuthors] = useState([]);
@@ -13,18 +14,19 @@ function Authors() {
     country: "",
   });
   const [showAuthorTable, setShowAuthorTable] = useState(true); // New state variable
+
   useEffect(() => {
     fetchAuthors();
   }, []);
 
   const handleEditClick = (author) => {
     setEditingAuthor({ ...author });
-    setShowAuthorTable(false); 
+    setShowAuthorTable(false);
   };
 
   const handleCancelEdit = () => {
     setEditingAuthor(null);
-    setShowAuthorTable(true); 
+    setShowAuthorTable(true);
   };
 
   const fetchAuthors = async () => {
@@ -49,9 +51,19 @@ function Authors() {
       });
       setEditingAuthor(null);
       fetchAuthors();
-      setShowAuthorTable(true); 
+      setShowAuthorTable(true);
+      Swal.fire({
+        icon: "success",
+        title: "Update Successful!",
+        text: "The author has been updated successfully",
+      });
     } catch (error) {
       console.error("Error updating author:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Update Failure!",
+        text: "There has been an error.",
+      });
     }
   };
 
@@ -66,23 +78,72 @@ function Authors() {
       setAuthors((prevAuthors) =>
         prevAuthors.filter((author) => author.author_id !== author_id)
       );
+
+      Swal.fire({
+        icon: "success",
+        title: "Delete Successful!",
+        text: "The author has been deleted successfully",
+      });
     } catch (error) {
       console.error("Error deleting author:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Delete Failure!",
+        text: "There has been an error.",
+      });
     }
   };
 
   const handleCreateAuthor = async () => {
     try {
-      await axios.post("http://localhost:5001/authors", newAuthor, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      const authorData = {
+        first_name: newAuthor.first_name,
+        last_name: newAuthor.last_name,
+        pen_name: newAuthor.pen_name,
+        gender: newAuthor.gender,
+        country: newAuthor.country,
+      };
+  
+      const response = await axios.post(
+        "http://localhost:5001/authors",
+        authorData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.status === 201) {
+        fetchAuthors();
+        setShowCreateForm(false);
+  
+        Swal.fire({
+          icon: "success",
+          title: "Create Successful!",
+          text: "The author has been created successfully",
+        });
+  
+        // Reset the newAuthor state
+        setNewAuthor({
+          first_name: "",
+          last_name: "",
+          pen_name: "",
+          gender: "",
+          country: "",
+        });
+      }
     } catch (error) {
       console.error("Error creating author:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Create Failure!",
+        text: "There has been an error.",
+      });
     }
-  };
-
+  };  
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewAuthor((prevState) => ({
@@ -104,9 +165,19 @@ function Authors() {
 
   return (
     <div className="authors-container">
-      {showAuthorTable && ( // Only render the author table if showAuthorTable is true
+      {!showCreateForm && showAuthorTable && (
         <>
-          <h2 className="admin-content__title">Authors</h2>
+          <div className="books-container__section">
+            <h2 className="admin-content__title">Authors</h2>
+            <div className="create-author-button-container">
+              <div
+                className="action-button action-button__text"
+                onClick={() => setShowCreateForm(true)}
+              >
+                Create Author
+              </div>
+            </div>
+          </div>
           <table>
             <thead>
               <tr>
@@ -129,6 +200,7 @@ function Authors() {
                   <td>{author.gender}</td>
                   <td>{author.country}</td>
                   <td>
+                    <div className="action-buttons">
                     <button
                       className="action-button"
                       onClick={() => handleEditClick(author)}
@@ -141,24 +213,17 @@ function Authors() {
                     >
                       Delete
                     </button>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="create-author-button-container">
-            <button
-              className="create-author-button"
-              onClick={() => setShowCreateForm(true)}
-            >
-              Create New Author
-            </button>
-          </div>
         </>
       )}
       {editingAuthor && (
         <div className="edit-author-form">
-          <h3>Edit Author</h3>
+          <h3 className="admin-content__title">Edit Author</h3>
           <label>First Name:</label>
           <input
             type="text"
@@ -220,42 +285,46 @@ function Authors() {
           </div>
         </div>
       )}
-      {showCreateForm && ( // Only render the create author form if showCreateForm is true
+      {showCreateForm && (
         <div className="create-author-form">
-          <h3>Create Author</h3>
+          <h3 className="admin-content__title">Create Author</h3>
           <label>First Name:</label>
           <input
             type="text"
             name="first_name"
-            value={newAuthor.first_name || ""}
+            value={newAuthor.first_name}
             onChange={handleChange}
           />
           <label>Last Name:</label>
           <input
             type="text"
             name="last_name"
-            value={newAuthor.last_name || ""}
+            value={newAuthor.last_name}
             onChange={handleChange}
           />
           <label>Pen Name:</label>
           <input
             type="text"
             name="pen_name"
-            value={newAuthor.pen_name || ""}
+            value={newAuthor.pen_name}
             onChange={handleChange}
           />
           <label>Gender:</label>
-          <input
-            type="text"
+          <p className="genderPadding">
+          <select
             name="gender"
-            value={newAuthor.gender || ""}
+            value={newAuthor.gender}
             onChange={handleChange}
-          />
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select></p>
           <label>Country:</label>
           <input
             type="text"
             name="country"
-            value={newAuthor.country || ""}
+            value={newAuthor.country}
             onChange={handleChange}
           />
           <div className="create-author-buttons">

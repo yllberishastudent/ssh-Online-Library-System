@@ -122,7 +122,7 @@ router.delete(
   }
 );
 router.post(
-  "/authors",
+  "/",
   authenticateToken,
   checkPermission("ManageBooks"),
   async (req, res) => {
