@@ -15,6 +15,7 @@ Express
 React.js
 MySQL
 Sequelize (ORM)
+
 Kërkesat Paraprake
 Para se të ekzekutoni këtë projekt, sigurohuni që të keni të instaluar:
 
