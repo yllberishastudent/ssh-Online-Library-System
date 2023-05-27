@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import Sidebar from "./adminControl/Siderbar";
 import Books from "./adminControl/crudBooks";
 import Users from "./adminControl/crudUsers";
+import Authors from "./adminControl/crudAuthor";
 import FAQList from "./adminControl/adminFaq";
 import AdminDashboard from "./adminControl/adminDashboard";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ function Admin() {
   const [activeButton, setActiveButton] = useState("Dashboard");
   const [books, setBooks] = useState([]);
   const [users, setUsers] = useState([]);
+  const [authors, setAuthors] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -27,6 +29,7 @@ function Admin() {
   useEffect(() => {
     fetchUsers();
     fetchBooks();
+    fetchAuthors();
     checkAdminStatus();
   }, []);
 
@@ -37,7 +40,7 @@ function Admin() {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        isAdmin = decodedToken.role == "admin";
+        isAdmin = decodedToken.role === "admin";
       } catch (error) {
         console.error(error);
       }
@@ -74,6 +77,37 @@ function Admin() {
     }
   };
 
+  const fetchAuthors = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5001/authors", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAuthors(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCreateAuthor = async (author) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post("http://localhost:5001/authors", author, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 201) {
+        const createdAuthor = response.data.author;
+        setAuthors([...authors, createdAuthor]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
   };
@@ -101,7 +135,7 @@ function Admin() {
   const handleCancelEdit = () => {
     setEditingUser(null);
   };
-  
+
   const handleSaveUser = async (editedUser) => {
     try {
       const token = localStorage.getItem("token");
@@ -193,7 +227,9 @@ function Admin() {
       )}
       <div className="admin-content">
         {activeButton === "Dashboard" && <AdminDashboard></AdminDashboard>}
-        {activeButton === "Books" && <Books books={books} />}
+        {activeButton === "Books" && (
+          <Books books={books} fetchBooks={fetchBooks} />
+        )}
         {activeButton === "Users" && (
           <Users
             users={users}
@@ -214,7 +250,13 @@ function Admin() {
             handleCreateClick={handleCreateFormClick}
           />
         )}
-        {activeButton === "Authors" && <h2>Authors Content Goes Here</h2>}
+        {activeButton === "Authors" && (
+          <Authors
+            authors={authors}
+            fetchAuthors={fetchAuthors}
+            handleCreateAuthor={handleCreateAuthor}
+          />
+        )}
         {activeButton === "FAQ" && <FAQList></FAQList>}
       </div>
     </div>
