@@ -7,7 +7,7 @@ const AdminDashboard = () => {
   const [membershipData, setMembershipData] = useState(null);
   const [usersData, setUsersData] = useState(null);
   const [chartInstance, setChartInstance] = useState(null);
-  const [selectedData, setSelectedData] = useState(null);
+  const [selectedData, setSelectedData] = useState("With Membership");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,7 +76,7 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
   const renderTable = () => {
-    if (selectedData === "With Membership") {
+    if (selectedData === "With Membership" && membershipData && usersData) {
       const usersWithMembership = usersData.filter((user) => {
         return membershipData.find(
           (membership) => membership.userId === user.user_id
@@ -84,6 +84,9 @@ const AdminDashboard = () => {
       });
       return (
         <table>
+          <div
+            style={{ width: "100%", height: "5px", backgroundColor: "#2b5797" }}
+          ></div>
           <thead>
             <tr>
               <th>ID</th>
@@ -102,7 +105,7 @@ const AdminDashboard = () => {
           </tbody>
         </table>
       );
-    } else if (selectedData === "Without Membership") {
+    } else if (selectedData === "Without Membership" && usersData) {
       const usersWithoutMembership = usersData.filter((user) => {
         return !membershipData.find(
           (membership) => membership.userId === user.user_id
@@ -111,6 +114,9 @@ const AdminDashboard = () => {
 
       return (
         <table>
+          <div
+          style={{ width: "100%", height: "5px", backgroundColor: "#e0e0e0" }}
+          ></div>
           <thead>
             <tr>
               <th>ID</th>
