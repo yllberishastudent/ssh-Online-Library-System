@@ -21,10 +21,10 @@
 
 
  * @swagger
- * books:
+* /books:
  *   post:
  *     summary: Add a new book
- *     tags: Books
+ *     tags: [Books]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -45,15 +45,6 @@
  *     responses:
  *       201:
  *         description: Book added successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 book:
- *                   $ref: '#/components/schemas/Book'
  *       400:
  *         description: Bad request
  *       404:

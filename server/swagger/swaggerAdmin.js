@@ -97,7 +97,7 @@
 /**
  * @swagger
  * tags:
- *   name: admin
+ *   name: Admin
  *   description: Admin operations
  * paths:
  *   admin/details/{userId}:

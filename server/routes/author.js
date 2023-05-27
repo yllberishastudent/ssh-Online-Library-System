@@ -128,5 +128,25 @@ router.delete(
     }
   }
 );
-
+router.post(
+  "/authors",
+  authenticateToken,
+  checkPermission("ManageBooks"),
+  async (req, res) => {
+    try {
+      const { first_name, last_name, pen_name, gender, country } = req.body;
+      const author = await db.Author.create({
+        first_name,
+        last_name,
+        pen_name,
+        gender,
+        country,
+      });
+      res.status(201).json({ author });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to create author" });
+    }
+  }
+);
 module.exports = router;
