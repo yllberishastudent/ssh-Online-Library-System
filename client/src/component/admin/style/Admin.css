@@ -1,4 +1,8 @@
 /* Admin.css */
+.container {
+  max-width: 1534px!important;
+}
+
 .admin-page {
   display: flex;
   height: 84vh;
@@ -203,4 +207,11 @@
 
 .action-button--1 {
   background-color: #ffe5ee;
+}
+
+.books-container__section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }

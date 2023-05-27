@@ -97,11 +97,16 @@ function Users({
     }
 
     try {
-      const response = await axios.post("/admin/users", newUser, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const role_id = newUser.role === "admin" ? 1 : 2;
+      const response = await axios.post(
+        "/admin/users",
+        { ...newUser, role_id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       const { user } = response.data;
       handleCreateUser(user);
@@ -258,21 +263,7 @@ function Users({
                     user.email
                   )}
                 </td>
-                <td>
-                  {editingUser && editingUser.user_id === user.user_id ? (
-                    <select
-                      name="role"
-                      value={editingUser.role}
-                      onChange={handleChangeInput}
-                    >
-                      <option value="">Select Role</option>
-                      <option value="admin">Admin</option>
-                      <option value="member">Member</option>
-                    </select>
-                  ) : (
-                    user.role
-                  )}
-                </td>
+                <td>{user.role}</td>
                 <td>
                   {editingUser && editingUser.user_id === user.user_id ? (
                     <div className="action-buttons">
