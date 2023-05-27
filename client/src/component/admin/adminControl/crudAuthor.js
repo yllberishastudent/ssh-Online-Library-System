@@ -95,6 +95,22 @@ function Authors() {
   };
 
   const handleCreateAuthor = async () => {
+    // Check if any field is empty
+    if (
+      newAuthor.first_name === "" ||
+      newAuthor.last_name === "" ||
+      newAuthor.pen_name === "" ||
+      newAuthor.gender === "" ||
+      newAuthor.country === ""
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Please fill in all the fields",
+      });
+      return;
+    }
+  
     try {
       const token = localStorage.getItem("token");
       const authorData = {
@@ -125,7 +141,6 @@ function Authors() {
           text: "The author has been created successfully",
         });
   
-        // Reset the newAuthor state
         setNewAuthor({
           first_name: "",
           last_name: "",
@@ -142,7 +157,7 @@ function Authors() {
         text: "There has been an error.",
       });
     }
-  };  
+  };
   
   const handleChange = (e) => {
     const { name, value } = e.target;
