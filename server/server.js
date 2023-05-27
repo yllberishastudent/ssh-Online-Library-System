@@ -53,7 +53,7 @@ app.use("/details", UserDetailsRoutes);
 app.get(
   "/protected",
   authenticateToken,
-  checkPermission("ReadBook"),
+  checkPermission("LeaveReview"),
   (req, res) => {
     // This route handler will only be executed if the user has the required permission
     res.json({ message: "Access granted" });

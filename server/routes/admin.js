@@ -121,6 +121,13 @@ router.put(
       user.email = email || user.email;
       user.phone_number = phoneNumber || user.phone_number;
       user.role = role || user.role;
+      
+      // Map role to roleId
+      if (user.role === "admin") {
+        user.roleId = 1;
+      } else if (user.role === "basic") {
+        user.roleId = 2;
+      }
 
       await user.save();
 
@@ -131,7 +138,6 @@ router.put(
     }
   }
 );
-
 router.delete(
   "/users/:userId",
   authenticateToken,
