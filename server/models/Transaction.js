@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
   const Transaction = sequelize.define(
     "Transaction",
     {
+      transaction_id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -33,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       card_date: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },

@@ -5,6 +5,14 @@ const {
   authenticateToken,
   checkPermission,
 } = require("../middleware/authMiddleware");
+const crypto = require("crypto");
+
+// Hashing function using SHA256 algorithm
+function hashFunction(data) {
+  const hash = crypto.createHash("sha256");
+  hash.update(data);
+  return hash.digest("hex");
+}
 
 // Endpoint 1: Get all transactions for a user
 router.get(
@@ -53,38 +61,33 @@ router.get(
   }
 );
 
-router.post(
-  "/",
-  authenticateToken,
-  async (req, res) => {
-    try {
-      const userId = req.user.id;
-      const { first_name, last_name, card_type, card_number, ccv, card_date } =
-        req.body;
+// Endpoint 3: Create a new transaction
+router.post("/", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { first_name, last_name, card_type, card_number, ccv, card_date } =
+      req.body;
 
-      // Generate hashes for card_type, card_number, and ccv
-      const hashedCardType = hashFunction(card_type);
-      const hashedCardNumber = hashFunction(card_number);
-      const hashedCCV = hashFunction(ccv);
+    const hashedCardType = hashFunction(card_type);
+    const hashedCardNumber = hashFunction(card_number);
+    const hashedCCV = hashFunction(ccv);
 
-      const newTransaction = await db.Transaction.create({
-        user_id: userId,
-        first_name,
-        last_name,
-        card_type: hashedCardType,
-        card_number: hashedCardNumber,
-        ccv: hashedCCV,
-        card_date,
-      });
+    const newTransaction = await db.Transaction.create({
+      user_id: userId,
+      first_name,
+      last_name,
+      card_type: hashedCardType,
+      card_number: hashedCardNumber,
+      ccv: hashedCCV,
+      card_date,
+    });
 
-      res.status(201).json({ transaction: newTransaction });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
-    }
+    res.status(201).json({ transaction: newTransaction });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
-);
-
+});
 // Endpoint 4: Delete a transaction for a user
 router.delete(
   "/:transactionId",

@@ -3,6 +3,11 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Transactions", {
+      transaction_id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -32,18 +37,33 @@ module.exports = {
         allowNull: false,
       },
       card_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
     });
+
+    await queryInterface.addConstraint("Transactions", {
+      fields: ["user_id"],
+      type: "foreign key",
+      name: "fk_user_id",
+      references: {
+        table: "Users",
+        field: "user_id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
   },
-  down: async (queryInterface, Sequelize) => {},
+
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable("Transactions");
+  },
 };
