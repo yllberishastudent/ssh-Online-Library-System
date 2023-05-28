@@ -121,6 +121,13 @@ router.put(
       user.email = email || user.email;
       user.phone_number = phoneNumber || user.phone_number;
       user.role = role || user.role;
+      
+      // Map role to roleId
+      if (user.role === "admin") {
+        user.roleId = 1;
+      } else if (user.role === "basic") {
+        user.roleId = 2;
+      }
 
       await user.save();
 
@@ -131,7 +138,6 @@ router.put(
     }
   }
 );
-
 router.delete(
   "/users/:userId",
   authenticateToken,
@@ -164,5 +170,117 @@ router.delete(
     }
   }
 );
+
+// Get user details by user ID
+router.get(
+  "/details/:userId",
+  authenticateToken,
+  checkPermission("ManageUsers"),
+  async (req, res) => {
+    try {
+      const { userId } = req.params; // Retrieve user ID from the request parameters
+      const userInfo = await db.UserInfo.findOne({
+        where: { userId },
+        include: db.User,
+      });
+
+      if (!userInfo) {
+        return res.status(404).json({ error: "User details not found" });
+      }
+
+      res.json(userInfo);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+);
+
+// Create or update user details
+router.post(
+  "/details/:userId",
+  authenticateToken,
+  checkPermission("ManageUsers"),
+  async (req, res) => {
+    try {
+      const { userId } = req.params; // Retrieve user ID from the request parameters
+      const { firstName, lastName, gender, age, ethnicity, address } = req.body;
+
+      let userInfo = await db.UserInfo.findOne({ where: { userId } });
+
+      if (userInfo) {
+        // User details already exist, update the existing record
+        userInfo = await userInfo.update(
+          {
+            firstName,
+            lastName,
+            gender,
+            age,
+            ethnicity,
+            address,
+          },
+          { where: { userId } }
+        );
+      } else {
+        // User details do not exist, create a new record
+        userInfo = await db.UserInfo.create({
+          userId,
+          firstName,
+          lastName,
+          gender,
+          age,
+          ethnicity,
+          address,
+        });
+      }
+
+      // Fetch the updated or created user details
+      userInfo = await db.UserInfo.findOne({ where: { userId } });
+
+      res.json(userInfo);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+);
+
+// Delete user details
+router.delete(
+  "/details/:userId",
+  authenticateToken,
+  checkPermission("ManageUsers"),
+  async (req, res) => {
+    try {
+      const { userId } = req.params; // Retrieve user ID from the request parameters
+
+      const userInfo = await db.UserInfo.findOne({ where: { userId } });
+
+      if (!userInfo) {
+        return res.status(404).json({ error: "User details not found" });
+      }
+
+      await userInfo.destroy();
+
+      res.json({ message: "User details deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+);
+// Get all user details
+router.get("/userInfo", authenticateToken, async (req, res) => {
+  try {
+    const userInfos = await db.UserInfo.findAll({
+      include: db.User,
+    });
+
+    res.json(userInfos);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 module.exports = router;

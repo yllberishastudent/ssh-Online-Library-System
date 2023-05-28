@@ -10,17 +10,17 @@ module.exports = (sequelize, DataTypes) => {
       },
       first_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       last_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       pen_name: {
         type: DataTypes.STRING,
       },
       gender: {
-        type: DataTypes.ENUM("male", "female"),
+        type: DataTypes.STRING,
       },
       country: {
         type: DataTypes.STRING,

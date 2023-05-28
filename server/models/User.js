@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Role",
+          model: "Roles",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -51,7 +51,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = function (models) {
     User.hasMany(models.Membership, { foreignKey: "userId" });
-    User.belongsTo(models.Role, { foreignKey: "roleId" });
+    User.belongsTo(models.Role, { foreignKey: "roleId"});
+    User.hasOne(models.UserInfo, { foreignKey: "userId" });
   };
 
   return User;

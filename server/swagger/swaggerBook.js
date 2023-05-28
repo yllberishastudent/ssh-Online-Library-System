@@ -19,11 +19,12 @@
  *       '500':
  *         description: Internal server error
 
+
+ * @swagger
+* /books:
  *   post:
- *     tags:
- *       - Books
- *     summary: Add a book
- *     description: Add a new book to the library.
+ *     summary: Add a new book
+ *     tags: [Books]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -35,21 +36,22 @@
  *             properties:
  *               title:
  *                 type: string
- *                 description: Title of the book
  *               author_id:
  *                 type: integer
- *                 description: ID of the book's author
  *               description:
  *                 type: string
- *                 description: Description of the book
  *               cover_image_url:
  *                 type: string
- *                 description: URL of the book's cover image
  *     responses:
- *       '201':
+ *       201:
  *         description: Book added successfully
- *       '500':
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Author not found
+ *       500:
  *         description: Internal server error
+ 
 
  * /books/category/{categoryName}:
  *   get:

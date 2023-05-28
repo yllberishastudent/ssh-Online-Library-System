@@ -76,23 +76,16 @@ router.patch(
   checkPermission("ManageBooks"),
   async (req, res) => {
     const { id } = req.params;
-    const { first_name, last_name, pen_name, gender, country, active } =
-      req.body;
 
     try {
-      const author = await Author.findByPk(id);
+      const author = await db.Author.findByPk(id);
 
       if (!author) {
         return res.status(404).json({ error: "Author not found" });
       }
 
       // Update the author's properties
-      author.first_name = first_name;
-      author.last_name = last_name;
-      author.pen_name = pen_name;
-      author.gender = gender;
-      author.country = country;
-      author.active = active;
+Object.assign(author, req.body);
 
       await author.save();
 
@@ -113,7 +106,7 @@ router.delete(
     const { id } = req.params;
 
     try {
-      const author = await Author.findByPk(id);
+      const author = await db.Author.findByPk(id);
 
       if (!author) {
         return res.status(404).json({ error: "Author not found" });
@@ -128,5 +121,25 @@ router.delete(
     }
   }
 );
-
+router.post(
+  "/",
+  authenticateToken,
+  checkPermission("ManageBooks"),
+  async (req, res) => {
+    try {
+      const { first_name, last_name, pen_name, gender, country } = req.body;
+      const author = await db.Author.create({
+        first_name,
+        last_name,
+        pen_name,
+        gender,
+        country,
+      });
+      res.status(201).json({ author });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to create author" });
+    }
+  }
+);
 module.exports = router;
