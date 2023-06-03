@@ -1,17 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-// const db = require("./models");
-// const bcrypt = require("bcrypt");
+const cron = require('node-cron');
+
 const cors = require("cors");
 const {
   authenticateToken,
   checkPermission,
 } = require("./middleware/authMiddleware");
-// const jwt = require("jsonwebtoken");
-// const path = require("path");
-// const fs = require("fs");
-// const nodemailer = require("nodemailer");
 require("dotenv").config();
+
 
 // Initialize the app
 const app = express();
@@ -29,11 +26,12 @@ const categoryRouter = require("./routes/category");
 const authRouter = require("./routes/auth");
 const faqRouter = require("./routes/faq");
 const UserHistoryRouter = require("./routes/userHistory");
-const favoriteRouter = require("./routes/favorite"); // Update the import statement
+const favoriteRouter = require("./routes/favorite"); 
 const pdfRouter = require("./routes/pdf");
 const transactionRouter = require("./routes/transactions");
 const adminRoutes = require("./routes/admin");
 const UserDetailsRoutes = require("./routes/userInfo");
+const checkMembershipExpiry = require("./middleware/checkMembership");
 
 app.use("/authors", authorRoutes);
 app.use("/books", bookRoutes);
@@ -49,6 +47,7 @@ app.use("/read/pdf", pdfRouter);
 app.use("/transaction", transactionRouter);
 app.use("/admin", adminRoutes);
 app.use("/details", UserDetailsRoutes);
+cron.schedule('0 0 * * *', checkMembershipExpiry);
 
 app.get(
   "/protected",
